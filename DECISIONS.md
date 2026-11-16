@@ -200,16 +200,6 @@ Qué se usa, qué se hace y por qué. Una entrada por decisión.
   - La app solo anima posición, tamaño, giro y opacidad (R46), justo lo que la opción acelera.
 - **Resigno:** cambiarla obliga a un build nativo, y es una opción que Reanimated trae apagada.
 
-## D23 · El catálogo del design system queda en la app
-
-- **Decisión:** el catálogo no se borra. Es una pantalla aparte que se abre con "Ver el DS"
-  desde la pantalla de inicio y vuelve con "Volver". Con `EXPO_PUBLIC_SHOW_CATALOG=1` la app
-  abre directo en él.
-- **Por qué:**
-  - Muestra cada pieza del design system en todos sus estados, sin depender del turno de voz.
-  - Sirve para revisar lo visual en el teléfono y para mostrar cómo está armada la interfaz.
-- **Resigno:** un botón más en la pantalla de inicio y una pantalla que el productor no usa.
-
 ## D24 · La navegación entre pantallas, con React Navigation
 
 - **Decisión:** las pantallas van en un stack nativo de React Navigation
@@ -217,37 +207,11 @@ Qué se usa, qué se hace y por qué. Una entrada por decisión.
   `presentation/navigation`. Es una excepción a lo que decía `RULES.md`: no usar navegación
   porque había una sola pantalla.
 - **Por qué:**
-  - Con el catálogo (D23) la app tiene dos pantallas, y elegir cuál se ve con un `useState` es
+  - Con el catálogo del design system la app tiene más de una pantalla, y elegir cuál se ve con un `useState` es
     una navegación hecha a mano: no es una buena práctica.
   - El stack trae el botón "atrás" de Android, el historial y las rutas tipadas, y suma pantallas
     sin tocar `App.tsx`.
 - **Resigno:** tres dependencias más, una de ellas nativa, y un build para incluirla.
-
-## D25 · La voz de la app es rioplatense: "Cande", de ElevenLabs
-
-- **Decisión:** la voz del server es "Cande" (`yFykvY9iSJewrANOC0cU`), una voz de la biblioteca de
-  ElevenLabs con acento porteño, informal y sin tono de locutor. Cierra la pregunta Q4 del research.
-- **Por qué:**
-  - Con el plan pago de ElevenLabs la API deja usar las voces de la biblioteca; con el gratis
-    solo había voces de acento neutro, como "Sarah".
-  - El productor habla en rioplatense: una voz que le contesta igual se siente del lugar.
-  - Ya en uso, tarda lo mismo que Sarah (0,64 s una frase corta). La primera frase con la voz
-    puede tardar varios segundos: si pasa de 1,5 s, esa frase la dice la voz del teléfono.
-- **Resigno:** depender de un plan pago de ElevenLabs. Sin él, la voz vuelve a fallar y la app
-  habla con la del teléfono.
-
-## D26 · Detrás de las tarjetas, el resumen desenfocado
-
-- **Decisión:** con tarjetas en pantalla, la lista ocupa todo el alto, de la barra de estado a
-  la zona de voz, y lo de atrás se desenfoca en vivo con `expo-blur` (`dimezisBlurView`, que
-  anda en Android 11). Los bordes de la lista se funden cuando quedan tarjetas por recorrer.
-  `VISUAL.md` decía "sin desenfoque en vivo": se corrigió para admitir este único caso.
-- **Por qué:**
-  - A veces no entraba ni una tarjeta en la mitad de abajo de la pantalla.
-  - El desenfoque deja claro que las tarjetas van por delante y el resumen queda de fondo.
-  - El fundido avisa que la lista se puede recorrer.
-- **Resigno:** una dependencia nativa más, y un desenfoque que en Android 11 cuesta más que
-  en los teléfonos nuevos.
 
 ## D27 · El splash es el primer cuadro de la entrada del logo
 

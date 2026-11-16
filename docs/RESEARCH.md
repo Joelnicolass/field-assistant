@@ -200,11 +200,82 @@ no alcanza con volver a correr `assembleRelease`.
   - No se pidió ningún permiso.
 - **Veredicto:** se cumple.
 
+## Proveedores, desde la máquina de desarrollo (I2, I3 e I13)
+
+- **Fecha:** 16-nov-2026.
+- **Dónde:** los scripts de `server/scripts/`, corridos en la Mac con la red de la casa. La
+  latencia desde el teléfono, con datos móviles, va a ser mayor.
+
+### I2 · El modelo entiende un audio y devuelve JSON con forma fija
+
+- **Se espera:** los tres audios dan el pedido correcto. Se anotan el identificador del modelo,
+  la latencia, el costo de mil pedidos y el límite de pedidos por minuto.
+- **Cómo:** `npm run research:interpret` en `server/`. Manda cada audio a Gemini en un solo
+  pedido, con `inlineData` (`audio/mp4`) y `responseSchema`, y mide.
+- **Audios:** `server/scripts/samples/`, hechos con la voz de la Mac (`say -v Paulina`, español
+  de México: no hay voz rioplatense) y pasados a `.m4a` AAC mono con `afconvert`. Duran de 1,6 a
+  3,2 s.
+- **Modelo:** `gemini-3.5-flash-lite`. Está en la lista de modelos de la API con esta clave.
+- **Qué dio:** cuatro corridas. Las dos primeras con el esquema que deja omitir los datos; las
+  dos últimas con todos los campos obligatorios y que aceptan `null`, y la instrucción "si un dato
+  no se dijo, va en null".
+
+| Audio | Se espera | Campos opcionales (2 corridas) | Campos con `null` (2 corridas) |
+| --- | --- | --- | --- |
+| `rain.m4a` | lluvia, 18 mm, ayer | una vez **sin `day`** y con `quantity: 2` y `toLot: 2` inventados; otra, correcto | correcto las dos veces |
+| `move.m4a` | 40 vaquillonas del 3 al 5 | correcto | correcto las dos veces |
+| `missing.m4a` | 15 terneros, faltan los lotes | lotes en `missing`, pero una vez con `toLot: 0` | una vez `503`; la otra, correcto, con los lotes en `null` y en `missing` |
+
+- **Latencia:** de 1,3 a 3,1 s en 9 de 11 pedidos. Dos pedidos tardaron **7,4 s y 17 s**, y
+  uno volvió con `503 UNAVAILABLE` ("high demand") en 1,5 s.
+- **Tokens y costo:** de 175 a 231 tokens de entrada y de 40 a 97 de salida por pedido. A
+  US$ 0,30 la entrada y US$ 2,50 la salida por millón: entre US$ 0,21 y US$ 0,30 cada mil
+  pedidos. RNF-07 pide US$ 1 o menos: se cumple.
+- **Límite por minuto:** la API no lo informa. Según la referencia de proveedores, el plan gratis
+  acepta unos 15 pedidos por minuto; pasado eso contesta `429`. Queda para confirmar en el panel
+  de Google AI Studio.
+- **Lo que se vio distinto de lo esperado:**
+  - Con campos opcionales, el modelo a veces inventa datos o pone `0` en uno que marca como
+    faltante. Con todos los campos obligatorios y nulos, no pasó.
+  - La demora tiene una cola larga y el servicio a veces responde `503`. El server necesita un
+    límite de tiempo propio (RF-17 fija 8 s) y tratar el `503` como falla técnica: el audio va a
+    la cola.
+- **Veredicto:** se cumple: entiende en un solo pedido, con JSON de forma fija y dentro del
+  costo. Para el RFC-004: campos obligatorios con `null`, límite de tiempo y reintento por cola.
+
+### I3 · La voz de servicio sintetiza una frase
+
+- **Se espera:** devuelve audio. Se anotan la voz elegida (Q4), la latencia y el costo por
+  carácter.
+- **Cómo:** `npm run research:speak` en `server/`. Usa `eleven_flash_v2_5`, salida
+  `mp3_44100_128` y `language_code: 'es'`, para que lea en español un texto ambiguo como "18 mm".
+  La voz es `EXAVITQu4vr4xnSDxMaL` ("Sarah"), una voz incluida que anda con el plan gratis; se
+  cambia con `ELEVENLABS_VOICE_ID`.
+- **Estado:** **BLOQUEADO.** La clave de ElevenLabs está en el tope de créditos (le quedan 6, unas
+  12 letras). El script está listo y no se corrió para no gastar los créditos.
+- **Para Q4:** con el plan gratis, la API solo deja usar las voces incluidas, de acento neutro.
+  Las voces argentinas son de la biblioteca y piden un plan pago (la API contesta `402`). Q4
+  queda abierta: voz neutra gratis o voz argentina paga.
+- **Precio de lista:** US$ 0,05 cada mil caracteres. Una respuesta de 90 caracteres cuesta
+  US$ 4,50 cada mil respuestas (ver `docs/PROVEEDORES.md`).
+
+### I13 · Latencia de un turno
+
+- **Se espera:** desde que termina la escucha hasta tener la respuesta, 5 segundos o menos
+  (RNF-02).
+- **Qué dio, en parte:** entender el pedido tarda de 1,3 a 3,1 s desde la Mac, subida del audio
+  incluida, en la mayoría de los pedidos. Con la voz del teléfono, que no tiene espera de red,
+  el turno queda en unos 3 s. Pero hubo pedidos de 7,4 y 17 s: esos superan los 5 s.
+- **Pendiente:** la latencia de la voz de servicio (I3, bloqueado) y la medición desde el
+  teléfono con datos móviles. Q5 queda contestada en parte.
+- **Veredicto:** dentro de los 5 s casi siempre, sin la voz de servicio. La cola larga del
+  modelo la supera; el límite de tiempo del server la corta. Falta sumar la voz.
+
 ## Faltan
 
-- **Paso 6:** I2 (el modelo entiende el audio), I3 (la voz de servicio) e I13 (la latencia de un
-  turno). I3 depende de que la clave de ElevenLabs tenga créditos.
+- **Bloqueado:** I3, hasta que la clave de ElevenLabs tenga créditos y se elija la voz (Q4). Con
+  eso se completa I13.
 - **Con voz real, pendientes:** las otras grabaciones de I1, escuchar las voces de I4 y la frase
-  de manos libres de I5 (RFC-005).
+  de manos libres de I5 (RFC-005, Q2).
 - **Para decidir:** si el orbe respeta la opción de reducir animaciones del teléfono (I10).
 - I12 se quitó.

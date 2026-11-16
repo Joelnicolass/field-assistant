@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "start": "node --env-file=.env src/main.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "research:interpret": "node --env-file=.env scripts/interpret.ts",
+    "research:speak": "node --env-file=.env scripts/speak.ts"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

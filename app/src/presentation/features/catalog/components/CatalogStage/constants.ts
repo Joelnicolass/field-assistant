@@ -16,6 +16,7 @@ const IDLE: VoiceStageView = {
   cards: [],
   pendingCount: 0,
   sending: false,
+  onPendingPress: doNothing,
   busy: false,
   onOrbPress: doNothing,
 };

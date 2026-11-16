@@ -28,6 +28,7 @@ export function HomeScreen({ navigation }: HomeScreenProps) {
           dimmed={voice.busy}
           pendingCount={voice.pendingCount}
           sending={voice.sending}
+          onPendingPress={voice.onPendingPress}
           onOpenCatalog={() => navigation.navigate(RootScreen.Catalog)}
         />
       )}

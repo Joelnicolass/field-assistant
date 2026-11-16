@@ -19,6 +19,8 @@ export type VoiceStageView = {
   pendingCount: number;
   /** Se está reintentando la cola: la píldora dice "Enviando…". */
   sending: boolean;
+  /** Al tocar la píldora: reintenta la cola en el momento. */
+  onPendingPress: () => void;
   /** Si hay un turno en curso: el resumen se apaga mientras tanto. */
   busy: boolean;
   onOrbPress: () => void;
@@ -47,6 +49,7 @@ export function useVoiceStage(options: VoiceTurnOptions): VoiceStageView {
     cards: stageCards(waitingVoice ? null : card, turn, pending.saved, context),
     pendingCount: pending.pendingCount,
     sending: pending.sending,
+    onPendingPress: pending.retryNow,
     busy: state.phase !== VoicePhase.Idle,
     onOrbPress,
   };

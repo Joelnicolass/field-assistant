@@ -13,6 +13,7 @@ import {
   PENDING_OUT_MS,
   PILL_ICON_SIZE,
   pendingLabel,
+  SEND_NOW_HINT,
   SENDING_LABEL,
 } from './constants';
 import { createStyles } from './styles';
@@ -23,10 +24,13 @@ type SummaryHeaderProps = {
   place: string;
   pendingCount: number;
   sending: boolean;
+  /** Tocar la píldora de pendientes los reintenta en el momento. */
+  onPendingPress: () => void;
   onOpenCatalog: () => void;
 };
 
-export function SummaryHeader({ place, pendingCount, sending, onOpenCatalog }: SummaryHeaderProps) {
+export function SummaryHeader(props: SummaryHeaderProps) {
+  const { place, pendingCount, sending, onPendingPress, onOpenCatalog } = props;
   const styles = useStyles(createStyles);
   const theme = useTheme();
 
@@ -54,12 +58,21 @@ export function SummaryHeader({ place, pendingCount, sending, onOpenCatalog }: S
           <Animated.View
             entering={FadeIn.duration(PENDING_IN_MS)}
             exiting={FadeOut.duration(PENDING_OUT_MS)}
-            style={[styles.pill, styles.pending]}
           >
-            <Icon name={IconName.Offline} size={PILL_ICON_SIZE} color={theme.colors.warning} />
-            <AppText variant={TextVariant.Pill} color={theme.colors.warning}>
-              {sending ? SENDING_LABEL : pendingLabel(pendingCount)}
-            </AppText>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={pendingLabel(pendingCount)}
+              accessibilityHint={SEND_NOW_HINT}
+              accessibilityState={{ busy: sending }}
+              disabled={sending}
+              onPress={onPendingPress}
+              style={[styles.pill, styles.pending]}
+            >
+              <Icon name={IconName.Offline} size={PILL_ICON_SIZE} color={theme.colors.warning} />
+              <AppText variant={TextVariant.Pill} color={theme.colors.warning}>
+                {sending ? SENDING_LABEL : pendingLabel(pendingCount)}
+              </AppText>
+            </Pressable>
           </Animated.View>
         )}
       </View>

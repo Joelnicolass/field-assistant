@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 
+import { readNumber } from '@/core/configs/settings';
+
 const loadSettings = () => {
   jest.resetModules();
   return jest.requireActual<typeof import('@/core/configs/settings')>('@/core/configs/settings')
@@ -29,5 +31,23 @@ describe('settings', () => {
     process.env.EXPO_PUBLIC_SERVER_URL = 'http://192.168.0.10:8787';
 
     expect(loadSettings().serverUrl).toBe('http://192.168.0.10:8787');
+  });
+});
+
+describe('readNumber', () => {
+  it('devuelve el número cuando el valor lo es', () => {
+    expect(readNumber('2500', 1)).toBe(2500);
+  });
+
+  it('devuelve el valor por defecto cuando no hay valor', () => {
+    expect(readNumber(undefined, 1)).toBe(1);
+  });
+
+  it('devuelve el valor por defecto cuando el valor está vacío', () => {
+    expect(readNumber('', 1)).toBe(1);
+  });
+
+  it('devuelve el valor por defecto cuando el valor no es un número', () => {
+    expect(readNumber('mucho', 1)).toBe(1);
   });
 });

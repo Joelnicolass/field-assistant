@@ -8,6 +8,7 @@ export const TOGGLE_LABEL: Record<ThemeMode, string> = {
   [ThemeMode.Dark]: 'Pasar a claro',
 };
 export const SECTION = {
+  voice: 'Voz y micrófono',
   orb: 'Orbe',
   texts: 'Textos',
   icons: 'Íconos',

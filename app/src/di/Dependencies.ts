@@ -1,4 +1,6 @@
+import type { AudioRecorderService } from '@/domain/services/AudioRecorderService';
 import type { ClockService } from '@/domain/services/ClockService';
+import type { SpeakerService } from '@/domain/services/SpeakerService';
 import type { InterpreterService } from '@/domain/services/InterpreterService';
 import type { ApplyCorrectionUseCase } from '@/domain/usecases/ApplyCorrectionUseCase';
 import type { DiscardPendingAudioUseCase } from '@/domain/usecases/DiscardPendingAudioUseCase';
@@ -25,6 +27,8 @@ export type Dependencies = {
   getTodaySummary: GetTodaySummaryUseCase;
   previewCorrection: PreviewCorrectionUseCase;
   applyCorrection: ApplyCorrectionUseCase;
+  recorder: AudioRecorderService;
+  speaker: SpeakerService;
   interpreter: InterpreterService;
   resolveRequest: ResolveRequestUseCase;
   keepAudioForLater: KeepAudioForLaterUseCase;

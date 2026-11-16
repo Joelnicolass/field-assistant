@@ -1,0 +1,1 @@
+export { CatalogVoiceCheck } from './CatalogVoiceCheck';

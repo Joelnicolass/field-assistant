@@ -3,7 +3,12 @@ import { FileFarmLocalDataSource } from '@/data/datasources/FileFarmLocalDataSou
 import { FilePendingAudioLocalDataSource } from '@/data/datasources/FilePendingAudioLocalDataSource';
 import { FarmRepositoryImpl } from '@/data/repositories/FarmRepositoryImpl';
 import { PendingAudioRepositoryImpl } from '@/data/repositories/PendingAudioRepositoryImpl';
+import { ExpoAudioRecorderService } from '@/data/services/ExpoAudioRecorderService';
+import { FallbackSpeakerService } from '@/data/services/FallbackSpeakerService';
+import { PhoneSpeakerService } from '@/data/services/PhoneSpeakerService';
+import { ScriptedAudioRecorderService } from '@/data/services/ScriptedAudioRecorderService';
 import { ServerInterpreterService } from '@/data/services/ServerInterpreterService';
+import { ServerSpeakerService } from '@/data/services/ServerSpeakerService';
 import { SystemClockService } from '@/data/services/SystemClockService';
 import { ApplyCorrectionUseCaseImpl } from '@/data/usecases/ApplyCorrectionUseCaseImpl';
 import { DiscardPendingAudioUseCaseImpl } from '@/data/usecases/DiscardPendingAudioUseCaseImpl';
@@ -24,6 +29,16 @@ const clock = new SystemClockService();
 const farm = new FarmRepositoryImpl(new FileFarmLocalDataSource(), clock);
 const pendingAudios = new PendingAudioRepositoryImpl(new FilePendingAudioLocalDataSource());
 const interpreter = new ServerInterpreterService(settings.serverUrl, settings.interpretTimeoutMs);
+// Con la dirección de prueba, se graba bajando un audio en lugar de abrir el micrófono.
+const recorder =
+  settings.scriptedAudioUrl === null
+    ? new ExpoAudioRecorderService(settings.speechLevel)
+    : new ScriptedAudioRecorderService(settings.scriptedAudioUrl);
+const speaker = new FallbackSpeakerService(
+  new ServerSpeakerService(settings.serverUrl),
+  new PhoneSpeakerService(),
+  settings.speakStartTimeoutMs,
+);
 
 const previewRain = new PreviewRainUseCaseImpl(farm);
 const previewMovement = new PreviewMovementUseCaseImpl(farm);
@@ -49,6 +64,8 @@ export const container: Dependencies = {
   getTodaySummary: new GetTodaySummaryUseCaseImpl(farm),
   previewCorrection,
   applyCorrection: new ApplyCorrectionUseCaseImpl(farm),
+  recorder,
+  speaker,
   interpreter,
   resolveRequest,
   keepAudioForLater: new KeepAudioForLaterUseCaseImpl(pendingAudios),

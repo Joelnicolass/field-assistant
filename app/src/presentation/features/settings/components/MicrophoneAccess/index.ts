@@ -1,0 +1,1 @@
+export { MicrophoneAccess } from './MicrophoneAccess';

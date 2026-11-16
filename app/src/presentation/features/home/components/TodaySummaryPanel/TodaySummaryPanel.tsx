@@ -21,7 +21,7 @@ type TodaySummaryPanelProps = {
   onPendingPress: () => void;
   handsFree: boolean;
   onHandsFreeChange: (value: boolean) => void;
-  onOpenCatalog: () => void;
+  onOpenSettings: () => void;
 };
 
 // Escondido no se ve; apagado se ve poco, para que la atención vaya a la voz.
@@ -33,8 +33,16 @@ function panelOpacity(hidden: boolean, dimmed: boolean): number {
 }
 
 export function TodaySummaryPanel(props: TodaySummaryPanelProps) {
-  const { summary, compact, dimmed, hidden, pendingCount, sending, onPendingPress, onOpenCatalog } =
-    props;
+  const {
+    summary,
+    compact,
+    dimmed,
+    hidden,
+    pendingCount,
+    sending,
+    onPendingPress,
+    onOpenSettings,
+  } = props;
   const { handsFree, onHandsFreeChange } = props;
   const styles = useStyles(createStyles);
 
@@ -56,7 +64,7 @@ export function TodaySummaryPanel(props: TodaySummaryPanelProps) {
         onPendingPress={onPendingPress}
         handsFree={handsFree}
         onHandsFreeChange={onHandsFreeChange}
-        onOpenCatalog={onOpenCatalog}
+        onOpenSettings={onOpenSettings}
       />
       <SummaryNoted text={summary.noted.text} anything={summary.noted.anything} />
       <SummaryData tiles={summary.tiles} compact={compact} />

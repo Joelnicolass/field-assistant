@@ -13,6 +13,7 @@ type HandsFreeInput = {
   phase: VoicePhase;
   dispatch: Dispatch<VoiceAction>;
   fail: (error?: unknown) => void;
+  covered: boolean;
 };
 
 // Encenderlo pide el micrófono: sin permiso queda apagado y aparece la tarjeta "Sin micrófono".
@@ -28,12 +29,12 @@ async function allowedToTurnOn(
 }
 
 /** Manos libres: con el interruptor encendido, la app a la vista y en reposo, espera la frase y empieza a escuchar. */
-export function useHandsFree({ phase, dispatch, fail }: HandsFreeInput) {
+export function useHandsFree({ phase, dispatch, fail, covered }: HandsFreeInput) {
   const canListen = useMicrophonePermission();
   const visible = useAppVisible();
   const [enabled, setEnabled] = useState(false);
   const release = useWakePhrase({
-    active: enabled && visible && phase === VoicePhase.Idle,
+    active: enabled && visible && !covered && phase === VoicePhase.Idle,
     // Vibra enseguida; empieza a escuchar cuando el detector soltó el micrófono.
     onDetected: () => {
       Vibration.vibrate(HANDS_FREE_VIBRATION_MS);

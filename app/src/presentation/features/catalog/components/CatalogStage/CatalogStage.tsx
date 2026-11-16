@@ -26,7 +26,7 @@ export function CatalogStage() {
           onPendingPress={doNothing}
           handsFree={false}
           onHandsFreeChange={doNothing}
-          onOpenCatalog={doNothing}
+          onOpenSettings={doNothing}
         />
       </View>
       <AppText variant={TextVariant.Overline}>{SUMMARY_TITLE.compact}</AppText>
@@ -41,7 +41,7 @@ export function CatalogStage() {
           onPendingPress={doNothing}
           handsFree
           onHandsFreeChange={doNothing}
-          onOpenCatalog={doNothing}
+          onOpenSettings={doNothing}
         />
       </View>
       {STAGES.map((stage) => (

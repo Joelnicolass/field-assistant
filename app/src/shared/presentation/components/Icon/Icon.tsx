@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import Svg, { Path, Rect } from 'react-native-svg';
+import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
 import { STROKE_WIDTH, VIEW_BOX } from './constants';
 import { IconName } from './IconName';
@@ -46,6 +46,14 @@ const DRAWINGS: Record<IconName, (color: string) => ReactNode> = {
     <Path d="M5 19v-2.5M10 19v-6M15 19v-9.5M20 19V6M4 4.5l16 15" {...line(color)} />
   ),
   [IconName.Close]: (color) => <Path d="M6.5 6.5l11 11M17.5 6.5l-11 11" {...line(color)} />,
+  // Dos perillas deslizantes: los ajustes.
+  [IconName.Settings]: (color) => (
+    <>
+      <Path d="M4 7.5h7.5M17.5 7.5H20M4 16.5h2.5M12.5 16.5H20" {...line(color)} />
+      <Circle cx={14.5} cy={7.5} r={2.6} {...line(color)} />
+      <Circle cx={9.5} cy={16.5} r={2.6} {...line(color)} />
+    </>
+  ),
 };
 
 export function Icon({ name, size, color }: IconProps) {

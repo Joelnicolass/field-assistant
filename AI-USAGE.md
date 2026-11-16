@@ -86,6 +86,8 @@ saturado, y las cinco categorías en la tarjeta de un lote.
 - Pasos C y E (manos libres, tema según la luz y brillo) en paralelo, y el merge de los tres.
 - Paso D: el script que graba las frases con la voz de la app, la muletilla al pensar, el aviso
   sin señal grabado y la tarjeta de la voz en español; el desenfoque en tema oscuro.
+- Paso F: la pantalla de Ajustes (calibrador del umbral de voz, tema automático, permiso del
+  micrófono), los ajustes guardados en un archivo y la propuesta del umbral con sus tests.
 
 Lo que decidió el autor en este RFC: el desenfoque con `expo-blur` y las tarjetas a todo el alto
 (D26), el splash como primer cuadro de la entrada (D27), y hacer los pasos sin subagentes.

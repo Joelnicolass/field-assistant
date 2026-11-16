@@ -1,3 +1,4 @@
+import { useIsFocused } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
@@ -40,7 +41,7 @@ export function HomeScreen({ navigation }: HomeScreenProps) {
   const styles = useStyles(createStyles);
   const { summary, refresh } = useTodaySummary();
   // Lo que la voz anota actualiza el resumen: la conexión entre las dos features se ve acá.
-  const voice = useVoiceStage({ onRecorded: refresh });
+  const voice = useVoiceStage({ onRecorded: refresh, covered: !useIsFocused() });
   const withCards = voice.cards.length > 0;
   const opening = useOpening(summary !== null);
 
@@ -63,7 +64,7 @@ export function HomeScreen({ navigation }: HomeScreenProps) {
           onPendingPress={voice.onPendingPress}
           handsFree={voice.handsFree}
           onHandsFreeChange={voice.onHandsFreeChange}
-          onOpenCatalog={() => navigation.navigate(RootScreen.Catalog)}
+          onOpenSettings={() => navigation.navigate(RootScreen.Settings)}
         />
       </SummaryBlur>
       <VoiceStage view={voice} intro={opening.intro} />

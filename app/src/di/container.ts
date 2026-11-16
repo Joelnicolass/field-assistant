@@ -1,7 +1,9 @@
 import { settings } from '@/core/configs/settings';
 import { FileFarmLocalDataSource } from '@/data/datasources/FileFarmLocalDataSource';
+import { FileUserSettingsLocalDataSource } from '@/data/datasources/FileUserSettingsLocalDataSource';
 import { FilePendingAudioLocalDataSource } from '@/data/datasources/FilePendingAudioLocalDataSource';
 import { FarmRepositoryImpl } from '@/data/repositories/FarmRepositoryImpl';
+import { UserSettingsRepositoryImpl } from '@/data/repositories/UserSettingsRepositoryImpl';
 import { PendingAudioRepositoryImpl } from '@/data/repositories/PendingAudioRepositoryImpl';
 import { ExpoAmbientLightService } from '@/data/services/ExpoAmbientLightService';
 import { ExpoAudioRecorderService } from '@/data/services/ExpoAudioRecorderService';
@@ -21,6 +23,8 @@ import { VoskWakePhraseService } from '@/data/services/vosk/VoskWakePhraseServic
 import { ApplyCorrectionUseCaseImpl } from '@/data/usecases/ApplyCorrectionUseCaseImpl';
 import { CountPendingAudiosUseCaseImpl } from '@/data/usecases/CountPendingAudiosUseCaseImpl';
 import { DiscardPendingAudioUseCaseImpl } from '@/data/usecases/DiscardPendingAudioUseCaseImpl';
+import { GetUserSettingsUseCaseImpl } from '@/data/usecases/GetUserSettingsUseCaseImpl';
+import { SaveUserSettingsUseCaseImpl } from '@/data/usecases/SaveUserSettingsUseCaseImpl';
 import { GetLotStockUseCaseImpl } from '@/data/usecases/GetLotStockUseCaseImpl';
 import { GetRainSummaryUseCaseImpl } from '@/data/usecases/GetRainSummaryUseCaseImpl';
 import { GetTodaySummaryUseCaseImpl } from '@/data/usecases/GetTodaySummaryUseCaseImpl';
@@ -37,6 +41,10 @@ import type { Dependencies } from '@/di/Dependencies';
 const clock = new SystemClockService();
 const farm = new FarmRepositoryImpl(new FileFarmLocalDataSource(), clock);
 const pendingAudios = new PendingAudioRepositoryImpl(new FilePendingAudioLocalDataSource());
+const userSettings = new UserSettingsRepositoryImpl(new FileUserSettingsLocalDataSource(), {
+  speechLevel: settings.speechLevel,
+  autoTheme: true,
+});
 const interpreter = new ServerInterpreterService(
   settings.serverUrl,
   settings.interpretTimeoutMs,
@@ -45,7 +53,7 @@ const interpreter = new ServerInterpreterService(
 // Con la dirección de prueba, se graba bajando un audio en lugar de abrir el micrófono.
 const recorder =
   settings.scriptedAudioUrl === null
-    ? new ExpoAudioRecorderService(settings.speechLevel)
+    ? new ExpoAudioRecorderService()
     : new ScriptedAudioRecorderService(settings.scriptedAudioUrl);
 const wakePhrase =
   settings.scriptedAudioUrl === null
@@ -94,4 +102,6 @@ export const container: Dependencies = {
   retryPendingAudios: new RetryPendingAudiosUseCaseImpl(pendingAudios, interpreter, resolveRequest),
   discardPendingAudio: new DiscardPendingAudioUseCaseImpl(pendingAudios),
   countPendingAudios: new CountPendingAudiosUseCaseImpl(pendingAudios),
+  getUserSettings: new GetUserSettingsUseCaseImpl(userSettings),
+  saveUserSettings: new SaveUserSettingsUseCaseImpl(userSettings),
 };

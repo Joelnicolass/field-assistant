@@ -23,8 +23,8 @@ describe('settings', () => {
     }
   });
 
-  it('serverUrl vale http://localhost:8787 cuando EXPO_PUBLIC_SERVER_URL no está definida', () => {
-    expect(loadSettings().serverUrl).toBe('http://localhost:8787');
+  it('serverUrl apunta al server publicado cuando EXPO_PUBLIC_SERVER_URL no está definida', () => {
+    expect(loadSettings().serverUrl).toBe('https://server-production-b97a938f.up.railway.app');
   });
 
   it('serverUrl toma el valor de EXPO_PUBLIC_SERVER_URL cuando está definida', () => {

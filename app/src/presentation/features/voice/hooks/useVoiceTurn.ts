@@ -41,6 +41,7 @@ export function useVoiceTurn({ onRecorded }: VoiceTurnOptions) {
     state,
     level: listening.level,
     voiceStarted: speech.voiceStarted,
+    cueText: speech.cueText,
     actions,
     onOrbPress,
     pending,

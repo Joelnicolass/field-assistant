@@ -3,8 +3,10 @@ import { useRef, type ComponentRef, type ReactNode } from 'react';
 import { View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
-import { BLUR_INTENSITY, BLUR_IN_MS, BLUR_OUT_MS } from './constants';
+import { useTheme } from '@/shared/presentation/hooks/useTheme';
+import { BLUR_INTENSITY, BLUR_IN_MS, BLUR_OUT_MS, BLUR_TINT } from './constants';
 import { styles } from './styles';
+import { useWindowBackground } from './useWindowBackground';
 
 type SummaryBlurProps = {
   /** Con tarjetas en pantalla, el resumen queda de fondo, desenfocado. */
@@ -19,10 +21,19 @@ type SummaryBlurProps = {
  */
 export function SummaryBlur({ blurred, children }: SummaryBlurProps) {
   const target = useRef<ComponentRef<typeof View>>(null);
+  const theme = useTheme();
+  const painted = useWindowBackground();
 
   return (
     <>
-      <BlurTargetView ref={target}>{children}</BlurTargetView>
+      {/* Desenfocado, con el fondo del tema para que no quede sobre transparente. Sin desenfoque, sin
+          fondo propio: el de la app se funde al cambiar de tema y este cambiaría de golpe. */}
+      <BlurTargetView
+        ref={target}
+        style={blurred ? { backgroundColor: theme.colors.background } : undefined}
+      >
+        {children}
+      </BlurTargetView>
       {blurred ? (
         <Animated.View
           pointerEvents="none"
@@ -30,10 +41,13 @@ export function SummaryBlur({ blurred, children }: SummaryBlurProps) {
           exiting={FadeOut.duration(BLUR_OUT_MS)}
           style={styles.cover}
         >
+          {/* Se rearma cuando el fondo de la ventana ya tiene el color del tema nuevo. */}
           <BlurView
+            key={painted ?? 'sin-pintar'}
             blurTarget={target}
             blurMethod="dimezisBlurView"
             intensity={BLUR_INTENSITY}
+            tint={BLUR_TINT[theme.mode]}
             style={styles.cover}
           />
         </Animated.View>

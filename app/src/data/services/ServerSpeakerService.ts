@@ -1,62 +1,70 @@
 import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
-import { File, Paths } from 'expo-file-system';
 
 import type { SpeakerService } from '@/domain/services/SpeakerService';
+import { appKeyHeader } from './appKeyHeader';
 
-/** La voz del server: pide el mp3 a /speak, lo guarda en la caché y lo reproduce. */
+// Cuenta qué hizo el reproductor: empezó a sonar, terminó o falló.
+function watch(
+  player: AudioPlayer,
+  onStart: (() => void) | undefined,
+  end: (error?: Error) => void,
+) {
+  let started = false;
+  return player.addListener('playbackStatusUpdate', (status) => {
+    if (status.error !== null) {
+      end(new Error(status.error));
+    } else if (status.didJustFinish) {
+      end();
+    } else if (status.playing && !started) {
+      started = true;
+      onStart?.();
+    }
+  });
+}
+
+// Reproduce hasta que termina o falla; `stop` lo corta y es seguro llamarlo de más.
+function play(player: AudioPlayer, onStart?: () => void) {
+  let end: (error?: Error) => void = () => {};
+  const done = new Promise<void>((resolve, reject) => {
+    let finished = false;
+    const subscription = watch(player, onStart, (error) => end(error));
+    end = (error) => {
+      if (finished) {
+        return;
+      }
+      finished = true;
+      subscription.remove();
+      player.remove();
+      return error === undefined ? resolve() : reject(error);
+    };
+    player.play();
+  });
+  return { done, stop: () => end() };
+}
+
+/** La voz del server: el reproductor lee /speak directo y suena con el primer audio que llega. */
 export class ServerSpeakerService implements SpeakerService {
   private stopCurrent: () => void = () => {};
 
-  constructor(private readonly serverUrl: string) {}
+  constructor(
+    private readonly serverUrl: string,
+    private readonly appKey: string,
+  ) {}
 
   async speak(text: string, onStart?: () => void): Promise<void> {
     this.stopCurrent();
-    const request = new AbortController();
-    this.stopCurrent = () => request.abort();
-    const response = await fetch(`${this.serverUrl}/speak`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text }),
-      signal: request.signal,
+    const player = createAudioPlayer({
+      uri: `${this.serverUrl}/speak?text=${encodeURIComponent(text)}`,
+      headers: appKeyHeader(this.appKey),
     });
-    if (!response.ok) {
-      throw new Error(`El server contestó ${response.status}`);
-    }
-    // El reproductor no puede hacer un POST: el audio se guarda en un archivo y se reproduce de ahí.
-    const file = new File(Paths.cache, `speech-${Date.now()}.mp3`);
-    await file.write(await response.arrayBuffer());
-    if (request.signal.aborted) {
-      file.delete();
-      return;
-    }
-    return this.play(file, onStart);
+    const playing = play(player, onStart);
+    this.stopCurrent = playing.stop;
+    await playing.done;
   }
 
   stop(): void {
     this.stopCurrent();
   }
 
-  private play(file: File, onStart?: () => void): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const player: AudioPlayer = createAudioPlayer({ uri: file.uri });
-      let started = false;
-      const finish = (error?: Error) => {
-        subscription.remove();
-        player.remove();
-        file.delete();
-        this.stopCurrent = () => {};
-        return error === undefined ? resolve() : reject(error);
-      };
-      const subscription = player.addListener('playbackStatusUpdate', (status) => {
-        if (status.didJustFinish) {
-          finish();
-        } else if (status.playing && !started) {
-          started = true;
-          onStart?.();
-        }
-      });
-      this.stopCurrent = () => finish();
-      player.play();
-    });
-  }
+  reset(): void {}
 }

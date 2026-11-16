@@ -1,4 +1,5 @@
 import { Pressable, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { AppText } from '@/shared/presentation/components/AppText';
 import { Icon, IconName } from '@/shared/presentation/components/Icon';
@@ -7,7 +8,13 @@ import { useTheme } from '@/shared/presentation/hooks/useTheme';
 import { TextVariant } from '@/shared/presentation/theme/TextVariant';
 import { GLYPH_COLOR } from '@/shared/presentation/theme/tokens';
 import type { Tone } from '@/shared/presentation/theme/Tone';
-import { BADGE_ICON_SIZE, CLOSE_HIT_SLOP, CLOSE_ICON_SIZE, CLOSE_LABEL } from './constants';
+import {
+  BADGE_ENTERING,
+  BADGE_ICON_SIZE,
+  CLOSE_HIT_SLOP,
+  CLOSE_ICON_SIZE,
+  CLOSE_LABEL,
+} from './constants';
 import { createStyles } from './styles';
 
 type CardHeaderProps = { icon: IconName; label: string; tone: Tone; onClose?: () => void };
@@ -18,9 +25,9 @@ export function CardHeader({ icon, label, tone, onClose }: CardHeaderProps) {
 
   return (
     <View style={styles.header}>
-      <View style={[styles.badge, styles[tone]]}>
+      <Animated.View entering={BADGE_ENTERING[icon]} style={[styles.badge, styles[tone]]}>
         <Icon name={icon} size={BADGE_ICON_SIZE} color={GLYPH_COLOR} />
-      </View>
+      </Animated.View>
       <View style={styles.label}>
         <AppText variant={TextVariant.Overline} color={theme.colors.textMuted}>
           {label}

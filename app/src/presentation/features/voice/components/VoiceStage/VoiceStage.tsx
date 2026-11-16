@@ -11,6 +11,7 @@ import { useTheme } from '@/shared/presentation/hooks/useTheme';
 import type { ThemeColors } from '@/shared/presentation/theme/Theme';
 import { TextVariant } from '@/shared/presentation/theme/TextVariant';
 import type { VoiceStageView } from '../../hooks/useVoiceStage';
+import { statusIn } from './animations';
 import { createStyles } from './styles';
 import { useStageMotion } from './useStageMotion';
 
@@ -69,9 +70,11 @@ export function VoiceStage({ view }: { view: VoiceStageView }) {
           />
         </Animated.View>
         <Animated.View style={[styles.status, stage.statusStyle]}>
-          <AppText variant={TextVariant.Status} color={theme.colors[STATUS_COLOR[view.orbState]]}>
-            {view.statusText}
-          </AppText>
+          <Animated.View key={view.statusText} entering={statusIn}>
+            <AppText variant={TextVariant.Status} color={theme.colors[STATUS_COLOR[view.orbState]]}>
+              {view.statusText}
+            </AppText>
+          </Animated.View>
         </Animated.View>
       </Animated.View>
     </View>

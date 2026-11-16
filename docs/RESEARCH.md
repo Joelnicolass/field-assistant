@@ -306,8 +306,9 @@ no alcanza con volver a correr `assembleRelease`.
 
 ## Faltan
 
-- **Para decidir, Q4:** la voz de servicio. Se probó "Sarah", incluida y de acento neutro; una
-  voz argentina pide un plan pago de ElevenLabs.
+- **Q4, decidida (D25):** con un plan pago de ElevenLabs la API deja usar la biblioteca, que tiene
+  30 voces con acento argentino. Se eligió "Cande". Ya en uso tarda como Sarah (0,64 s una frase
+  corta); la primera frase con una voz nueva tardó de 5,8 a 6,9 s.
 - **Con voz real, pendientes:** las otras grabaciones de I1, escuchar las voces de I4 y la frase
   de manos libres de I5 (RFC-005, Q2).
 - **Para decidir:** si el orbe respeta la opción de reducir animaciones del teléfono (I10).

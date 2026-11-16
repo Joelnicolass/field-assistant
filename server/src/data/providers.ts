@@ -6,7 +6,8 @@ export const GEMINI = {
 
 export const ELEVENLABS = {
   model: 'eleven_flash_v2_5',
-  voiceId: process.env.ELEVENLABS_VOICE_ID || 'EXAVITQu4vr4xnSDxMaL',
+  // "Cande": una voz de la biblioteca con acento rioplatense (D25). Pide un plan pago.
+  voiceId: process.env.ELEVENLABS_VOICE_ID || 'yFykvY9iSJewrANOC0cU',
   outputFormat: 'mp3_44100_128',
   language: 'es',
   endpoint: 'https://api.elevenlabs.io/v1/text-to-speech',

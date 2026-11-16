@@ -9,7 +9,7 @@ implementa y prueba el orquestador; los grandes (C, E y F) van por `dev` y `qa`.
 | B | Audios de prueba y la batería automática del server | aprobado |
 | C | La app entiende y resuelve: contratos, ajustes, intérprete, `ResolveRequest` y la cola de audios | aprobado |
 | D | Grabar y hablar: los servicios de micrófono, voces y la cola de sonidos | aprobado |
-| E | El turno en pantalla: escuchar, pensar, hablar, proponer, anotar y preguntar | pendiente |
+| E | El turno en pantalla: escuchar, pensar, hablar, proponer, anotar y preguntar | aprobado |
 | F | Errores con salida, audios guardados, corrección, latencia y la prueba de punta a punta | pendiente |
 
 Rama por paso, con su PR a `feature/rfc-004`: `feature/rfc-004-A` a `-F`.
@@ -125,12 +125,23 @@ app/src/presentation/features/voice/
             [~] useVoiceStage (deja el reposo fijo y arma la vista del turno real)
             [+] replies/spokenReply.ts  replies/cardView.ts (con tests)
             [+] constants.ts (todo lo que la app dice o muestra)
-app/src/shared/presentation/states/
-  [+] RefreshSignal (el número que sube con cada escritura y su proveedor)
-app/src/presentation/features/home/hooks/
-  [~] useTodaySummary (vuelve a pedir el resumen cuando cambia la señal)
-app/src/App.tsx  [~] monta el proveedor de RefreshSignal
+app/src/presentation/features/home/
+  [~] useTodaySummary (devuelve también refresh)  HomeScreen (le pasa refresh al turno)
 ```
+
+**Cambio del autor respecto del RFC:** en lugar de `RefreshSignal` con un proveedor en
+`App.tsx`, `HomeScreen` conecta las dos features con un callback: `useVoiceStage` recibe el
+`refresh` del resumen y lo llama después de anotar. Hay un solo lugar que escribe y uno solo que
+lee, en la misma pantalla.
+
+**Cambios respecto de la tabla del RFC:** `Pensando + NothingHeard → Hablando`, para que un toque
+que corta una escucha sin voz diga "No te escuché" sin llamar al server (criterio 16); y un evento
+`CardClosed` para la cruz de las tarjetas, que no cambia la fase. La elección por tipo usa el
+patrón de uniones correlacionadas, sin un ayudante genérico.
+
+**Voz consistente (pedido del autor):** `/speak` pasa a `GET` con streaming; la voz del teléfono
+se usa solo si la del server falla o no empieza en 4 s, y una vez que se pasó, sigue hasta el
+próximo turno.
 
 **Animaciones (VISUAL 4.6 y 4.8):** el texto de estado que cambia sube 5 en `text`; el tilde de
 "anotado" crece de 0,92 a 1 (exageración); el aviso de lo anotado y los números del resumen se
@@ -155,6 +166,12 @@ app/src/presentation/features/voice/hooks/
 app/src/presentation/features/home/   [~] pendingCount en el encabezado
 docs/RESEARCH.md   [~] la latencia de diez turnos, desde el teléfono
 ```
+
+**Android nuevos:** además del teléfono (Android 11), los turnos con audio de prueba se repiten
+en el emulador `Medium_Phone_API_36` (Android 16, el `targetSdk` de la app). Se revisa: pantalla de
+borde a borde (el resumen y el orbe no quedan debajo de las barras del sistema), el gesto de
+"atrás" predictivo entre el catálogo y el inicio, el permiso del micrófono "Solo esta vez" y
+denegado, y el micrófono apagado desde el panel rápido. Los permisos del manifiesto no se tocan.
 
 **Criterios:** 27, 30, 36 a 39, 41, 44, 46, 47 y 49.
 

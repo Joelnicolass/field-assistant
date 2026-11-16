@@ -9,8 +9,8 @@ export class ElevenLabsSpeechSynthesizer implements SpeechSynthesizer {
     this.apiKey = apiKey;
   }
 
-  async synthesize(text: string): Promise<Buffer> {
-    const url = `${ELEVENLABS.endpoint}/${ELEVENLABS.voiceId}?output_format=${ELEVENLABS.outputFormat}`;
+  async synthesize(text: string): Promise<AsyncIterable<Uint8Array>> {
+    const url = `${ELEVENLABS.endpoint}/${ELEVENLABS.voiceId}/stream?output_format=${ELEVENLABS.outputFormat}`;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -27,9 +27,9 @@ export class ElevenLabsSpeechSynthesizer implements SpeechSynthesizer {
     }).catch((error: unknown) => {
       throw new ProviderError(`ElevenLabs no respondió: ${String(error)}`);
     });
-    if (!response.ok) {
+    if (!response.ok || response.body === null) {
       throw new ProviderError(`ElevenLabs contestó ${response.status}`);
     }
-    return Buffer.from(await response.arrayBuffer());
+    return response.body;
   }
 }

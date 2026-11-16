@@ -27,6 +27,8 @@ export class PhoneSpeakerService implements SpeakerService {
     void Speech.stop();
   }
 
+  reset(): void {}
+
   private chooseVoice(): Promise<string | null> {
     this.voice ??= Speech.getAvailableVoicesAsync()
       .then(spanishVoice)

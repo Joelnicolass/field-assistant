@@ -4,12 +4,15 @@ import type { AudioInterpreter } from '../domain/AudioInterpreter.ts';
 import type { SpeechSynthesizer } from '../domain/SpeechSynthesizer.ts';
 import { healthRouter } from './health.ts';
 import { interpretAudioRouter } from './interpretAudio.ts';
+import { requireAppKey } from './requireAppKey.ts';
 import { sendError } from './respond.ts';
 import { speakRouter } from './speak.ts';
 
 type Providers = {
   interpreter: AudioInterpreter;
   synthesizer: SpeechSynthesizer;
+  /** La clave que tiene que traer cada pedido en X-App-Key; vacía, no se exige. */
+  appKey: string;
 };
 
 // Los errores de Express (un cuerpo de más o un JSON roto) traen su código en `status`.
@@ -25,9 +28,11 @@ const MESSAGE_BY_STATUS: Record<number, string> = {
   413: 'El audio pasa de 2 MB',
 };
 
-export function createApp({ interpreter, synthesizer }: Providers): express.Express {
+export function createApp({ interpreter, synthesizer, appKey }: Providers): express.Express {
   const app = express();
   app.use(healthRouter);
+  // Todo lo que viene después de /health pide la clave de la app.
+  app.use(requireAppKey(appKey));
   app.use(interpretAudioRouter(interpreter));
   app.use(speakRouter(synthesizer));
   app.use((_request, response) => {

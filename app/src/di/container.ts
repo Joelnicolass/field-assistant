@@ -28,14 +28,18 @@ import type { Dependencies } from '@/di/Dependencies';
 const clock = new SystemClockService();
 const farm = new FarmRepositoryImpl(new FileFarmLocalDataSource(), clock);
 const pendingAudios = new PendingAudioRepositoryImpl(new FilePendingAudioLocalDataSource());
-const interpreter = new ServerInterpreterService(settings.serverUrl, settings.interpretTimeoutMs);
+const interpreter = new ServerInterpreterService(
+  settings.serverUrl,
+  settings.interpretTimeoutMs,
+  settings.appKey,
+);
 // Con la dirección de prueba, se graba bajando un audio en lugar de abrir el micrófono.
 const recorder =
   settings.scriptedAudioUrl === null
     ? new ExpoAudioRecorderService(settings.speechLevel)
     : new ScriptedAudioRecorderService(settings.scriptedAudioUrl);
 const speaker = new FallbackSpeakerService(
-  new ServerSpeakerService(settings.serverUrl),
+  new ServerSpeakerService(settings.serverUrl, settings.appKey),
   new PhoneSpeakerService(),
   settings.speakStartTimeoutMs,
 );

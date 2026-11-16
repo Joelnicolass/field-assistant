@@ -6,7 +6,7 @@ implementa y prueba el orquestador; los grandes (C, E y F) van por `dev` y `qa`.
 | Paso | Objetivo | Estado |
 | --- | --- | --- |
 | A | El server: `/interpret-audio`, `/speak` y los errores | aprobado |
-| B | Audios de prueba y la batería automática del server | pendiente |
+| B | Audios de prueba y la batería automática del server | aprobado |
 | C | La app entiende y resuelve: contratos, ajustes, intérprete, `ResolveRequest` y la cola de audios | pendiente |
 | D | Grabar y hablar: los servicios de micrófono, voces y la cola de sonidos | pendiente |
 | E | El turno en pantalla: escuchar, pensar, hablar, proponer, anotar y preguntar | pendiente |
@@ -131,6 +131,11 @@ app/src/presentation/features/home/hooks/
   [~] useTodaySummary (vuelve a pedir el resumen cuando cambia la señal)
 app/src/App.tsx  [~] monta el proveedor de RefreshSignal
 ```
+
+**Animaciones (VISUAL 4.6 y 4.8):** el texto de estado que cambia sube 5 en `text`; el tilde de
+"anotado" crece de 0,92 a 1 (exageración); el aviso de lo anotado y los números del resumen se
+funden al cambiar; las barras de los lotes crecen al entrar, una detrás de otra. `qa` revisa cada
+animación nueva contra la tabla de los 12 principios.
 
 **Criterios:** 11 a 19, 22 a 26, 28, 29, 31 a 35, 43 a 45 y 50.
 

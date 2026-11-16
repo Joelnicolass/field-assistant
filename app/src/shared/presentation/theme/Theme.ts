@@ -13,6 +13,8 @@ export type ThemeColors = {
   hairline: string;
   text: string;
   textMuted: string;
+  /** Más suave que textMuted, para lo secundario: el campo y el aviso del resumen. */
+  textSubtle: string;
   brand: string;
   onBrand: string;
   warning: string;

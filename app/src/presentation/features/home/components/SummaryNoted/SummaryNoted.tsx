@@ -16,7 +16,7 @@ export function SummaryNoted({ text, anything }: SummaryNotedProps) {
     <View style={[styles.banner, anything ? styles.done : styles.pending]}>
       <View style={[styles.dot, anything ? styles.doneDot : styles.pendingDot]} />
       <View style={styles.text}>
-        <AppText variant={TextVariant.TileLabel} color={theme.colors.textMuted}>
+        <AppText variant={TextVariant.TileLabel} color={theme.colors.textSubtle}>
           {text}
         </AppText>
       </View>

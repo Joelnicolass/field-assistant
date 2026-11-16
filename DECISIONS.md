@@ -169,3 +169,12 @@ Qué se usa, qué se hace y por qué. Una entrada por decisión.
   - No hay que adaptarlo: es lo que menos tiempo lleva.
   - El APK funciona en el teléfono de quien evalúa, sin levantar nada.
 - **Resigno:** depender de un servicio más y de que siga prendido.
+
+## D20 · Sin React Compiler
+
+- **Decisión:** React Compiler queda apagado.
+- **Por qué:**
+  - En esta versión de Expo es experimental.
+  - La app no lo necesita: tiene una sola pantalla y pocos componentes.
+  - Al probarlo en el teléfono, la app andaba bien, pero Metro no le aplicaba el compilador al código: tenerlo encendido daba una garantía que no se cumplía.
+- **Resigno:** la memoización automática. Si una pantalla se vuelve lenta, se memoiza a mano, con una medición que lo justifique (R41).

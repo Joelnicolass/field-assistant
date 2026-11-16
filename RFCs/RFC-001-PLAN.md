@@ -28,9 +28,9 @@ app/
   [+] app.json                    nombre, slug, paquete com.fieldassistant.app, vertical, solo
                                   Android; plugins expo-audio (permiso en español),
                                   react-native-vosk (assets/model-es) y expo-build-properties
-                                  (reglas de R8 y usesCleartextTraffic); React Compiler
+                                  (reglas de R8 y usesCleartextTraffic); sin React Compiler (D20)
   [+] tsconfig.json               estricto, alias @/ → src/
-  [+] babel.config.js             solo si el alias o React Compiler lo necesitan (se verifica, I12)
+  [+] babel.config.js             solo si el alias lo necesita
   [+] index.ts                    punto de entrada que registra App
   [+] src/App.tsx                 provisorio: un texto, hasta el paso 2
   [+] scripts/get-vosk-model.sh   baja y descomprime vosk-model-small-es-0.42 en assets/model-es
@@ -51,8 +51,7 @@ Jest se comprueba en el paso 2.
 - `python3 scripts/vosk-words.py hola asistente` → código 0;
   `python3 scripts/vosk-words.py hola zzqx` → código 1, con `NO está` en la segunda.
 - `git status` no lista `assets/model-es`.
-- React Compiler: el lugar donde se enciende según la documentación instalada de Expo. La prueba
-  en el build es del paso 4.
+- React Compiler apagado: `npx expo config` no muestra `reactCompiler` (D20).
 
 ---
 
@@ -133,10 +132,10 @@ release compila con las reglas de R8.
 app/
   [~] app.json            solo si el build pide un ajuste (todo ajuste nativo va por acá)
 docs/
-  [+] RESEARCH.md         empieza: I7, I8 e I12, con fecha, dispositivo y Android
+  [+] RESEARCH.md         empieza: I7 e I8, con fecha, dispositivo y Android
 ```
 
-**Criterios que cubre:** 14 y 15. Research: I7, I8 e I12.
+**Criterios que cubre:** 14 y 15. Research: I7 e I8.
 
 **Cómo lo comprueba `qa`:**
 
@@ -147,8 +146,6 @@ docs/
 - I7: `assembleRelease` sin las reglas de R8 (falla) y con ellas (compila); el peso del APK.
 - I8: dos builds de release con distinto `EXPO_PUBLIC_SERVER_URL`, buscando el valor dentro del
   APK; con y sin vaciar la caché de Metro. Anota la receta.
-- I12: React Compiler compila los componentes (lo que diga la documentación instalada para
-  comprobarlo).
 
 ---
 
@@ -202,7 +199,7 @@ docs/
 [+] AI-USAGE.md                       qué herramienta de IA se usó en este RFC y para qué
 [~] DECISIONS.md                      solo lo que decidas en este RFC, con tu OK
 [~] RULES.md                          la tabla de stack, si npx expo install eligió otras
-                                      versiones o React Compiler suma un paquete
+                                      versiones
 ```
 
 **Criterios que cubre:** 16, 17, 19 y 20. Research: I2, I3 e I13.
@@ -214,7 +211,7 @@ docs/
   identificador del modelo, costo de mil pedidos y límite por minuto.
 - `npm run research:speak`: devuelve audio (ver el bloqueo de abajo).
 - Sigue el README desde cero en una carpeta limpia y corre cada comando que cita.
-- `RESEARCH.md` tiene I1 a I13, cada una con fecha, dispositivo, Android, lo esperado y lo que
+- `RESEARCH.md` tiene I1 a I13 sin I12, cada una con fecha, dispositivo, Android, lo esperado y lo que
   dio.
 
 ---

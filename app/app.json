@@ -8,9 +8,6 @@
     "android": {
       "package": "com.fieldassistant.app"
     },
-    "experiments": {
-      "reactCompiler": true
-    },
     "plugins": [
       [
         "expo-audio",

@@ -9,8 +9,12 @@ import type { RootStackParamList } from './RootStackParamList';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-// Cada pantalla dibuja su propio encabezado: el del stack no se muestra.
-const SCREEN_OPTIONS = { headerShown: false } as const;
+// Cada pantalla dibuja su propio encabezado: el del stack no se muestra. El fondo del stack es
+// transparente para que se vea el de AmbientShell, que se funde al cambiar de tema.
+const SCREEN_OPTIONS = {
+  headerShown: false,
+  contentStyle: { backgroundColor: 'transparent' },
+} as const;
 
 export function RootNavigator() {
   return (

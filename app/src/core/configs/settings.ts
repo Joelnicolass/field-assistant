@@ -34,4 +34,12 @@ export const settings = {
   logoIntro: process.env.EXPO_PUBLIC_LOGO_INTRO !== 'false',
   /** Con valor, la app graba bajando el audio de esta dirección en lugar de abrir el micrófono. */
   scriptedAudioUrl: process.env.EXPO_PUBLIC_SCRIPTED_AUDIO_URL || null,
+  /** Luz ambiente, en lux: arriba de lightAboveLux, tema claro; abajo de darkBelowLux, oscuro. */
+  lightAboveLux: readNumber(process.env.EXPO_PUBLIC_LIGHT_ABOVE_LUX, 600),
+  darkBelowLux: readNumber(process.env.EXPO_PUBLIC_DARK_BELOW_LUX, 150),
+  /** Arriba de sunAboveLux, brillo al máximo; abajo de sunBelowLux, el del teléfono. */
+  sunAboveLux: readNumber(process.env.EXPO_PUBLIC_SUN_ABOVE_LUX, 10000),
+  sunBelowLux: readNumber(process.env.EXPO_PUBLIC_SUN_BELOW_LUX, 3000),
+  /** Cuánto espera el tema del sensor al abrir: el splash y la entrada del logo son claros. */
+  themeHoldMs: readNumber(process.env.EXPO_PUBLIC_THEME_HOLD_MS, 3500),
 };

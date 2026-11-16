@@ -3,7 +3,9 @@ import { FileFarmLocalDataSource } from '@/data/datasources/FileFarmLocalDataSou
 import { FilePendingAudioLocalDataSource } from '@/data/datasources/FilePendingAudioLocalDataSource';
 import { FarmRepositoryImpl } from '@/data/repositories/FarmRepositoryImpl';
 import { PendingAudioRepositoryImpl } from '@/data/repositories/PendingAudioRepositoryImpl';
+import { ExpoAmbientLightService } from '@/data/services/ExpoAmbientLightService';
 import { ExpoAudioRecorderService } from '@/data/services/ExpoAudioRecorderService';
+import { ExpoScreenBrightnessService } from '@/data/services/ExpoScreenBrightnessService';
 import { FallbackSpeakerService } from '@/data/services/FallbackSpeakerService';
 import { PhoneSpeakerService } from '@/data/services/PhoneSpeakerService';
 import { ScriptedAudioRecorderService } from '@/data/services/ScriptedAudioRecorderService';
@@ -79,6 +81,8 @@ export const container: Dependencies = {
   wakePhrase,
   speaker,
   interpreter,
+  ambientLight: new ExpoAmbientLightService(),
+  screenBrightness: new ExpoScreenBrightnessService(),
   resolveRequest,
   keepAudioForLater: new KeepAudioForLaterUseCaseImpl(pendingAudios),
   retryPendingAudios: new RetryPendingAudiosUseCaseImpl(pendingAudios, interpreter, resolveRequest),

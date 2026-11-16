@@ -23,4 +23,6 @@ export const settings = {
   historyTurns: readNumber(process.env.EXPO_PUBLIC_HISTORY_TURNS, 4),
   retryQueueMs: readNumber(process.env.EXPO_PUBLIC_RETRY_QUEUE_MS, 20000),
   maxQuestionsInARow: readNumber(process.env.EXPO_PUBLIC_MAX_QUESTIONS_IN_A_ROW, 2),
+  /** Con valor, la app graba bajando el audio de esta dirección en lugar de abrir el micrófono. */
+  scriptedAudioUrl: process.env.EXPO_PUBLIC_SCRIPTED_AUDIO_URL || null,
 };

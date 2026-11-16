@@ -13,6 +13,7 @@ import { CatalogButtons } from '../CatalogButtons';
 import { CatalogCards } from '../CatalogCards';
 import { CatalogOrb } from '../CatalogOrb';
 import { CatalogStage } from '../CatalogStage';
+import { CatalogVoiceCheck } from '../CatalogVoiceCheck';
 import {
   BACK_LABEL,
   ICON_SIZE,
@@ -52,6 +53,9 @@ export function CatalogContent({ mode, onToggleMode, onBack }: CatalogContentPro
             <AppText variant={TextVariant.Pill}>{TOGGLE_LABEL[mode]}</AppText>
           </Pressable>
         </View>
+
+        <AppText variant={TextVariant.Overline}>{SECTION.voice}</AppText>
+        <CatalogVoiceCheck />
 
         <AppText variant={TextVariant.Overline}>{SECTION.orb}</AppText>
         <CatalogOrb />

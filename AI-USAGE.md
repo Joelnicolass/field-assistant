@@ -55,7 +55,7 @@ mapper mínimo y un comentario corto en cada caso de uso y cada hook (R34).
 Lo que decidió el autor en este RFC: las decisiones visuales V1 a V4 (`VISUAL.md`), el orbe más
 parecido a su referencia, el resumen con el orden de su captura, el nombre de la app que alterna
 entre "Field Data" y "Field Assistant", encender la opción de Reanimated (D22) y dejar el
-catálogo en la app (D23).
+catálogo en la app.
 
 ## RFC-004 · Server y turno de voz
 
@@ -69,8 +69,8 @@ catálogo en la app (D23).
 - Probar los turnos en el teléfono con audio de prueba, medir la latencia y buscar en el registro
   la causa de las fallas (la voz que no sonaba y el grabador que se usaba después de liberarlo).
 
-Lo que decidió el autor en este RFC: la navegación con React Navigation (D24), la voz "Cande"
-(D25), publicar el server con Docker y una clave de la app, que el resumen se actualice con un
+Lo que decidió el autor en este RFC: la navegación con React Navigation (D24), la voz "Cande",
+publicar el server con Docker y una clave de la app, que el resumen se actualice con un
 callback desde la pantalla de inicio, sin trucos de tipos, la voz en streaming y siempre la misma
 en un turno, cómo se reintentan y se muestran los audios guardados, el texto para el servicio
 saturado, y las cinco categorías en la tarjeta de un lote.
@@ -89,5 +89,5 @@ saturado, y las cinco categorías en la tarjeta de un lote.
 - Paso F: la pantalla de Ajustes (calibrador del umbral de voz, tema automático, permiso del
   micrófono), los ajustes guardados en un archivo y la propuesta del umbral con sus tests.
 
-Lo que decidió el autor en este RFC: el desenfoque con `expo-blur` y las tarjetas a todo el alto
-(D26), el splash como primer cuadro de la entrada (D27), y hacer los pasos sin subagentes.
+Lo que decidió el autor en este RFC: el desenfoque con `expo-blur` y las tarjetas a todo el alto,
+el splash como primer cuadro de la entrada (D27), y hacer los pasos sin subagentes.

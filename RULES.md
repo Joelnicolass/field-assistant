@@ -175,7 +175,7 @@ Orb/
 | R35 | **Sin validaciones de más.** Se confía en los tipos. Se valida solo en los bordes: lo que llega del server, del archivo guardado o de un módulo nativo. Sin `try/catch` que solo relanza o que esconde el error, y sin valores por defecto "por las dudas". |
 | R36 | **TypeScript estricto:** sin `any`, sin `!`, y `as` solo en los mappers de borde. |
 | R37 | **Las fallas esperadas son valores, no excepciones.** Un caso de uso que puede fallar devuelve `Result`: el valor o la falla con su código. Uno que no puede fallar devuelve el valor. |
-| R38 | **Exports con nombre.** `index.ts` solo en carpetas de componente. |
+| R38 | **Exports con nombre.** `index.ts` solo en carpetas de componente, salvo `app/index.ts`, el punto de entrada que registra la app en Expo. |
 | R39 | **Sin pendientes:** nada de `TODO`, código muerto ni código comentado. |
 
 ```ts

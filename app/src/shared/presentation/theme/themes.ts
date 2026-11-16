@@ -1,3 +1,4 @@
+import { OrbState } from '@/shared/presentation/components/Orb/OrbState';
 import type { Theme, ThemeColors } from '@/shared/presentation/theme/Theme';
 import { ThemeMode } from '@/shared/presentation/theme/ThemeMode';
 import { Tone } from '@/shared/presentation/theme/Tone';
@@ -8,6 +9,34 @@ const TONES: Theme['tones'] = {
   [Tone.Brand]: ['#3CCC6C', '#3C9C54', '#6C9CE4'],
   [Tone.Warning]: ['#FCCC54', '#E4B454', '#FC8454'],
   [Tone.Danger]: ['#FC8454', '#F0284A', '#C21DA0'],
+};
+
+// Los colores del orbe son los mismos en los dos temas (VISUAL 5.2).
+const ORB: Theme['orb'] = {
+  [OrbState.Idle]: {
+    core: ['#62DE88', '#3C9C54', '#1F4D4A'],
+    blobs: ['#6C9CE4', '#FCCC54', '#FC8454'],
+    ring: ['#FCCC54', '#3CCC6C', '#6C9CE4', '#FC8454'],
+    glow: '#3CB46C',
+  },
+  [OrbState.Listening]: {
+    core: ['#FFD36B', '#FC8454', '#B3263F'],
+    blobs: ['#FF4D7A', '#FCCC54', '#FF6A2B'],
+    ring: ['#FCCC54', '#FC8454', '#FF4D7A', '#B13DFF'],
+    glow: '#FC7A4A',
+  },
+  [OrbState.Thinking]: {
+    core: ['#A5CBF7', '#5B8FE6', '#27336E'],
+    blobs: ['#8E6CF0', '#4FC3F0', '#F06CC8'],
+    ring: ['#6C9CE4', '#4F6FE8', '#8E6CF0', '#F06CC8'],
+    glow: '#6C9CE4',
+  },
+  [OrbState.Speaking]: {
+    core: ['#9BEFA9', '#2FB877', '#1F5E5A'],
+    blobs: ['#6C9CE4', '#D8F06A', '#3CCC6C'],
+    ring: ['#D8F06A', '#3CCC6C', '#4FC3F0', '#6C9CE4'],
+    glow: '#3CCC6C',
+  },
 };
 
 const LIGHT_COLORS: ThemeColors = {
@@ -43,6 +72,7 @@ const SHARED = {
   durations: DURATIONS,
   touch: TOUCH,
   tones: TONES,
+  orb: ORB,
 };
 
 export const THEMES: Record<ThemeMode, Theme> = {

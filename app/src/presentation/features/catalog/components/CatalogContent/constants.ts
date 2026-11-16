@@ -7,6 +7,7 @@ export const TOGGLE_LABEL: Record<ThemeMode, string> = {
   [ThemeMode.Dark]: 'Pasar a claro',
 };
 export const SECTION = {
+  orb: 'Orbe',
   texts: 'Textos',
   icons: 'Íconos',
   surfaces: 'Superficies',

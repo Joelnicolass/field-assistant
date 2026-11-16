@@ -238,16 +238,17 @@ De atrás hacia adelante. Las medidas son fracciones del diámetro.
    47 % a mitad de camino y 0 en el borde.
 2. **Dos ondas:** borde de 2,5, con el segundo y el tercer color de `ring`. Solo en los estados
    con ondas.
-3. **Aro:** radio 0,565, trazo 0,036, con un degradé en diagonal de los cuatro colores de `ring`.
-   Debajo, el mismo trazo 2,8 veces más ancho al 25 %, como brillo. Es la única capa en SVG.
+3. **Aro:** radio 0,515, trazo 0,028, con un degradé en diagonal de los cuatro colores de `ring`.
+   Va apoyado sobre el filo blanco de la esfera. Es la única capa en SVG.
 4. **Esfera:** `radial-gradient(circle farthest-corner at 34% 28%, core0 0%, core1 46%, core2 100%)`.
    La luz viene de arriba a la izquierda.
 5. **Manchas,** en dos grupos que giran en sentidos opuestos:
-   - grupo a: en (0,15; −0,12), radio 0,30, al 95 %; y en (−0,16; 0,13), radio 0,29, al 85 %;
-   - grupo b: en (−0,13; −0,15), radio 0,30, al 90 %; y una blanca en (0,16; 0,15), radio 0,26,
-     al 45 %.
+   - grupo a: en (0,15; −0,12), radio 0,30, al 45 %; y en (−0,16; 0,13), radio 0,29, al 40 %;
+   - grupo b: en (−0,13; −0,15), radio 0,30, al 40 %; y una blanca en (0,16; 0,15), radio 0,26,
+     al 30 %.
+   Son un tinte sobre la esfera, no manchas que se distingan.
 6. **Volumen:** sombra `#00000026` en el centro y `#00000038` en el borde; brillo `#FFFFFFB8` en
-   una elipse de 0,46 × 0,27 en (0,13; 0,07), girada −28°; filo de luz `#FFFFFF38` de 1,5.
+   una elipse de 0,46 × 0,27 en (0,13; 0,07), girada −28°; filo blanco `#FFFFFFE6` de 2,5.
 7. **Dibujo del centro,** blanco:
    - micrófono de 0,36;
    - cinco barras de 0,055 de ancho y 0,40 de alto, separadas 0,045, con alturas 0,5 / 0,8 / 1 /

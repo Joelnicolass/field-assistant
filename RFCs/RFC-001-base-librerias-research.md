@@ -115,7 +115,7 @@ El primer test es `settings.test.ts`: sin la variable, `serverUrl` es `http://lo
 
 ### 5. El server
 
-- `server/`, en Node 24 o superior, que corre TypeScript sin compilar. Sin framework.
+- `server/`, en Node 24 o superior, que corre TypeScript sin compilar, con Express (D13).
 - Estructura `src/domain`, `src/data` y `src/http`, más `src/main.ts`. En este RFC `domain` y
   `data` quedan vacías: las llena el RFC-004.
 - `npm start` corre `node --env-file=.env src/main.ts` y lo levanta en el puerto de la variable

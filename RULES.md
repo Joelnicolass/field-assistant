@@ -40,6 +40,8 @@ de esta tabla, se corrige la tabla.
 | Lint | `eslint-config-expo` | 58.0.4 |
 | Formato | `prettier` | 3.10.1 |
 | Server | Node, que corre TypeScript sin compilar | 24 o superior |
+| Server | `express` | ^5.3.0 |
+| Server | `@types/express` | ^5.0.6 |
 
 Proveedores, detrás del server: un modelo de lenguaje que recibe audio y devuelve JSON
 (Gemini Flash-Lite) y una voz de servicio (ElevenLabs Flash v2.5). El identificador exacto de
@@ -214,7 +216,7 @@ const STATUS_TEXT: Record<VoicePhase, string> = {
 
 | ID | Regla |
 | --- | --- |
-| R52 | El server no guarda nada: recibe, llama al proveedor y contesta. Sin framework. |
+| R52 | El server no guarda nada: recibe, llama al proveedor y contesta. Usa Express (D13), sin otras librerías de servidor. |
 | R53 | Las claves viven solo en `.env`, que no se versiona. Hay un `.env.example` sin valores. |
 | R54 | Mismas capas, en chico: contratos en `domain`, proveedores en `data` y rutas en `http`. |
 | R55 | Como corre sin compilar, los conjuntos cerrados del server son objetos `as const` con su tipo derivado, no `enum`. |

@@ -251,8 +251,14 @@ no alcanza con volver a correr `assembleRelease`.
   `mp3_44100_128` y `language_code: 'es'`, para que lea en español un texto ambiguo como "18 mm".
   La voz es `EXAVITQu4vr4xnSDxMaL` ("Sarah"), una voz incluida que anda con el plan gratis; se
   cambia con `ELEVENLABS_VOICE_ID`.
-- **Estado:** **BLOQUEADO.** La clave de ElevenLabs está en el tope de créditos (le quedan 6, unas
-  12 letras). El script está listo y no se corrió para no gastar los créditos.
+- **Qué dio:** tres corridas con "Anotado. Van dieciocho milímetros." (34 caracteres), después
+  de renovar la cuota:
+  - Devuelve audio: mp3 mono a 44,1 kHz, de 2,8 s y entre 44.764 y 51.034 bytes.
+  - Latencia, del pedido al audio completo: 845, 621 y 492 ms. Sin streaming: con streaming, el
+    primer sonido llega antes.
+  - Costo: US$ 0,05 cada mil caracteres, o sea US$ 1,70 cada mil respuestas como esta; una de 90
+    caracteres, US$ 4,50 cada mil.
+- **Veredicto:** se cumple.
 - **Para Q4:** con el plan gratis, la API solo deja usar las voces incluidas, de acento neutro.
   Las voces argentinas son de la biblioteca y piden un plan pago (la API contesta `402`). Q4
   queda abierta: voz neutra gratis o voz argentina paga.
@@ -263,18 +269,24 @@ no alcanza con volver a correr `assembleRelease`.
 
 - **Se espera:** desde que termina la escucha hasta tener la respuesta, 5 segundos o menos
   (RNF-02).
-- **Qué dio, en parte:** entender el pedido tarda de 1,3 a 3,1 s desde la Mac, subida del audio
-  incluida, en la mayoría de los pedidos. Con la voz del teléfono, que no tiene espera de red,
-  el turno queda en unos 3 s. Pero hubo pedidos de 7,4 y 17 s: esos superan los 5 s.
-- **Pendiente:** la latencia de la voz de servicio (I3, bloqueado) y la medición desde el
-  teléfono con datos móviles. Q5 queda contestada en parte.
-- **Veredicto:** dentro de los 5 s casi siempre, sin la voz de servicio. La cola larga del
-  modelo la supera; el límite de tiempo del server la corta. Falta sumar la voz.
+- **Qué dio:** la suma de I2 e I3 desde la Mac.
+
+| Parte | Lo común | La cola |
+| --- | --- | --- |
+| Entender (I2), subida del audio incluida | de 1,3 a 3,1 s | 7,4 y 17 s en 2 de 11 pedidos |
+| Voz de servicio (I3), audio completo | de 0,5 a 0,85 s | — |
+| **Turno** | **de 1,8 a 4 s** | pasa los 5 s cuando el modelo tarda |
+
+- **Pendiente:** medirlo desde el teléfono con datos móviles, en el RFC-004, cuando el turno
+  exista de punta a punta.
+- **Q5:** un turno tarda de 1,8 a 4 s con buena señal, medido desde la Mac.
+- **Veredicto:** se cumple en lo común: dentro de los 5 s de RNF-02. La cola del modelo lo
+  supera; el límite de tiempo del server la corta y el audio va a la cola.
 
 ## Faltan
 
-- **Bloqueado:** I3, hasta que la clave de ElevenLabs tenga créditos y se elija la voz (Q4). Con
-  eso se completa I13.
+- **Para decidir, Q4:** la voz de servicio. Se probó "Sarah", incluida y de acento neutro; una
+  voz argentina pide un plan pago de ElevenLabs.
 - **Con voz real, pendientes:** las otras grabaciones de I1, escuchar las voces de I4 y la frase
   de manos libres de I5 (RFC-005, Q2).
 - **Para decidir:** si el orbe respeta la opción de reducir animaciones del teléfono (I10).

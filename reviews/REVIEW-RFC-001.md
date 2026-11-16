@@ -10,9 +10,10 @@
 ## Veredicto
 
 **Aprobado con observaciones.** Los criterios de proyecto, chequeos, server y builds se cumplen
-con evidencia. Del research, el criterio 17 se cumple solo en parte: Q2 y Q4 siguen abiertas y Q5
-está medida en parte, por la clave de ElevenLabs sin créditos y por las pruebas de voz real que
-quedaron pendientes. Ninguna observación frena al RFC-002.
+con evidencia. Del research, el criterio 17 se cumple en parte: Q5 está contestada (un turno
+tarda de 1,8 a 4 s), Q4 quedó medida pero la voz la elige el autor, y Q2 sigue abierta porque
+la frase de manos libres se prueba con voz real en el RFC-005. Ninguna observación frena al
+RFC-002.
 
 ## Criterios de aceptación
 
@@ -34,7 +35,7 @@ quedaron pendientes. Ninguna observación frena al RFC-002.
 | 14 | Debug instalado en Android 11, abre `ResearchScreen` | Cumple | moto e40, capturas en los pasos 4 y 5 |
 | 15 | Release con R8 y peso anotado | Cumple | 76,9 MB (I7) |
 | 16 | `RESEARCH.md` con las comprobaciones, fecha, dispositivo, esperado y resultado | Cumple | doce comprobaciones (I12 quitada) |
-| 17 | Q2, Q4 y Q5 contestadas | **Cumple en parte** | Q2 sin elegir (I5 pendiente); Q4 abierta (voz neutra gratis o argentina paga); Q5 medida sin la voz de servicio |
+| 17 | Q2, Q4 y Q5 contestadas | **Cumple en parte** | Q5 contestada (I13); Q4 medida con "Sarah", falta que el autor elija (neutra gratis o argentina paga); Q2 sin elegir (I5 pendiente) |
 | 18 | Un botón por comprobación en el teléfono | Cumple | I1, I4, I5, I9, I10 e I11 en `ResearchScreen` |
 | 19 | Audios de prueba y comandos de research | Cumple | `server/scripts/samples/`, `research:interpret` y `research:speak` |
 | 20 | `README.md`, `DECISIONS.md` y `AI-USAGE.md`, y los comandos del README andan | Cumple | probados los que no compilan; los builds, en el paso 4 |
@@ -77,6 +78,5 @@ quedaron pendientes. Ninguna observación frena al RFC-002.
 - **RFC-004:** campos obligatorios con `null` en el esquema del modelo; límite de tiempo en el
   server (la cola llega a 17 s); el `503` de Gemini como falla técnica, con el audio a la cola;
   un handler de errores que conteste JSON.
-- **RFC-005:** I3 y el resto de I13 cuando la clave de ElevenLabs tenga créditos; Q4 (voz neutra
-  o argentina paga); la frase de manos libres (I5, Q2); "vaquillonas" y "mové" no están en el
-  vocabulario de Vosk.
+- **RFC-005:** Q4 (voz neutra o argentina paga); la frase de manos libres (I5, Q2);
+  "vaquillonas" y "mové" no están en el vocabulario de Vosk.

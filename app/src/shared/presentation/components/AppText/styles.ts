@@ -17,6 +17,8 @@ export function createStyles(theme: Theme) {
         fontVariant: spec.tabular ? ['tabular-nums'] : undefined,
         textTransform: spec.uppercase ? 'uppercase' : 'none',
         color: theme.colors.text,
+        // Android suma arriba y abajo el espacio de los acentos de la fuente y baja el texto.
+        includeFontPadding: false,
       };
     },
   };

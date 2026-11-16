@@ -1,13 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 import type { Theme } from '@/shared/presentation/theme/Theme';
+import { diagonal } from '@/shared/presentation/theme/gradients';
 import { Tone } from '@/shared/presentation/theme/Tone';
 
 const BORDER_WIDTH = 1.5;
-
-function diagonal([start, middle, end]: readonly [string, string, string]): string {
-  return `linear-gradient(135deg, ${start} 0%, ${middle} 50%, ${end} 100%)`;
-}
 
 export function createStyles(theme: Theme) {
   return StyleSheet.create({

@@ -1,0 +1,17 @@
+.DS_Store
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Referencias visuales: quedan solo en la máquina
+docs/visual-refs/*
+!docs/visual-refs/README.md
+
+# App: el modelo de voz se baja con scripts/get-vosk-model.sh; lo nativo se genera con prebuild
+app/assets/model-es/
+app/android/
+app/ios/
+
+# Audio que genera research:speak
+server/scripts/samples/speak.mp3

@@ -1,0 +1,1 @@
+export { RevealWord } from './RevealWord';

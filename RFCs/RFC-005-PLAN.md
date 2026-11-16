@@ -9,7 +9,7 @@ para la revisión del autor. Los pasos chicos los hace el orquestador; los grand
 | A | Primera entrega: APK de release contra Railway, ícono y splash, y el Release v1.0.0 | aprobado (APK y Release al final) |
 | B | Documentos: README, DECISIONS con las nueve entradas y AI-USAGE | pendiente |
 | C | Manos libres | aprobado |
-| D | Frases grabadas y aviso de voz en español | pendiente |
+| D | Frases grabadas y aviso de voz en español | aprobado |
 | E | Entrada con el logo, tema según la luz y brillo al sol | aprobado (la entrada entró con A) |
 | F | Pantalla de Ajustes (pedido del autor) y entrega final | pendiente |
 

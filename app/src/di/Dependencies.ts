@@ -1,6 +1,8 @@
 import type { AmbientLightService } from '@/domain/services/AmbientLightService';
 import type { AudioRecorderService } from '@/domain/services/AudioRecorderService';
 import type { ClockService } from '@/domain/services/ClockService';
+import type { CuePlayerService } from '@/domain/services/CuePlayerService';
+import type { SpanishVoiceService } from '@/domain/services/SpanishVoiceService';
 import type { SpeakerService } from '@/domain/services/SpeakerService';
 import type { WakePhraseService } from '@/domain/services/WakePhraseService';
 import type { InterpreterService } from '@/domain/services/InterpreterService';
@@ -34,6 +36,8 @@ export type Dependencies = {
   recorder: AudioRecorderService;
   wakePhrase: WakePhraseService;
   speaker: SpeakerService;
+  cues: CuePlayerService;
+  spanishVoice: SpanishVoiceService;
   interpreter: InterpreterService;
   ambientLight: AmbientLightService;
   screenBrightness: ScreenBrightnessService;

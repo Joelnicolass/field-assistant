@@ -7,6 +7,7 @@ import { handsFreeStatus, IDLE_SUBTITLE, ORB_STATE, STATUS_TEXT } from './consta
 import type { VoiceCard } from '../states/VoiceCard';
 import { cardView, type CardContext } from './replies/cardView';
 import type { SavedEntry } from './usePendingAudios';
+import { useSpanishVoiceNotice } from './useSpanishVoiceNotice';
 import { useVoiceTurn, type VoiceTurnOptions } from './useVoiceTurn';
 
 export type VoiceStageView = {
@@ -32,8 +33,9 @@ export type VoiceStageView = {
 /** Entrega lo que dibuja la zona de voz: el turno en curso, ya traducido a orbe, textos y tarjetas. */
 export function useVoiceStage(options: VoiceTurnOptions): VoiceStageView {
   const { clock } = useDependencies();
-  const { state, level, voiceStarted, actions, onOrbPress, pending, handsFree } =
+  const { state, level, voiceStarted, cueText, actions, onOrbPress, pending, handsFree } =
     useVoiceTurn(options);
+  const voiceNotice = useSpanishVoiceNotice();
   const { card, turn, subtitle, paused } = state;
   // Hasta que la voz suena, se sigue viendo "Pensando…": el texto y la tarjeta llegan con la voz.
   const waitingVoice = state.phase === VoicePhase.Speaking && !voiceStarted;
@@ -49,8 +51,12 @@ export function useVoiceStage(options: VoiceTurnOptions): VoiceStageView {
     orbState: ORB_STATE[phase],
     level,
     statusText: statusText(phase, handsFree.enabled),
-    subtitle: waitingVoice ? '' : visibleSubtitle(phase, subtitle),
-    cards: stageCards(waitingVoice ? null : card, turn, pending.saved, context),
+    subtitle: waitingVoice ? '' : visibleSubtitle(phase, cueText ?? subtitle),
+    // El aviso de la voz va primero: es lo más viejo, no depende del turno.
+    cards: [
+      ...voiceNotice,
+      ...stageCards(waitingVoice ? null : card, turn, pending.saved, context),
+    ],
     pendingCount: pending.pendingCount,
     sending: pending.sending,
     onPendingPress: pending.retryNow,

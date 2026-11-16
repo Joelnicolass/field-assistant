@@ -7,6 +7,10 @@ import { ExpoAmbientLightService } from '@/data/services/ExpoAmbientLightService
 import { ExpoAudioRecorderService } from '@/data/services/ExpoAudioRecorderService';
 import { ExpoScreenBrightnessService } from '@/data/services/ExpoScreenBrightnessService';
 import { FallbackSpeakerService } from '@/data/services/FallbackSpeakerService';
+import { BundledCuePlayerService } from '@/data/services/cues/BundledCuePlayerService';
+import { CUES } from '@/data/services/cues/constants';
+import { playBundled } from '@/data/services/cues/playBundled';
+import { PhoneSpanishVoiceService } from '@/data/services/PhoneSpanishVoiceService';
 import { PhoneSpeakerService } from '@/data/services/PhoneSpeakerService';
 import { ScriptedAudioRecorderService } from '@/data/services/ScriptedAudioRecorderService';
 import { ScriptedWakePhraseService } from '@/data/services/ScriptedWakePhraseService';
@@ -80,6 +84,8 @@ export const container: Dependencies = {
   recorder,
   wakePhrase,
   speaker,
+  cues: new BundledCuePlayerService(CUES, playBundled),
+  spanishVoice: new PhoneSpanishVoiceService(),
   interpreter,
   ambientLight: new ExpoAmbientLightService(),
   screenBrightness: new ExpoScreenBrightnessService(),

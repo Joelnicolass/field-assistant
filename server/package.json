@@ -8,6 +8,7 @@
     "typecheck": "tsc --noEmit",
     "research:interpret": "node --env-file=.env scripts/interpret.ts",
     "research:speak": "node --env-file=.env scripts/speak.ts",
+    "cues": "node --env-file=.env scripts/cues.ts",
     "eval": "node --env-file=.env eval/battery.ts"
   },
   "devDependencies": {

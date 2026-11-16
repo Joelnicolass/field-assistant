@@ -88,7 +88,6 @@ Contraste medido, en la peor combinación de cada color: `text` 14,4; `textMuted
 | `brand` | `#3CCC6C` | `#3C9C54` | `#6C9CE4` |
 | `warning` | `#FCCC54` | `#E4B454` | `#FC8454` |
 | `danger` | `#FC8454` | `#F0284A` | `#C21DA0` |
-| `neutral` | Sin definir: ver la sección 10 | | |
 
 **Colores fijos,** fuera del tema: blanco `#FFFFFF` para el dibujo del centro del orbe y el ícono
 del distintivo de la tarjeta.
@@ -285,6 +284,8 @@ verde: se distinguen sin leer.
 - Al cambiar de estado, los colores se funden en `orbColor` (300 ms). El dibujo del centro cambia
   en 250 ms y el que entra crece desde 0,82.
 - En reposo el orbe sigue animado (D17).
+- **El orbe ignora la opción "reducir animaciones" del teléfono** (`ReduceMotion.Never`): su
+  movimiento dice el estado de la app. Las demás animaciones la respetan.
 - Escuchando y hablando usan el mismo dibujo; se distinguen por color, por las ondas y porque al
   escuchar las barras siguen la voz. **Para corregir en RFC-003:** su criterio 11 pide que no
   haya dos estados con el mismo dibujo (ver la sección 9).
@@ -359,8 +360,8 @@ flex; no hay un ancho de diseño fijo.
 - **Con tarjetas,** el orbe baja a su casillero y se achica a 0,56 (unos 94). El cambio es una
   escala y una traslación, sin recalcular la pantalla. El resumen esconde los lotes.
 - **Más de una tarjeta:** van en columna, separadas `lg`, con 16 arriba y 26 abajo. Si no entran,
-  su zona se desplaza con el dedo, sin barra de desplazamiento. En qué orden van: ver la
-  sección 10.
+  su zona se desplaza con el dedo, sin barra de desplazamiento. La más nueva va abajo, junto al
+  orbe.
 - **Contador de audios guardados:** una píldora en el encabezado del resumen, debajo de la de
   manos libres. Fondo `warning` al 14 %, ícono de sin señal de 15 y texto en `pill`, los dos en
   `warning`. Con 0 guardados no se muestra. Entra con un fundido de 220 ms y sale en 160 ms.
@@ -419,25 +420,13 @@ pregunta, alerta, sin señal y cruz.
   tamaño, giro y opacidad (R46). La excepción es el fundido del fondo al cambiar de tema.
 - **Sin sombras salvo en la tarjeta.**
 
-## 9. Para corregir en RFC-003
+## 9. Decisiones tomadas
 
-`VISUAL.md` tiene más autoridad que los RFCs. Estos puntos del RFC-003 quedan desactualizados y
-hay que corregirlos antes de implementarlo:
-
-1. **`TextVariant`** tiene seis valores (`Title`, `Subtitle`, `Body`, `Number`, `Label` y
-   `Caption`). Las variantes son las de la sección 4.2, y el criterio 4 tiene que comprobar
-   `subtitle`, `button`, `display`, `rowValue` y `lotNumber`.
-2. **`theme.tones`** es `{ accent, soft }`. Cada tono es el degradé de tres colores de la
-   sección 4.1.
-3. **`OrbPalette`** es `{ core, ring, glow }`. Le faltan las manchas (`blobs`).
-4. **Criterio 11:** pide que no haya dos estados con el mismo dibujo. Escuchando y hablando usan
-   las dos las barras (sección 5.3).
-5. **`touch`** es `{ minimum, primary }`. Suma `button` (56).
-6. **`RevealText`** se construye: el subtítulo aparece palabra por palabra (sección 4.6).
-
-## 10. Preguntas abiertas
-
-| ID | Pregunta | Para cuándo |
+| ID | Pregunta | Decisión |
 | --- | --- | --- |
-| V1 | ¿Cómo se ve el tono `neutral` (el degradé del borde y del distintivo)? Ninguna tarjeta de la tabla del RFC-003 lo usa hoy: si nadie lo usa, se saca del enum | Antes del RFC-003 |
-| V2 | Con más de una tarjeta, ¿la más nueva va arriba o abajo, junto al orbe? | Antes del RFC-003 |
+| V1 | El tono `neutral` | Se saca: ninguna tarjeta lo usa |
+| V2 | El orden de las tarjetas | La más nueva va abajo, junto al orbe |
+| V3 | El orbe con "reducir animaciones" | Se anima siempre |
+| V4 | La opacidad del resumen durante un turno | 35 % |
+
+Los puntos que el RFC-003 tenía desactualizados respecto de esta guía ya se corrigieron en el RFC.

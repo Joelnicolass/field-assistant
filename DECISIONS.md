@@ -70,7 +70,7 @@ Qué se usa, qué se hace y por qué. Una entrada por decisión.
   - Las reglas se prueban con tests y dan siempre lo mismo.
   - Se puede cambiar de modelo sin que cambien los números.
 - **Resigno:** hoy las reglas viven en el teléfono.
-- **A rever:** así no escalan. Lo ideal es que vivan en un server.
+- **A rever:** así no escalan. Lo ideal es que vivan en un server (D29).
 
 ## D9 · Sin señal, el audio se guarda y se manda después
 
@@ -267,44 +267,28 @@ Qué se usa, qué se hace y por qué. Una entrada por decisión.
 - **Resigno:** hoy no hay cuentas ni base compartida. Es lo que la consigna pidió no construir,
   y es lo primero que haría falta para salir del piloto.
 
-## D29 · A futuro: el server es el cerebro y la app dibuja
-
-- **Decisión:** no se construye ahora. Para escalar, el server pasa a ser la base de datos y a
-  tener las reglas, y le responde a la app con tarjetas y acciones de un catálogo cerrado.
-- **Por qué:**
-  - Los datos se comparten entre teléfonos y tienen respaldo.
-  - Una regla o un registro nuevo se publican en el server, sin sacar un APK.
-  - El mismo cerebro puede atender otros canales, además de la app.
-- **Queda en el teléfono:** grabar, la frase de manos libres, la voz, las animaciones, la cola de
-  audios y una copia de los datos para mirar sin señal.
-- **Resigno:** sin señal la copia puede estar vieja y nada se anota hasta que vuelve. El server
-  deja de ser sin estado: base de datos, cuentas y sincronización.
-
 ## D29 · Para escalar: el server es el cerebro y el teléfono dibuja acciones
 
-- **Decisión:** el camino más escalable es que un server sea la base de datos y el que decide,
-  y que el teléfono reciba acciones ya resueltas para mostrarlas. Hoy no está construido: la
-  versión actual guarda todo en el teléfono (D4) y calcula ahí (D8). Es hacia donde iría.
-  - **El server guarda los datos** de cada establecimiento, no el teléfono.
-  - **El server tiene las reglas:** recibe el audio, el LLM interpreta la intención y el código
-    del server calcula (cuántos animales quedan, cuánto llovió).
-  - **La respuesta es un JSON de acciones posibles con sus datos:** qué tarjeta mostrar, qué
-    botones ofrecer y qué decir. El teléfono no razona: dibuja lo que le llega y devuelve lo
-    que toca la persona.
+- **Decisión:** no se construye ahora: hoy los datos y las reglas viven en el teléfono (D4, D8).
+  Para escalar:
+  - El server guarda los datos de cada establecimiento y tiene las reglas.
+  - El modelo entiende el pedido y pregunta lo que falta. El código del server calcula y elige
+    la tarjeta y las acciones, de un catálogo cerrado.
+  - El teléfono dibuja lo que llega y devuelve lo que toca la persona.
 - **Por qué:**
-  - Las cuentas son las mismas en todos los teléfonos, y lo comparten el dueño, el encargado y el
-    peón.
+  - Los datos son los mismos en todos los teléfonos y tienen respaldo: los comparten el dueño, el
+    encargado y el peón.
   - Una regla nueva o un arreglo se publica en el server, sin sacar un APK.
-  - Cambiar de modelo o sumar un tipo de registro no toca la app.
-- **Por qué no un cliente 100 % dinámico, donde el LLM arme toda la interfaz:**
-  - **Sin señal no haría nada,** y en el campo la señal va y viene. El teléfono conserva una copia
-    local de los datos, la cola de audios y las frases grabadas, para seguir siendo útil sin red.
-  - **El LLM no decide la interfaz ni los números.** Elige entre un catálogo cerrado de tarjetas y
-    acciones, que es el design system de la app, y los datos los pone el código del server. Si
-    el modelo armara la pantalla libremente, la misma frase podría dar dos pantallas distintas o
-    un botón que no existe (el mismo criterio que D8).
-  - **Las versiones viejas del APK** tienen que poder dibujar lo que manda el server: el formato
-    de las acciones lleva versión, y hay una tarjeta genérica de respaldo para lo que el
-    teléfono no conoce.
-- **Resigno:** cada respuesta depende de un server más complejo, con base de datos y cuentas; y
-  la app pierde algo de libertad para animar cada caso a mano, porque dibuja piezas genéricas.
+  - El mismo cerebro puede atender otros canales, además de la app.
+- **Queda en el teléfono:** grabar, la frase de manos libres, la voz y su respaldo, la cuenta de
+  4 segundos (D7), las animaciones, la cola de audios y una copia de los datos para mirar sin
+  señal.
+- **Por qué no un cliente 100 % dinámico:**
+  - Sin señal no haría nada.
+  - Si el modelo armara la pantalla, la misma frase podría dar dos pantallas distintas o un botón
+    que no existe (el criterio de D8).
+  - Los APK viejos tienen que poder dibujar lo que llega: el formato lleva versión y hay una
+    tarjeta genérica de respaldo.
+- **Resigno:** el server deja de ser sin estado (D13): base de datos, cuentas y sincronización.
+  Sin señal la copia puede estar vieja y nada se anota hasta que vuelve. La app dibuja piezas del
+  catálogo: menos libertad para animar cada caso a mano.

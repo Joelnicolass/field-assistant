@@ -115,16 +115,18 @@ export function OrbSphere({
   state,
   size,
   motion,
+  inside,
   children,
-}: OrbLayerProps & { children: ReactNode }) {
+}: OrbLayerProps & { inside: ReactNode; children: ReactNode }) {
   const { breathSize, kick } = motion.pose;
   const { breath } = motion.phases;
   const { voice, voiceLag } = motion.voice;
   const { pressed } = motion.press;
+  const { sphereScale } = motion.entrance;
 
   const style = useAnimatedStyle(() => {
     const breathing = Math.sin(breath.get() * TURN) * breathSize.get();
-    const scale = 1 + breathing + voice.get() * 0.2 + kick.get();
+    const scale = sphereScale.get() * (1 + breathing + voice.get() * 0.2 + kick.get());
     const shape = squash(voice.get(), voiceLag.get(), pressed.get());
     return { transform: [{ scaleX: scale * shape.x }, { scaleY: scale * shape.y }] };
   });
@@ -135,6 +137,7 @@ export function OrbSphere({
       <Blobs group="a" state={state} size={size} motion={motion} />
       <Blobs group="b" state={state} size={size} motion={motion} />
       <Shade size={size} />
+      {inside}
       {children}
     </Animated.View>
   );

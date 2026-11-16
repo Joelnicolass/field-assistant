@@ -259,3 +259,46 @@ Qué se usa, qué se hace y por qué. Una entrada por decisión.
   splash y la app.
 - **Resigno:** unos 3 s de entrada en cada apertura (se apaga con `EXPO_PUBLIC_LOGO_INTRO=false`),
   y una imagen de splash que hay que volver a sacar si cambia el orbe.
+
+## D28 · Escalabilidad: de un productor a miles
+
+- **Decisión:** la versión de hoy está pensada para un productor y un teléfono. No se construyó
+  la escala, pero sí se pensó qué pasa con miles de productores y qué cambiaría primero.
+- **Costo por pedido:**
+  - Entender un audio con Gemini cuesta entre US$ 0,21 y US$ 0,30 cada mil pedidos (175 a 231
+    tokens de entrada y 40 a 97 de salida, medido en el research).
+  - La voz cuesta US$ 0,05 cada mil caracteres: una respuesta de 90 caracteres, unos US$ 4,50
+    cada mil. **La voz es más del 90 % del costo de un turno.**
+  - Con mil productores y 20 turnos por día cada uno, son 20.000 turnos diarios: unos US$ 6 de
+    modelo y unos US$ 90 de voz por día.
+  - Lo que ya lo baja: las frases cortas (la muletilla y el aviso sin señal) están grabadas en
+    la app y no cuestan nada, y la voz del teléfono es el respaldo gratis.
+- **Límites del server:**
+  - No guarda estado, así que crece poniendo más copias detrás de un balanceador, sin cambiar
+    el código.
+  - Cada turno tiene ocupada una conexión hasta 7 s, mientras espera al modelo. Node aguanta
+    muchas conexiones así porque solo espera, pero el techo real es el de los proveedores: el
+    límite de pedidos por minuto de Gemini, que en el plan gratis es de unos 15. Con miles de
+    productores hace falta el plan pago y que el server reparta los pedidos y avise con un
+    `429` claro.
+  - Ya rechaza audios de más de 2 MB, y la cola del teléfono reintenta con pausas, así que un
+    corte del proveedor no se convierte en una avalancha de reintentos.
+- **Los datos, en el teléfono o en un servicio:**
+  - Hoy viven en un JSON del teléfono. Alcanza para uno, pero se pierden si se pierde el
+    teléfono, y no los comparten el dueño, el encargado y el peón.
+  - Con miles hace falta una base por establecimiento en un servicio, con sincronización. La
+    app sigue funcionando sin señal: anota en el teléfono y sincroniza cuando vuelve, como ya
+    hace con los audios guardados. Hay que resolver conflictos, por ejemplo dos personas que
+    mueven animales del mismo lote.
+- **Identificar a quien llama:**
+  - Hoy hay una sola clave de la app (`X-App-Key`), adentro del APK. Frena a quien encuentre la
+    dirección del server, pero se puede sacar del APK.
+  - Con miles hace falta una cuenta por persona: un token por usuario, con límites de pedidos y
+    de gasto por cuenta, para que nadie pueda gastar el presupuesto de todos.
+- **Qué cambiaría primero:**
+  1. Cuentas por usuario con límite de pedidos: es lo que protege el costo.
+  2. Bajar el costo de la voz: guardar las respuestas que se repiten, o una voz más barata para
+     las frases largas.
+  3. Llevar los datos a un servicio, con la sincronización sin señal.
+- **Resigno:** hoy no hay cuentas ni base compartida. Es lo que la consigna pidió no construir,
+  y es lo primero que haría falta para salir del piloto.

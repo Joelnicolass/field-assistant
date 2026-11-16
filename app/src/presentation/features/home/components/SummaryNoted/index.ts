@@ -1,0 +1,1 @@
+export { SummaryNoted } from './SummaryNoted';

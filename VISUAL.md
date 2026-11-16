@@ -88,7 +88,6 @@ Contraste medido, en la peor combinación de cada color: `text` 14,4; `textMuted
 | `brand` | `#3CCC6C` | `#3C9C54` | `#6C9CE4` |
 | `warning` | `#FCCC54` | `#E4B454` | `#FC8454` |
 | `danger` | `#FC8454` | `#F0284A` | `#C21DA0` |
-| `neutral` | Sin definir: ver la sección 10 | | |
 
 **Colores fijos,** fuera del tema: blanco `#FFFFFF` para el dibujo del centro del orbe y el ícono
 del distintivo de la tarjeta.
@@ -107,14 +106,14 @@ Variantes de texto (tamaño / alto de renglón en sp, peso, espaciado entre letr
 | `display` | 68 / 74, 800, −2, tabular | El número grande de la tarjeta |
 | `displayUnit` | 26, 700 | La unidad al lado del número grande |
 | `message` | 25 / 31, 800, −0,3 | El texto grande de una tarjeta sin número |
-| `farm` | 28 / 33, 800, −0,5 | El nombre del establecimiento |
+| `title` | 22 / 28, 800, −0,4 | El nombre de la app, arriba del resumen |
 | `tileValue` | 25, 800, −0,4, tabular | El número de un cuadro del resumen |
 | `lotNumber` | 26 / 30, 800, tabular | El número de lote en la ruta de un movimiento |
 | `subtitle` | 20 / 26, 700, centrado | Lo que dice la app, arriba del orbe |
 | `button` | 20, 800 | El texto de los botones |
 | `rowValue` | 20, 800, tabular | El valor de un renglón de la tarjeta |
 | `caption` | 19 / 24, 600 | El texto que acompaña al número grande |
-| `noted` | 17 / 22, 700 | "Lo anotado hoy" en el resumen |
+| `noted` | 17 / 22, 700 | El título del panel de lotes ("Cabezas por lote") |
 | `rowLabel` | 16, 600 | La etiqueta de un renglón |
 | `hint` | 16 / 22, 500 | La aclaración de una tarjeta (el día, el valor anterior) |
 | `status` | 15, 700 | El estado debajo del orbe |
@@ -239,16 +238,17 @@ De atrás hacia adelante. Las medidas son fracciones del diámetro.
    47 % a mitad de camino y 0 en el borde.
 2. **Dos ondas:** borde de 2,5, con el segundo y el tercer color de `ring`. Solo en los estados
    con ondas.
-3. **Aro:** radio 0,565, trazo 0,036, con un degradé en diagonal de los cuatro colores de `ring`.
-   Debajo, el mismo trazo 2,8 veces más ancho al 25 %, como brillo. Es la única capa en SVG.
+3. **Aro:** radio 0,515, trazo 0,028, con un degradé en diagonal de los cuatro colores de `ring`.
+   Va apoyado sobre el filo blanco de la esfera. Es la única capa en SVG.
 4. **Esfera:** `radial-gradient(circle farthest-corner at 34% 28%, core0 0%, core1 46%, core2 100%)`.
    La luz viene de arriba a la izquierda.
 5. **Manchas,** en dos grupos que giran en sentidos opuestos:
-   - grupo a: en (0,15; −0,12), radio 0,30, al 95 %; y en (−0,16; 0,13), radio 0,29, al 85 %;
-   - grupo b: en (−0,13; −0,15), radio 0,30, al 90 %; y una blanca en (0,16; 0,15), radio 0,26,
-     al 45 %.
+   - grupo a: en (0,15; −0,12), radio 0,30, al 45 %; y en (−0,16; 0,13), radio 0,29, al 40 %;
+   - grupo b: en (−0,13; −0,15), radio 0,30, al 40 %; y una blanca en (0,16; 0,15), radio 0,26,
+     al 30 %.
+   Son un tinte sobre la esfera, no manchas que se distingan.
 6. **Volumen:** sombra `#00000026` en el centro y `#00000038` en el borde; brillo `#FFFFFFB8` en
-   una elipse de 0,46 × 0,27 en (0,13; 0,07), girada −28°; filo de luz `#FFFFFF38` de 1,5.
+   una elipse de 0,46 × 0,27 en (0,13; 0,07), girada −28°; filo blanco `#FFFFFFE6` de 2,5.
 7. **Dibujo del centro,** blanco:
    - micrófono de 0,36;
    - cinco barras de 0,055 de ancho y 0,40 de alto, separadas 0,045, con alturas 0,5 / 0,8 / 1 /
@@ -285,6 +285,8 @@ verde: se distinguen sin leer.
 - Al cambiar de estado, los colores se funden en `orbColor` (300 ms). El dibujo del centro cambia
   en 250 ms y el que entra crece desde 0,82.
 - En reposo el orbe sigue animado (D17).
+- **El orbe ignora la opción "reducir animaciones" del teléfono** (`ReduceMotion.Never`): su
+  movimiento dice el estado de la app. Las demás animaciones la respetan.
 - Escuchando y hablando usan el mismo dibujo; se distinguen por color, por las ondas y porque al
   escuchar las barras siguen la voz. **Para corregir en RFC-003:** su criterio 11 pide que no
   haya dos estados con el mismo dibujo (ver la sección 9).
@@ -359,8 +361,8 @@ flex; no hay un ancho de diseño fijo.
 - **Con tarjetas,** el orbe baja a su casillero y se achica a 0,56 (unos 94). El cambio es una
   escala y una traslación, sin recalcular la pantalla. El resumen esconde los lotes.
 - **Más de una tarjeta:** van en columna, separadas `lg`, con 16 arriba y 26 abajo. Si no entran,
-  su zona se desplaza con el dedo, sin barra de desplazamiento. En qué orden van: ver la
-  sección 10.
+  su zona se desplaza con el dedo, sin barra de desplazamiento. La más nueva va abajo, junto al
+  orbe.
 - **Contador de audios guardados:** una píldora en el encabezado del resumen, debajo de la de
   manos libres. Fondo `warning` al 14 %, ícono de sin señal de 15 y texto en `pill`, los dos en
   `warning`. Con 0 guardados no se muestra. Entra con un fundido de 220 ms y sale en 160 ms.
@@ -372,10 +374,10 @@ flex; no hay un ancho de diseño fijo.
 
 | Dato | Forma |
 | --- | --- |
-| Establecimiento | El nombre en `farm`; debajo, actividad y ubicación en `place` y `textMuted` |
-| Lo anotado hoy | Una frase en `noted` ("Hoy anotaste 2 cosas" o "Todavía no anotaste nada hoy") |
-| Cabezas totales, lluvia del mes y última lluvia | **Panel de datos:** un panel con fondo `surfaceSoft`, radio `tile` y padding 13 vertical y 14 horizontal. Adentro, tres columnas iguales separadas por líneas verticales `hairline`. Cada columna: el valor arriba en `tileValue` (si no entra, pasa a dos renglones) y la etiqueta abajo en `tileLabel` y `textMuted`, hasta dos renglones. Las etiquetas de las tres columnas quedan alineadas abajo |
-| Animales por lote | **Panel de lotes,** aparte, `base` debajo del panel de datos, con el mismo fondo, radio y padding. Ocho columnas iguales, separadas `sm`. Cada una: una barra de 12 × 38 con radio `lotBar`, fondo `surface` y relleno con el degradé vertical de `brand` (c1 abajo, c0 arriba), tan alto como la proporción respecto del lote con más cabezas; debajo, las cabezas en `lotHead` (`textMuted` si es 0) y el nombre corto en `lotName` |
+| Encabezado | El logo de la app (40, radio 12) arriba a la izquierda. Al lado, "Field Data" o "Field Assistant" en `title` (alternan cada 10 segundos: la palabra se desenfoca y entra la otra, sin moverse) y debajo, alineado con la F, el establecimiento, la actividad y la ubicación en `place` y `textMuted`. A la derecha, las píldoras |
+| Lo anotado hoy | Un aviso de ancho completo, radio `tile` como los paneles, borde de 1 y padding `sm` y `lg`: un punto de 6 y la frase en `tileLabel` y `textMuted` ("Hoy todavía no anotaste nada" o "Hoy anotaste 18 mm de lluvia"). Sin registros, fondo y borde `warning` al 10 % y 28 %; con algo anotado, `brand` |
+| Cabezas totales, lluvia del mes y última lluvia | **Panel de datos:** un panel con fondo `surfaceSoft`, radio `tile` y padding 13 vertical y 14 horizontal. Adentro, tres columnas iguales separadas por líneas verticales `hairline`. Cada columna: el valor arriba en `tileValue`, con la unidad al lado en `rowLabel` y `textMuted` ("38 mm"); la etiqueta abajo en `tileLabel` y `textMuted`, hasta dos renglones, con una parte destacada en `text` ("última lluvia · **12 mm**"). La última lluvia muestra el cuándo como valor ("hace 3 días"). Las etiquetas de las tres columnas quedan alineadas abajo |
+| Animales por lote | **Panel de lotes,** con el mismo fondo, radio y padding. Arriba, "Cabezas por lote" en `noted` y, a la derecha, una píldora `surface` con los lotes que tienen hacienda en `pill` ("7 lotes activos"). Debajo, ocho columnas iguales, separadas `sm`: una barra de 14 × 84 con radio `lotBar`, fondo `surface` y relleno con el degradé vertical de `brand` (c1 abajo, c0 arriba), tan alto como la proporción respecto del lote con más cabezas; debajo, las cabezas en `lotHead` (`textMuted` si es 0) y el nombre corto en `lotName` |
 
 **Con una tarjeta en pantalla,** el resumen se achica: el panel de lotes se esconde y el panel de
 datos se abre en tres cuadros sueltos, iguales, separados `md`, cada uno con fondo
@@ -419,25 +421,13 @@ pregunta, alerta, sin señal y cruz.
   tamaño, giro y opacidad (R46). La excepción es el fundido del fondo al cambiar de tema.
 - **Sin sombras salvo en la tarjeta.**
 
-## 9. Para corregir en RFC-003
+## 9. Decisiones tomadas
 
-`VISUAL.md` tiene más autoridad que los RFCs. Estos puntos del RFC-003 quedan desactualizados y
-hay que corregirlos antes de implementarlo:
-
-1. **`TextVariant`** tiene seis valores (`Title`, `Subtitle`, `Body`, `Number`, `Label` y
-   `Caption`). Las variantes son las de la sección 4.2, y el criterio 4 tiene que comprobar
-   `subtitle`, `button`, `display`, `rowValue` y `lotNumber`.
-2. **`theme.tones`** es `{ accent, soft }`. Cada tono es el degradé de tres colores de la
-   sección 4.1.
-3. **`OrbPalette`** es `{ core, ring, glow }`. Le faltan las manchas (`blobs`).
-4. **Criterio 11:** pide que no haya dos estados con el mismo dibujo. Escuchando y hablando usan
-   las dos las barras (sección 5.3).
-5. **`touch`** es `{ minimum, primary }`. Suma `button` (56).
-6. **`RevealText`** se construye: el subtítulo aparece palabra por palabra (sección 4.6).
-
-## 10. Preguntas abiertas
-
-| ID | Pregunta | Para cuándo |
+| ID | Pregunta | Decisión |
 | --- | --- | --- |
-| V1 | ¿Cómo se ve el tono `neutral` (el degradé del borde y del distintivo)? Ninguna tarjeta de la tabla del RFC-003 lo usa hoy: si nadie lo usa, se saca del enum | Antes del RFC-003 |
-| V2 | Con más de una tarjeta, ¿la más nueva va arriba o abajo, junto al orbe? | Antes del RFC-003 |
+| V1 | El tono `neutral` | Se saca: ninguna tarjeta lo usa |
+| V2 | El orden de las tarjetas | La más nueva va abajo, junto al orbe |
+| V3 | El orbe con "reducir animaciones" | Se anima siempre |
+| V4 | La opacidad del resumen durante un turno | 35 % |
+
+Los puntos que el RFC-003 tenía desactualizados respecto de esta guía ya se corrigieron en el RFC.

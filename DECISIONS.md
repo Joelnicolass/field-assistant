@@ -190,3 +190,22 @@ Qué se usa, qué se hace y por qué. Una entrada por decisión.
   - "Llovieron 18 mm anoche" se dice hoy: tiene que aparecer en lo anotado hoy, aunque la lluvia sea de ayer.
   - Los totales siguen siendo correctos: esa lluvia suma en ayer, no en hoy.
 - **Resigno:** un campo más en cada registro y en el archivo guardado.
+
+## D22 · Reanimated aplica las animaciones directo a la vista
+
+- **Decisión:** se enciende `ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS` en `app/package.json`. Reanimated aplica `transform` y `opacity` directo a la vista nativa, sin pasar por el árbol de React Native en cada cuadro.
+- **Por qué:**
+  - El orbe anima unas quince vistas a la vez, y por defecto cada cuadro recalculaba la pantalla: tardaba 20 ms en modo desarrollo.
+  - Con la opción tarda 10 ms en desarrollo y de 8 a 9 ms en producción, medido con `dumpsys gfxinfo` en el teléfono.
+  - La app solo anima posición, tamaño, giro y opacidad (R46), justo lo que la opción acelera.
+- **Resigno:** cambiarla obliga a un build nativo, y es una opción que Reanimated trae apagada.
+
+## D23 · El catálogo del design system queda en la app
+
+- **Decisión:** el catálogo no se borra. Es una pantalla aparte que se abre con "Ver el DS"
+  desde la pantalla de inicio y vuelve con "Volver". Con `EXPO_PUBLIC_SHOW_CATALOG=1` la app
+  abre directo en él.
+- **Por qué:**
+  - Muestra cada pieza del design system en todos sus estados, sin depender del turno de voz.
+  - Sirve para revisar lo visual en el teléfono y para mostrar cómo está armada la interfaz.
+- **Resigno:** un botón más en la pantalla de inicio y una pantalla que el productor no usa.

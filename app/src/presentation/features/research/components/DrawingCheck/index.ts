@@ -1,1 +1,0 @@
-export { DrawingCheck } from './DrawingCheck';

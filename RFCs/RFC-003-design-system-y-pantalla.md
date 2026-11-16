@@ -48,14 +48,14 @@ export type Theme = {
   };
   typography: {
     family: string;
-    variants: Record<TextVariant, { size: number; lineHeight: number; weight: string }>;
+    variants: Record<TextVariant, { size: number; lineHeight?: number; weight: string; letterSpacing?: number; italic?: boolean; tabular?: boolean; uppercase?: boolean }>;
   };
   spacing: Record<string, number>;
   radii: Record<string, number>;
   shadows: Record<string, string>;
   durations: Record<string, number>;
-  touch: { minimum: number; primary: number };   // primary: 64 o más
-  tones: Record<Tone, { accent: string; soft: string }>;
+  touch: { minimum: number; button: number; primary: number };   // primary: 64 o más
+  tones: Record<Tone, [string, string, string]>;   // el degradé de cada tono
   orb: Record<OrbState, OrbPalette>;
 };
 ```
@@ -76,9 +76,16 @@ En `shared/presentation/components`, cada pieza en su carpeta (R19). Son present
 reciben datos y avisan con funciones (R20). No conocen el dominio (R25).
 
 ```ts
-export enum TextVariant { Title = 'title', Subtitle = 'subtitle', Body = 'body', Number = 'number', Label = 'label', Caption = 'caption' }
+// Las variantes de la sección 4.2 de VISUAL.md, con el mismo nombre.
+export enum TextVariant {
+  Display = 'display', DisplayUnit = 'displayUnit', Message = 'message', Farm = 'farm',
+  TileValue = 'tileValue', LotNumber = 'lotNumber', Subtitle = 'subtitle', Button = 'button',
+  RowValue = 'rowValue', Caption = 'caption', Noted = 'noted', RowLabel = 'rowLabel', Hint = 'hint',
+  Status = 'status', Example = 'example', Heard = 'heard', LotHead = 'lotHead', Place = 'place',
+  Overline = 'overline', Pill = 'pill', TileLabel = 'tileLabel', LotTag = 'lotTag', LotName = 'lotName',
+}
 export enum ButtonVariant { Primary = 'primary', Secondary = 'secondary' }
-export enum Tone { Brand = 'brand', Warning = 'warning', Danger = 'danger', Neutral = 'neutral' }
+export enum Tone { Brand = 'brand', Warning = 'warning', Danger = 'danger' }
 export enum IconName {
   Microphone = 'microphone', MicrophoneOff = 'microphone_off', Rain = 'rain', Move = 'move',
   Check = 'check', Question = 'question', Alert = 'alert', Offline = 'offline', Close = 'close',
@@ -93,7 +100,7 @@ export enum IconName {
 | `AppButton` | Botón de texto | `label`, `variant`, `onPress`, `countdown` opcional |
 | `InfoCard` | La tarjeta de comprobante | `InfoCardProps` |
 | `Orb` | El botón principal | `state`, `level`, `size`, `onPress`, `accessibilityLabel` |
-| `RevealText` | Un texto que aparece de a palabras | `text`, `variant`. Se construye solo si `VISUAL.md` lo pide |
+| `RevealText` | El subtítulo, que aparece palabra por palabra (sección 4.6 de `VISUAL.md`) | `text`, `variant`, `color` |
 
 **La cuenta de un botón.** `countdown` es `{ durationMs: number; paused: boolean }`. El botón
 dibuja su propia barra de avance, animada en el hilo de la interfaz. No avisa cuando termina:
@@ -128,10 +135,10 @@ un estado en particular: todos leen la ficha.
 
 ```ts
 export enum OrbState { Idle = 'idle', Listening = 'listening', Thinking = 'thinking', Speaking = 'speaking' }
-export enum OrbGlyph { Microphone = 'microphone', Bars = 'bars', Dots = 'dots', Waves = 'waves' }
+export enum OrbGlyph { Microphone = 'microphone', Bars = 'bars', Dots = 'dots' }
 
 export type OrbStateSpec = {
-  glyph: OrbGlyph;            // el dibujo del centro; cada estado tiene uno distinto
+  glyph: OrbGlyph;            // el dibujo del centro
   swirlMs: number;            // cuánto tardan los colores en dar una vuelta
   breathMs: number;           // cuánto dura una respiración
   breathSize: number;         // cuánto crece al respirar, como fracción del tamaño: 0,03 es un 3%
@@ -139,7 +146,7 @@ export type OrbStateSpec = {
   ripples: boolean;           // si larga ondas
   followsVoice: boolean;      // si reacciona a `level`
 };
-export type OrbPalette = { core: string[]; ring: string[]; glow: string };
+export type OrbPalette = { core: string[]; blobs: string[]; ring: string[]; glow: string };
 
 export const ORB_STATES: Record<OrbState, OrbStateSpec>;
 export const ORB_GLYPHS: Record<OrbGlyph, ComponentType<OrbGlyphProps>>;
@@ -156,6 +163,8 @@ export const ORB_GLYPHS: Record<OrbGlyph, ComponentType<OrbGlyphProps>>;
 - Mide `theme.touch.primary` o más y su área táctil es mayor que el dibujo, también cuando la
   pantalla lo achica.
 - En reposo el orbe sigue animado: no se aquieta por falta de uso (Q3 del PRD).
+- El orbe ignora la opción "reducir animaciones" del teléfono (`ReduceMotion.Never`); el resto
+  de las animaciones la respeta (V3 de `VISUAL.md`).
 
 ### 3. Feature `home`
 
@@ -205,7 +214,9 @@ export type VoiceStageView = {
 
 - Sin tarjetas, el orbe va grande y centrado en el espacio libre. Con una tarjeta, se achica y
   baja para dejarle el lugar. El cambio es animado, con una escala, sin recalcular la pantalla.
-- Si las tarjetas no entran, su zona se desplaza con el dedo.
+- Si las tarjetas no entran, su zona se desplaza con el dedo. La más nueva va abajo, junto al
+  orbe (V2).
+- Mientras hay un turno, el resumen baja al 35 % de opacidad (V4).
 - En este RFC `useVoiceStage` devuelve el estado de reposo, sin tarjetas, con `pendingCount` en
   0 y un `onOrbPress` que no hace nada. El RFC-004 reemplaza el contenido del hook por el turno
   de voz real; `VoiceStage` no cambia.
@@ -270,23 +281,24 @@ Se borra la feature `research` del RFC-001.
 3. `ThemeProvider` recibe `mode`. `useTheme()` y `useStyles(createStyles)` existen, y los
    componentes que usan el tema exportan `createStyles(theme)` desde su `styles.ts`.
 4. `theme.test.ts` comprueba, en los dos temas: que el contraste del texto sobre el fondo y
-   sobre la superficie es de 4,5 a 1 o más; que las variantes `Subtitle`, `Number` y `Label`
-   miden 20 o más; y que `touch.primary` es 64 o más.
+   sobre la superficie es de 4,5 a 1 o más; que las variantes `Subtitle`, `Button`, `Display`,
+   `RowValue` y `LotNumber` miden 20 o más; y que `touch.primary` es 64 o más.
 5. La tipografía de `VISUAL.md` está declarada en el plugin de `expo-font` y la app la muestra.
 
 **Design system**
 
-6. Existen `AppText`, `Icon`, `Surface`, `AppButton`, `InfoCard` y `Orb`, cada uno en su
-   carpeta, según R19. `RevealText` existe si `VISUAL.md` lo pide.
+6. Existen `AppText`, `Icon`, `Surface`, `AppButton`, `InfoCard`, `Orb` y `RevealText`, cada uno
+   en su carpeta, según R19.
 7. Ningún archivo de `shared` importa de `presentation/features`, `domain`, `data` ni `di`, y
    ninguno de `presentation` importa de `data`. `npm run lint` lo comprueba.
 8. `InfoCard` dibuja las catorce tarjetas de la tabla a partir de `InfoCardProps`, sin una rama
    por tipo de tarjeta.
 9. Toda tarjeta de la tabla tiene la salida que dice su columna "Cómo se sale".
 10. El botón con `countdown` anima su barra en el hilo de la interfaz y la frena con `paused`.
-11. `Orb` tiene los cuatro estados de `OrbState`, cada uno con su ficha, un dibujo de centro
-    distinto y sus colores en los dos temas. Un test comprueba que no falta ninguno y que no
-    hay dos estados con el mismo dibujo.
+11. `Orb` tiene los cuatro estados de `OrbState`, cada uno con su ficha y sus colores. Un test
+    comprueba que no falta ninguno. Escuchando y hablando comparten el dibujo de las barras y se
+    distinguen por el color, las ondas y porque al escuchar siguen la voz (sección 5.3 de
+    `VISUAL.md`).
 12. En el catálogo, cada estado del orbe se distingue por color, movimiento, dibujo del centro
     y texto.
 13. En los estados con `followsVoice`, el orbe cambia con `level`.

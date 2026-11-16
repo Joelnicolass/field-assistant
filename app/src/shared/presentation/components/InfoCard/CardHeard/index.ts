@@ -1,0 +1,1 @@
+export { CardHeard } from './CardHeard';

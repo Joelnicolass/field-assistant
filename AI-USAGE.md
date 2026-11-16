@@ -2,17 +2,23 @@
 
 Qué herramienta de IA se usó y para qué. Las decisiones y la revisión de cada paso son del autor.
 
-## Herramienta
+## Herramientas
 
-Claude Code (Claude Opus), en la app de escritorio, con comandos y subagentes propios del
-proyecto (`.claude/`).
+- **Claude Code** (Claude Opus), en la app de escritorio, con comandos y subagentes propios del
+  proyecto (`.claude/`): planificación, código, pruebas en el teléfono y documentos.
+- **Claude y Gemini**, para debatir el PRD.
+- **Gemini**, para generar los primeros bocetos de la interfaz.
+- **Google Stitch**, para el diseño: los mockups de las pantallas y las referencias visuales que
+  después se volcaron en `VISUAL.md`.
 
 ## Planificación
 
+- Debatir el PRD con Claude y con Gemini antes de cerrarlo.
 - Redactar el PRD a partir de la consigna, revisarlo (`PRD-REVIEW.md`) y extraer las features.
 - Escribir `RULES.md`, los cinco RFCs y la estrategia de tests.
 - Leer cada RFC en frío buscando lo que habría que adivinar para implementarlo
   (`reviews/COLD-READ-RFC-*.md`).
+- Bocetar la interfaz con Gemini y generar los mockups y las referencias con Google Stitch.
 - Armar `VISUAL.md` a partir de las referencias visuales que eligió el autor.
 
 ## RFC-001 · Base, librerías y research

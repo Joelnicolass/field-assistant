@@ -69,9 +69,9 @@ El orden de las categorías es el del enum: vacas, vaquillonas, terneros, novill
 export type DateText = string; // AAAA-MM-DD
 
 export type Lot = { number: number; stock: Record<AnimalCategory, number> };
-export type RainRecord = { id: number; date: DateText; millimeters: number };
+export type RainRecord = { id: number; date: DateText; notedOn: DateText; millimeters: number };
 export type AnimalMovement = {
-  id: number; date: DateText; quantity: number; category: AnimalCategory; fromLot: number; toLot: number;
+  id: number; date: DateText; notedOn: DateText; quantity: number; category: AnimalCategory; fromLot: number; toLot: number;
 };
 export type Farm = {
   name: string; activity: string; location: string;
@@ -103,6 +103,9 @@ export type TodaySummary = {
 ```
 
 - `id` es un número: el mayor que ya exista en su lista, más uno; 1 si la lista está vacía.
+- `date` es el día del hecho (cuándo llovió, cuándo se movieron) y `notedOn` el día en que se
+  anotó, que es el `today` del registro. "Anoche" se anota hoy con `date` de ayer (D21). En los
+  datos iniciales, `notedOn` es igual a `date`.
 - `remainingInOrigin` es la cantidad de animales de esa categoría que quedan en el lote de origen.
 - En `RainSummary.days` y en `lastRain`, dos lluvias del mismo día se suman en un solo renglón.
   `lastRain` es el día con lluvia más reciente, y `daysAgo` cuántos días pasaron hasta
@@ -217,8 +220,9 @@ mapper del RFC-004.
 - **Hoy y ayer:** las lluvias de ese día.
 - **Mover animales:** resta la cantidad en el origen y la suma en el destino, para esa
   categoría. El total de cabezas no cambia.
-- **Lo anotado hoy:** la suma de los milímetros de las lluvias con fecha `today`, y la suma de
-  los animales movidos con fecha `today`.
+- **Lo anotado hoy:** la suma de los milímetros de las lluvias con `notedOn` igual a `today`, y
+  la suma de los animales movidos con `notedOn` igual a `today`, aunque su `date` sea anterior
+  (D21). Los totales de lluvia usan `date`.
 
 ### Corrección (F8, Should)
 
@@ -281,10 +285,9 @@ app/src/
 - **`FarmDocument`** es `{ version: 1; farm: Farm }`: lo guardado tiene la misma forma que la
   entidad.
 - **`farmMapper`** exporta `toEntity(document: unknown): Farm | null` y
-  `toDocument(farm: Farm): FarmDocument`. `toEntity` es el único lugar donde se valida un dato
-  que viene de afuera (R35): comprueba la versión, que cada campo tenga su tipo, que las
-  categorías sean del enum, que las cantidades sean números finitos no negativos y que las
-  fechas tengan el formato. Si algo no cumple, devuelve `null`.
+  `toDocument(farm: Farm): FarmDocument`. El archivo lo escribe solo la app, así que `toEntity`
+  comprueba lo mínimo (R35): la versión y que estén las listas de lotes, lluvias y movimientos.
+  Si algo no cumple, devuelve `null`.
 - **`FileFarmLocalDataSource`** usa el archivo `farm.json` en la carpeta de documentos de la
   app. Si el archivo no existe o no es JSON, `read()` devuelve `null`. La API de
   `expo-file-system` se verifica en los tipos instalados (R58). No lleva test unitario porque
@@ -341,8 +344,8 @@ Todas caen entre 1 y 60 días antes de `today`.
 7. Sin documento guardado, `load()` devuelve los datos iniciales y los deja guardados.
 8. Con un repositorio nuevo sobre el mismo datasource, `load()` devuelve lo que se guardó con
    `save()`.
-9. Un documento con otra versión, con un campo de otro tipo, con una categoría que no existe o
-   con una fecha mal formada hace que `load()` devuelva los datos iniciales.
+9. Un documento con otra versión o sin las listas del campo hace que `load()` devuelva los datos
+   iniciales.
 
 **Lluvia (F5)**
 
@@ -383,6 +386,8 @@ Todas caen entre 1 y 60 días antes de `today`.
     lluvia del mes, la última lluvia con cuántos días hace, el total de cada uno de los 8 lotes
     y lo anotado hoy. Sin lluvias, `lastRain` es `null`.
 27. Después de registrar una lluvia de hoy y un movimiento de hoy, "lo anotado hoy" los refleja.
+    Una lluvia de ayer registrada hoy también cuenta en "lo anotado hoy", y en los totales cuenta
+    para ayer.
 
 **Fechas e identificadores**
 

@@ -8,7 +8,7 @@ const restrict = (...patterns) => ({
 const forbid = (regex, message) => ({ regex, message });
 
 const NOT_ALLOWED_IN_DOMAIN = 'R1: domain solo importa de domain, sin React ni Expo.';
-const NOT_ALLOWED_IN_USECASES = 'R3: data/usecases importa solo de domain.';
+const NOT_ALLOWED_IN_USECASES = 'R3: data/usecases importa solo de domain y de su propia carpeta.';
 const NOT_ALLOWED_IN_CORE = 'R6: core no importa nada del proyecto.';
 const NOT_ALLOWED_IN_SHARED = 'R5: shared no importa de presentation/features, domain, data ni di.';
 const NOT_ALLOWED_IN_PRESENTATION =
@@ -39,7 +39,12 @@ module.exports = defineConfig([
   },
   {
     files: ['src/data/usecases/**/*.{ts,tsx}'],
-    rules: restrict(forbid('^(?!@/domain/|\\./|\\.\\./\\.\\./domain/)', NOT_ALLOWED_IN_USECASES)),
+    rules: restrict(
+      forbid(
+        '^(?!@/domain/|@/data/usecases/|@jest/globals$|\\./|\\.\\./(rules|testing)/|\\.\\./\\.\\./domain/)',
+        NOT_ALLOWED_IN_USECASES,
+      ),
+    ),
   },
   {
     files: ['src/presentation/**/*.{ts,tsx}'],

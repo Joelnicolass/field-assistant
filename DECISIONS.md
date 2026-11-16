@@ -182,3 +182,11 @@ Qué se usa, qué se hace y por qué. Una entrada por decisión.
   - La app no lo necesita: tiene una sola pantalla y pocos componentes.
   - Al probarlo en el teléfono, la app andaba bien, pero Metro no le aplicaba el compilador al código: tenerlo encendido daba una garantía que no se cumplía.
 - **Resigno:** la memoización automática. Si una pantalla se vuelve lenta, se memoiza a mano, con una medición que lo justifique (R41).
+
+## D21 · "Lo anotado hoy" cuenta por el día en que se anotó
+
+- **Decisión:** cada lluvia y cada movimiento guardan dos fechas: el día del hecho y el día en que se anotó. "Lo anotado hoy" cuenta lo que se anotó hoy; los totales de lluvia usan el día en que llovió.
+- **Por qué:**
+  - "Llovieron 18 mm anoche" se dice hoy: tiene que aparecer en lo anotado hoy, aunque la lluvia sea de ayer.
+  - Los totales siguen siendo correctos: esa lluvia suma en ayer, no en hoy.
+- **Resigno:** un campo más en cada registro y en el archivo guardado.

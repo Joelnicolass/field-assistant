@@ -12,30 +12,51 @@ import { Tone } from '@/shared/presentation/theme/Tone';
 import { CatalogButtons } from '../CatalogButtons';
 import { CatalogCards } from '../CatalogCards';
 import { CatalogOrb } from '../CatalogOrb';
-import { ICON_SIZE, SAMPLE_TEXT, SECTION, TITLE, TOGGLE_LABEL, TONE_LABEL } from './constants';
+import { CatalogStage } from '../CatalogStage';
+import {
+  BACK_LABEL,
+  ICON_SIZE,
+  SAMPLE_TEXT,
+  SECTION,
+  TITLE,
+  TOGGLE_LABEL,
+  TONE_LABEL,
+} from './constants';
 import { createStyles } from './styles';
 
-type CatalogContentProps = { mode: ThemeMode; onToggleMode: () => void };
+type CatalogContentProps = { mode: ThemeMode; onToggleMode: () => void; onBack: () => void };
 
-export function CatalogContent({ mode, onToggleMode }: CatalogContentProps) {
+export function CatalogContent({ mode, onToggleMode, onBack }: CatalogContentProps) {
   const styles = useStyles(createStyles);
   const theme = useTheme();
 
   return (
     <SafeAreaView style={styles.screen}>
       <ScrollView contentContainerStyle={styles.content}>
-        <AppText variant={TextVariant.Farm}>{TITLE}</AppText>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={TOGGLE_LABEL[mode]}
-          onPress={onToggleMode}
-          style={styles.toggle}
-        >
-          <AppText variant={TextVariant.Pill}>{TOGGLE_LABEL[mode]}</AppText>
-        </Pressable>
+        <AppText variant={TextVariant.Title}>{TITLE}</AppText>
+        <View style={styles.row}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={BACK_LABEL}
+            onPress={onBack}
+            style={styles.toggle}
+          >
+            <AppText variant={TextVariant.Pill}>{BACK_LABEL}</AppText>
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={TOGGLE_LABEL[mode]}
+            onPress={onToggleMode}
+            style={styles.toggle}
+          >
+            <AppText variant={TextVariant.Pill}>{TOGGLE_LABEL[mode]}</AppText>
+          </Pressable>
+        </View>
 
         <AppText variant={TextVariant.Overline}>{SECTION.orb}</AppText>
         <CatalogOrb />
+
+        <CatalogStage />
 
         <AppText variant={TextVariant.Overline}>{SECTION.texts}</AppText>
         {Object.values(TextVariant).map((variant) => (

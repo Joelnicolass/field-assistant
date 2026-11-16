@@ -24,7 +24,11 @@ export function useCountdownFill(countdown: Countdown | undefined) {
     // Lineal porque mide tiempo, y sin "reducir animaciones": la barra dice cuánto falta.
     const remainingMs = durationMs * (1 - progress.get());
     progress.set(
-      withTiming(1, { duration: remainingMs, easing: Easing.linear, reduceMotion: ReduceMotion.Never }),
+      withTiming(1, {
+        duration: remainingMs,
+        easing: Easing.linear,
+        reduceMotion: ReduceMotion.Never,
+      }),
     );
   }, [durationMs, running, progress]);
 

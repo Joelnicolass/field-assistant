@@ -17,8 +17,10 @@ export function CatalogOrb() {
   const styles = useStyles(createStyles);
   const theme = useTheme();
   const demo = useOrbDemo();
-  const variantFor = (selected: boolean) => (selected ? ButtonVariant.Primary : ButtonVariant.Secondary);
-  const statusColor = demo.state === OrbState.Listening ? theme.colors.danger : theme.colors.textMuted;
+  const variantFor = (selected: boolean) =>
+    selected ? ButtonVariant.Primary : ButtonVariant.Secondary;
+  const statusColor =
+    demo.state === OrbState.Listening ? theme.colors.danger : theme.colors.textMuted;
 
   return (
     <View style={styles.section}>
@@ -42,7 +44,11 @@ export function CatalogOrb() {
           />
         ))}
       </View>
-      <RevealText text={SUBTITLE[demo.state]} variant={TextVariant.Subtitle} color={theme.colors.text} />
+      <RevealText
+        text={SUBTITLE[demo.state]}
+        variant={TextVariant.Subtitle}
+        color={theme.colors.text}
+      />
       <View style={styles.stage}>
         <Orb
           state={demo.state}

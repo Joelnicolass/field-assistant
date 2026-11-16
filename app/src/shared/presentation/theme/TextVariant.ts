@@ -2,7 +2,7 @@ export enum TextVariant {
   Display = 'display',
   DisplayUnit = 'displayUnit',
   Message = 'message',
-  Farm = 'farm',
+  Title = 'title',
   TileValue = 'tileValue',
   LotNumber = 'lotNumber',
   Subtitle = 'subtitle',

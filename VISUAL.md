@@ -106,14 +106,14 @@ Variantes de texto (tamaño / alto de renglón en sp, peso, espaciado entre letr
 | `display` | 68 / 74, 800, −2, tabular | El número grande de la tarjeta |
 | `displayUnit` | 26, 700 | La unidad al lado del número grande |
 | `message` | 25 / 31, 800, −0,3 | El texto grande de una tarjeta sin número |
-| `farm` | 28 / 33, 800, −0,5 | El nombre del establecimiento |
+| `title` | 22 / 28, 800, −0,4 | El nombre de la app, arriba del resumen |
 | `tileValue` | 25, 800, −0,4, tabular | El número de un cuadro del resumen |
 | `lotNumber` | 26 / 30, 800, tabular | El número de lote en la ruta de un movimiento |
 | `subtitle` | 20 / 26, 700, centrado | Lo que dice la app, arriba del orbe |
 | `button` | 20, 800 | El texto de los botones |
 | `rowValue` | 20, 800, tabular | El valor de un renglón de la tarjeta |
 | `caption` | 19 / 24, 600 | El texto que acompaña al número grande |
-| `noted` | 17 / 22, 700 | "Lo anotado hoy" en el resumen |
+| `noted` | 17 / 22, 700 | El título del panel de lotes ("Cabezas por lote") |
 | `rowLabel` | 16, 600 | La etiqueta de un renglón |
 | `hint` | 16 / 22, 500 | La aclaración de una tarjeta (el día, el valor anterior) |
 | `status` | 15, 700 | El estado debajo del orbe |
@@ -374,10 +374,10 @@ flex; no hay un ancho de diseño fijo.
 
 | Dato | Forma |
 | --- | --- |
-| Establecimiento | El nombre en `farm`; debajo, actividad y ubicación en `place` y `textMuted` |
-| Lo anotado hoy | Una frase en `noted` ("Hoy anotaste 2 cosas" o "Todavía no anotaste nada hoy") |
-| Cabezas totales, lluvia del mes y última lluvia | **Panel de datos:** un panel con fondo `surfaceSoft`, radio `tile` y padding 13 vertical y 14 horizontal. Adentro, tres columnas iguales separadas por líneas verticales `hairline`. Cada columna: el valor arriba en `tileValue` (si no entra, pasa a dos renglones) y la etiqueta abajo en `tileLabel` y `textMuted`, hasta dos renglones. Las etiquetas de las tres columnas quedan alineadas abajo |
-| Animales por lote | **Panel de lotes,** aparte, `base` debajo del panel de datos, con el mismo fondo, radio y padding. Ocho columnas iguales, separadas `sm`. Cada una: una barra de 12 × 38 con radio `lotBar`, fondo `surface` y relleno con el degradé vertical de `brand` (c1 abajo, c0 arriba), tan alto como la proporción respecto del lote con más cabezas; debajo, las cabezas en `lotHead` (`textMuted` si es 0) y el nombre corto en `lotName` |
+| Encabezado | El logo de la app (40, radio 12) arriba a la izquierda. Al lado, "Field Data" o "Field Assistant" en `title` (alternan cada 10 segundos: la palabra se desenfoca y entra la otra, sin moverse) y debajo, alineado con la F, el establecimiento, la actividad y la ubicación en `place` y `textMuted`. A la derecha, las píldoras |
+| Lo anotado hoy | Un aviso de ancho completo, radio `tile` como los paneles, borde de 1 y padding `sm` y `lg`: un punto de 6 y la frase en `tileLabel` y `textMuted` ("Hoy todavía no anotaste nada" o "Hoy anotaste 18 mm de lluvia"). Sin registros, fondo y borde `warning` al 10 % y 28 %; con algo anotado, `brand` |
+| Cabezas totales, lluvia del mes y última lluvia | **Panel de datos:** un panel con fondo `surfaceSoft`, radio `tile` y padding 13 vertical y 14 horizontal. Adentro, tres columnas iguales separadas por líneas verticales `hairline`. Cada columna: el valor arriba en `tileValue`, con la unidad al lado en `rowLabel` y `textMuted` ("38 mm"); la etiqueta abajo en `tileLabel` y `textMuted`, hasta dos renglones, con una parte destacada en `text` ("última lluvia · **12 mm**"). La última lluvia muestra el cuándo como valor ("hace 3 días"). Las etiquetas de las tres columnas quedan alineadas abajo |
+| Animales por lote | **Panel de lotes,** con el mismo fondo, radio y padding. Arriba, "Cabezas por lote" en `noted` y, a la derecha, una píldora `surface` con los lotes que tienen hacienda en `pill` ("7 lotes activos"). Debajo, ocho columnas iguales, separadas `sm`: una barra de 14 × 84 con radio `lotBar`, fondo `surface` y relleno con el degradé vertical de `brand` (c1 abajo, c0 arriba), tan alto como la proporción respecto del lote con más cabezas; debajo, las cabezas en `lotHead` (`textMuted` si es 0) y el nombre corto en `lotName` |
 
 **Con una tarjeta en pantalla,** el resumen se achica: el panel de lotes se esconde y el panel de
 datos se abre en tres cuadros sueltos, iguales, separados `md`, cada uno con fondo

@@ -2,6 +2,7 @@ import { ThemeMode } from '@/shared/presentation/theme/ThemeMode';
 import { Tone } from '@/shared/presentation/theme/Tone';
 
 export const TITLE = 'Catálogo';
+export const BACK_LABEL = 'Volver';
 export const TOGGLE_LABEL: Record<ThemeMode, string> = {
   [ThemeMode.Light]: 'Pasar a oscuro',
   [ThemeMode.Dark]: 'Pasar a claro',

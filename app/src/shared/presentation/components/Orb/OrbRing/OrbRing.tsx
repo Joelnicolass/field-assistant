@@ -24,7 +24,14 @@ function RingDrawing({ palette, size }: { palette: OrbPalette; size: number }) {
           ))}
         </LinearGradient>
       </Defs>
-      <Circle cx={center} cy={center} r={radius} stroke={`url(#${GRADIENT_ID})`} strokeWidth={width} fill="none" />
+      <Circle
+        cx={center}
+        cy={center}
+        r={radius}
+        stroke={`url(#${GRADIENT_ID})`}
+        strokeWidth={width}
+        fill="none"
+      />
     </Svg>
   );
 }
@@ -50,7 +57,9 @@ export function OrbRing({ state, size, motion }: OrbLayerProps) {
 
   return (
     <Animated.View pointerEvents="none" style={[centered(size, size * RING_LAYER_SCALE), style]}>
-      <OrbPerState state={state}>{(palette) => <RingDrawing palette={palette} size={size} />}</OrbPerState>
+      <OrbPerState state={state}>
+        {(palette) => <RingDrawing palette={palette} size={size} />}
+      </OrbPerState>
     </Animated.View>
   );
 }

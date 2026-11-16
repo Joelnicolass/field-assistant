@@ -22,7 +22,7 @@ export const TEXT_VARIANTS: Record<TextVariant, TextVariantSpec> = {
   },
   [TextVariant.DisplayUnit]: { size: 26, weight: '700' },
   [TextVariant.Message]: { size: 25, lineHeight: 31, weight: '800', letterSpacing: -0.3 },
-  [TextVariant.Farm]: { size: 28, lineHeight: 33, weight: '800', letterSpacing: -0.5 },
+  [TextVariant.Title]: { size: 22, lineHeight: 28, weight: '800', letterSpacing: -0.4 },
   [TextVariant.TileValue]: { size: 25, weight: '800', letterSpacing: -0.4, tabular: true },
   [TextVariant.LotNumber]: { size: 26, lineHeight: 30, weight: '800', tabular: true },
   [TextVariant.Subtitle]: { size: 20, lineHeight: 26, weight: '700' },

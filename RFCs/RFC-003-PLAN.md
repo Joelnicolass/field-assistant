@@ -8,7 +8,7 @@ uno para la revisión del autor. Cada paso se mira en el teléfono por Metro y e
 | A | Tema, tipografía y piezas básicas (`AppText`, `Icon`, `Surface`) | aprobado |
 | B | Botón con cuenta y tarjeta (`AppButton`, `InfoCard`) | aprobado |
 | C | El orbe y el subtítulo (`Orb`, `RevealText`) | aprobado |
-| D | Pantalla de inicio, zona de voz, catálogo y limpieza | pendiente |
+| D | Pantalla de inicio, zona de voz, catálogo y limpieza | aprobado |
 
 Rama por paso, con su PR a `feature/rfc-003`: `feature/rfc-003-A` a `-D`.
 
@@ -79,10 +79,25 @@ src/presentation/features/home/
   [+] HomeScreen, TodaySummaryPanel, useTodaySummary, todaySummaryView (con test)
 src/presentation/features/voice/
   [+] VoiceStage, useVoiceStage (reposo, sin tarjetas)
-src/presentation/features/catalog/   [~] VoiceStage con y sin tarjeta
+src/presentation/features/catalog/   [~] VoiceStage con y sin tarjeta, y un botón "Volver"
 src/di/                              (sin cambios: los casos de uso ya están)
+src/App.tsx                          [~] guarda qué pantalla se ve; arranca en settings.rootScreen
 [-] src/presentation/features/research/
 ```
+
+**El catálogo se queda** como una pantalla aparte (pedido del autor): la pantalla de inicio
+tiene un botón chico "Ver el DS" que lo abre, y el catálogo vuelve con "Volver". Sin librería
+de navegación: `App.tsx` guarda la pantalla actual. `EXPO_PUBLIC_SHOW_CATALOG=1` sigue
+abriéndolo directo.
+
+**Cambios del autor al revisar:** el resumen sigue el orden de su captura: el logo con "Field
+Data" ⇄ "Field Assistant" (cada 10 segundos, sin movimiento) y el campo debajo, alineado con la F;
+lo anotado hoy como un aviso con un punto de color; los datos con la unidad al lado del número; y
+el panel de lotes con su título y los lotes activos. El título de la app es más chico (`title`,
+22/28). VISUAL 7.1 quedó con estos valores.
+
+**Pendiente, para iterar:** mientras el subtítulo aparece, su animación se superpone con el
+panel de lotes.
 
 **Criterios:** 17 a 28.
 

@@ -7,7 +7,7 @@ implementa y prueba el orquestador; los grandes (C, E y F) van por `dev` y `qa`.
 | --- | --- | --- |
 | A | El server: `/interpret-audio`, `/speak` y los errores | aprobado |
 | B | Audios de prueba y la batería automática del server | aprobado |
-| C | La app entiende y resuelve: contratos, ajustes, intérprete, `ResolveRequest` y la cola de audios | pendiente |
+| C | La app entiende y resuelve: contratos, ajustes, intérprete, `ResolveRequest` y la cola de audios | aprobado |
 | D | Grabar y hablar: los servicios de micrófono, voces y la cola de sonidos | pendiente |
 | E | El turno en pantalla: escuchar, pensar, hablar, proponer, anotar y preguntar | pendiente |
 | F | Errores con salida, audios guardados, corrección, latencia y la prueba de punta a punta | pendiente |

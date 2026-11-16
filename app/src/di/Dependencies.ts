@@ -1,7 +1,9 @@
+import type { AmbientLightService } from '@/domain/services/AmbientLightService';
 import type { AudioRecorderService } from '@/domain/services/AudioRecorderService';
 import type { ClockService } from '@/domain/services/ClockService';
 import type { SpeakerService } from '@/domain/services/SpeakerService';
 import type { InterpreterService } from '@/domain/services/InterpreterService';
+import type { ScreenBrightnessService } from '@/domain/services/ScreenBrightnessService';
 import type { ApplyCorrectionUseCase } from '@/domain/usecases/ApplyCorrectionUseCase';
 import type { CountPendingAudiosUseCase } from '@/domain/usecases/CountPendingAudiosUseCase';
 import type { DiscardPendingAudioUseCase } from '@/domain/usecases/DiscardPendingAudioUseCase';
@@ -31,6 +33,8 @@ export type Dependencies = {
   recorder: AudioRecorderService;
   speaker: SpeakerService;
   interpreter: InterpreterService;
+  ambientLight: AmbientLightService;
+  screenBrightness: ScreenBrightnessService;
   resolveRequest: ResolveRequestUseCase;
   keepAudioForLater: KeepAudioForLaterUseCase;
   retryPendingAudios: RetryPendingAudiosUseCase;

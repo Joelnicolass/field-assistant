@@ -36,7 +36,7 @@ export const TEXT_VARIANTS: Record<TextVariant, TextVariantSpec> = {
   [TextVariant.Example]: { size: 15, lineHeight: 20, weight: '600', italic: true },
   [TextVariant.Heard]: { size: 15, lineHeight: 20, weight: '500', italic: true },
   [TextVariant.LotHead]: { size: 15, weight: '800', tabular: true },
-  [TextVariant.Place]: { size: 14, weight: '500' },
+  [TextVariant.Place]: { size: 13, lineHeight: 18, weight: '500' },
   [TextVariant.Overline]: { size: 13, weight: '800', letterSpacing: 1.3, uppercase: true },
   [TextVariant.Pill]: { size: 13, weight: '800' },
   [TextVariant.TileLabel]: { size: 12.5, lineHeight: 16, weight: '600' },

@@ -33,7 +33,7 @@ export function SummaryHeader({ place, pendingCount, onOpenCatalog }: SummaryHea
       <Image source={LOGO} style={styles.logo} accessibilityIgnoresInvertColors />
       <View style={styles.names}>
         <AppTitle />
-        <AppText variant={TextVariant.Place} color={theme.colors.textMuted}>
+        <AppText variant={TextVariant.Place} color={theme.colors.textSubtle}>
           {place}
         </AppText>
       </View>

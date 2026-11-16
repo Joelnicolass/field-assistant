@@ -18,8 +18,8 @@ function contrast(foreground: string, background: string): number {
 
 describe.each(Object.values(THEMES))('tema $mode', (theme) => {
   it('el texto se lee a 4,5 a 1 o más sobre el fondo y la superficie', () => {
-    const { text, textMuted, background, surface } = theme.colors;
-    [text, textMuted].forEach((foreground) =>
+    const { text, textMuted, textSubtle, background, surface } = theme.colors;
+    [text, textMuted, textSubtle].forEach((foreground) =>
       [background, surface].forEach((back) =>
         expect(contrast(foreground, back)).toBeGreaterThanOrEqual(4.5),
       ),

@@ -283,6 +283,27 @@ no alcanza con volver a correr `assembleRelease`.
 - **Veredicto:** se cumple en lo común: dentro de los 5 s de RNF-02. La cola del modelo lo
   supera; el límite de tiempo del server la corta y el audio va a la cola.
 
+## Batería automática del server (RFC-004)
+
+- **Cómo:** `npm run eval` en `server/`. Manda al modelo real (`gemini-3.5-flash-lite`) los 26
+  casos de `server/eval/cases.ts`: las frases de `docs/BATERIA.md` (la 18 repite la 3) y cinco de
+  conversación. Los audios son de `scripts/make-audio.sh`, con la voz de la Mac (Paulina, español
+  de México; la 8 con Mónica, de España). Día de referencia: 2026-11-16. 5 s entre casos.
+- **Fecha:** 16-nov-2026, desde la Mac.
+- **Corrida 1:** 16 de 26. 7 fallas del proveedor (`503`). De los 19 que contestó, 4 mal:
+  "Llovió hoy" como consulta, "¿Qué onda el clima mañana?" con pregunta, y dos de la voz
+  sintética ("Mové" como "move" y "quinientos" como 50).
+- **Ajustes a las instrucciones:** si afirma que llovió es `register_rain` aunque no diga cuánto;
+  con `unknown` no hay pregunta; atención a los números parecidos ("quinientos" y "cincuenta").
+  Los cuatro casos dieron bien después.
+- **Corrida 2, con las instrucciones nuevas:** 16 de 26, y **los 16 que el modelo contestó,
+  bien**. Los otros 10 son fallas del proveedor: cinco `503` y cinco que pasaron el límite de 7 s.
+  Latencia de los que contestó: mínima 1.322 ms, mediana 1.698 ms, máxima 4.180 ms.
+- **Veredicto:** el modelo entiende las frases de la batería, con historial y correcciones. El
+  proveedor falló en 10 de 26 pedidos de esta corrida: esos audios irían a la cola de la app. La
+  batería suma reintentos por caso para medir lo que entiende el modelo aunque el proveedor
+  falle. Por decisión del autor, no se siguió midiendo la disponibilidad del proveedor.
+
 ## Faltan
 
 - **Para decidir, Q4:** la voz de servicio. Se probó "Sarah", incluida y de acento neutro; una

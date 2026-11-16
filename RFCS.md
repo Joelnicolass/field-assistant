@@ -8,7 +8,7 @@ con `/build-rfc <id>`: un paso por vez, con revisión y aprobación del usuario 
 | RFC | Qué deja | Features | Predecesores | Complejidad | Minutos | Estado |
 | --- | --- | --- | --- | --- | --- | --- |
 | [001](RFCs/RFC-001-base-librerias-research.md) | Proyecto armado, librerías, server mínimo y research | F26 | Ninguno | Media | 30 | Terminado |
-| [002](RFCs/RFC-002-datos-y-reglas.md) | Los datos y las reglas del campo, con tests y sin pantalla | F17, y los datos de F5, F6, F7, F8, F9, F10 y F11 | 001 | Media | 35 | Pendiente |
+| [002](RFCs/RFC-002-datos-y-reglas.md) | Los datos y las reglas del campo, con tests y sin pantalla | F17, y los datos de F5, F6, F7, F8, F9, F10 y F11 | 001 | Media | 35 | Terminado |
 | [003](RFCs/RFC-003-design-system-y-pantalla.md) | El design system y la pantalla de inicio | F11, y lo visual de F2, F3, F7, F8, F12, F13, F14, F15 y F16 | 001 y 002, y `VISUAL.md` | Media | 55 | Pendiente |
 | [004](RFCs/RFC-004-server-y-turno-de-voz.md) | El server y el turno de voz, con los errores con salida | F1, F3, F4, F12, F13, F14, F15 y F16, el flujo de F5, F6, F7, F9, F10 y F11, F2 conectada, y F8 | 001, 002 y 003 | Alta | 70 | Pendiente |
 | [005](RFCs/RFC-005-extras-y-entrega.md) | La entrega y los extras | F24, F25, F18, F19, F20, F21, F22, F23 y F27 | 001 a 004, y `VISUAL.md` | Alta | 50 | Pendiente |

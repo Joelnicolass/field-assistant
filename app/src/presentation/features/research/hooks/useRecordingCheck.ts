@@ -26,6 +26,7 @@ function appendIfChanged(levels: readonly number[], level: number | undefined): 
   return level === undefined || levels.at(-1) === level ? levels : [...levels, level];
 }
 
+/** I1: graba con el micrófono y muestra el volumen mientras graba. */
 export function useRecordingCheck(): CheckView {
   const recorder = useAudioRecorder(RECORDING_OPTIONS);
   const [recording, setRecording] = useState(false);

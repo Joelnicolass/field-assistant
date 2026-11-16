@@ -19,6 +19,7 @@ function blockJavaScript() {
   }
 }
 
+/** I10: mueve dos cuadros con Reanimated para ver qué estilos se recalculan. */
 export function useAnimationCheck() {
   const offset = useSharedValue(0);
 

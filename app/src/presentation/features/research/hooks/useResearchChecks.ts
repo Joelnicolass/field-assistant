@@ -14,6 +14,7 @@ type ResearchChecks = {
   serverUrl: string;
 };
 
+/** Junta las comprobaciones del research que se hacen en el teléfono. */
 export function useResearchChecks(): ResearchChecks {
   const recording = useRecordingCheck();
   const voices = useVoicesCheck();

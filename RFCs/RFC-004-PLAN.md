@@ -5,7 +5,7 @@ implementa y prueba el orquestador; los grandes (C, E y F) van por `dev` y `qa`.
 
 | Paso | Objetivo | Estado |
 | --- | --- | --- |
-| A | El server: `/interpret-audio`, `/speak` y los errores | pendiente |
+| A | El server: `/interpret-audio`, `/speak` y los errores | aprobado |
 | B | Audios de prueba y la batería automática del server | pendiente |
 | C | La app entiende y resuelve: contratos, ajustes, intérprete, `ResolveRequest` y la cola de audios | pendiente |
 | D | Grabar y hablar: los servicios de micrófono, voces y la cola de sonidos | pendiente |
@@ -32,7 +32,6 @@ server/src/
   http/     [+] interpretAudio.ts  speak.ts  readHistory.ts  readReferenceDay.ts  respond.ts
             [~] health.ts (antes healthRouter.ts)  createApp.ts (las rutas y un manejo de errores en JSON)
   [~] main.ts
-[-] server/scripts/interpret.ts  speak.ts (los reemplaza la batería del paso B y la ruta)
 ```
 
 **Criterios:** 1 a 7.

@@ -13,6 +13,7 @@ import {
   PENDING_OUT_MS,
   PILL_ICON_SIZE,
   pendingLabel,
+  SENDING_LABEL,
 } from './constants';
 import { createStyles } from './styles';
 
@@ -21,10 +22,11 @@ const LOGO = require('../../../../../../assets/images/logo.png');
 type SummaryHeaderProps = {
   place: string;
   pendingCount: number;
+  sending: boolean;
   onOpenCatalog: () => void;
 };
 
-export function SummaryHeader({ place, pendingCount, onOpenCatalog }: SummaryHeaderProps) {
+export function SummaryHeader({ place, pendingCount, sending, onOpenCatalog }: SummaryHeaderProps) {
   const styles = useStyles(createStyles);
   const theme = useTheme();
 
@@ -33,7 +35,7 @@ export function SummaryHeader({ place, pendingCount, onOpenCatalog }: SummaryHea
       <Image source={LOGO} style={styles.logo} accessibilityIgnoresInvertColors />
       <View style={styles.names}>
         <AppTitle />
-        <AppText variant={TextVariant.Place} color={theme.colors.textMuted}>
+        <AppText variant={TextVariant.Place} color={theme.colors.textSubtle}>
           {place}
         </AppText>
       </View>
@@ -56,7 +58,7 @@ export function SummaryHeader({ place, pendingCount, onOpenCatalog }: SummaryHea
           >
             <Icon name={IconName.Offline} size={PILL_ICON_SIZE} color={theme.colors.warning} />
             <AppText variant={TextVariant.Pill} color={theme.colors.warning}>
-              {pendingLabel(pendingCount)}
+              {sending ? SENDING_LABEL : pendingLabel(pendingCount)}
             </AppText>
           </Animated.View>
         )}

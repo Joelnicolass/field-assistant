@@ -1,13 +1,20 @@
+import type { AudioRecorderService } from '@/domain/services/AudioRecorderService';
 import type { ClockService } from '@/domain/services/ClockService';
+import type { SpeakerService } from '@/domain/services/SpeakerService';
+import type { InterpreterService } from '@/domain/services/InterpreterService';
 import type { ApplyCorrectionUseCase } from '@/domain/usecases/ApplyCorrectionUseCase';
+import type { DiscardPendingAudioUseCase } from '@/domain/usecases/DiscardPendingAudioUseCase';
 import type { GetLotStockUseCase } from '@/domain/usecases/GetLotStockUseCase';
 import type { GetRainSummaryUseCase } from '@/domain/usecases/GetRainSummaryUseCase';
 import type { GetTodaySummaryUseCase } from '@/domain/usecases/GetTodaySummaryUseCase';
+import type { KeepAudioForLaterUseCase } from '@/domain/usecases/KeepAudioForLaterUseCase';
 import type { PreviewCorrectionUseCase } from '@/domain/usecases/PreviewCorrectionUseCase';
 import type { PreviewMovementUseCase } from '@/domain/usecases/PreviewMovementUseCase';
 import type { PreviewRainUseCase } from '@/domain/usecases/PreviewRainUseCase';
 import type { RegisterMovementUseCase } from '@/domain/usecases/RegisterMovementUseCase';
 import type { RegisterRainUseCase } from '@/domain/usecases/RegisterRainUseCase';
+import type { ResolveRequestUseCase } from '@/domain/usecases/ResolveRequestUseCase';
+import type { RetryPendingAudiosUseCase } from '@/domain/usecases/RetryPendingAudiosUseCase';
 
 export type Dependencies = {
   clock: ClockService;
@@ -20,4 +27,11 @@ export type Dependencies = {
   getTodaySummary: GetTodaySummaryUseCase;
   previewCorrection: PreviewCorrectionUseCase;
   applyCorrection: ApplyCorrectionUseCase;
+  recorder: AudioRecorderService;
+  speaker: SpeakerService;
+  interpreter: InterpreterService;
+  resolveRequest: ResolveRequestUseCase;
+  keepAudioForLater: KeepAudioForLaterUseCase;
+  retryPendingAudios: RetryPendingAudiosUseCase;
+  discardPendingAudio: DiscardPendingAudioUseCase;
 };

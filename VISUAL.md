@@ -71,7 +71,8 @@ Las dos columnas son el tema claro (el del sol) y el oscuro. El sensor de luz el
 | `surfaceSoft` | `#EDF6F0` | `#1A2533` | Cuadros del resumen, botón secundario, chips, fondo de las barras |
 | `hairline` | `rgba(17, 28, 43, 0.10)` | `rgba(226, 238, 245, 0.14)` | Líneas de separación |
 | `text` | `#111C2B` | `#F3F8F5` | Texto principal |
-| `textMuted` | `#4A5871` | `#A7B4C4` | Etiquetas, lugar, texto de estado |
+| `textMuted` | `#4A5871` | `#A7B4C4` | Etiquetas, texto de estado |
+| `textSubtle` | `#5F6D83` | `#8492A5` | Lo secundario del resumen: el campo y el aviso de lo anotado |
 | `brand` | `#00751F` | `#4ADE80` | Lo que se toca y los números que importan |
 | `onBrand` | `#FFFFFF` | `#04140A` | Texto sobre `brand` |
 | `warning` | `#8A6914` | `#FCCC54` | Avisos: no entendió, sin señal, sin micrófono |
@@ -120,7 +121,7 @@ Variantes de texto (tamaño / alto de renglón en sp, peso, espaciado entre letr
 | `example` | 15 / 20, 600 cursiva | Una frase de ejemplo |
 | `heard` | 15 / 20, 500 cursiva | "Lo que se entendió", al pie de la tarjeta |
 | `lotHead` | 15, 800, tabular | Las cabezas de un lote en el resumen |
-| `place` | 14, 500 | Actividad y ubicación del establecimiento |
+| `place` | 13 / 18, 500 | El establecimiento, su actividad y su ubicación, debajo del título |
 | `overline` | 13, 800, +1,3, mayúsculas | El título chico de una tarjeta |
 | `pill` | 13, 800 | El texto de una píldora |
 | `tileLabel` | 12,5 / 16, 600 | La etiqueta de un cuadro del resumen |
@@ -194,7 +195,8 @@ Solo la tarjeta lleva sombra.
 - **Texto que cambia** (estado): sube 5 en `text`.
 - **Subtítulo:** aparece palabra por palabra y cada palabra se enfoca (es `RevealText`). Una
   palabra cada 70 ms; cada una tarda 620 ms. El desenfoque se hace con la sombra del texto, en
-  tres capas (nítida, borrosa y muy borrosa), porque Android 11 no desenfoca una vista.
+  tres capas (nítida, borrosa y muy borrosa), porque Android 11 no desenfoca una vista. La sombra va
+  al 45 % del color del texto y con radios de 0,35 y 0,9 tamaños de letra, para que no se vea dura.
 
 ### 4.8 Los 12 principios de la animación
 
@@ -374,8 +376,8 @@ flex; no hay un ancho de diseño fijo.
 
 | Dato | Forma |
 | --- | --- |
-| Encabezado | El logo de la app (40, radio 12) arriba a la izquierda. Al lado, "Field Data" o "Field Assistant" en `title` (alternan cada 10 segundos: la palabra se desenfoca y entra la otra, sin moverse) y debajo, alineado con la F, el establecimiento, la actividad y la ubicación en `place` y `textMuted`. A la derecha, las píldoras |
-| Lo anotado hoy | Un aviso de ancho completo, radio `tile` como los paneles, borde de 1 y padding `sm` y `lg`: un punto de 6 y la frase en `tileLabel` y `textMuted` ("Hoy todavía no anotaste nada" o "Hoy anotaste 18 mm de lluvia"). Sin registros, fondo y borde `warning` al 10 % y 28 %; con algo anotado, `brand` |
+| Encabezado | El logo de la app (40, radio 12) a la izquierda, centrado con el título y el campo. Al lado, "Field Data" o "Field Assistant" en `title` (alternan cada 10 segundos: la palabra se desenfoca y entra la otra, sin moverse) y debajo, alineado con la F, el establecimiento, la actividad y la ubicación en `place` y `textSubtle`. A la derecha, las píldoras |
+| Lo anotado hoy | Un aviso de ancho completo, radio `tile` como los paneles, borde de 1 y padding `sm` y `lg`: un punto de 6 y la frase en `tileLabel` y `textSubtle` ("Hoy todavía no anotaste nada" o "Hoy anotaste 18 mm de lluvia"). Sin registros, fondo y borde `warning` al 10 % y 28 %; con algo anotado, `brand` |
 | Cabezas totales, lluvia del mes y última lluvia | **Panel de datos:** un panel con fondo `surfaceSoft`, radio `tile` y padding 13 vertical y 14 horizontal. Adentro, tres columnas iguales separadas por líneas verticales `hairline`. Cada columna: el valor arriba en `tileValue`, con la unidad al lado en `rowLabel` y `textMuted` ("38 mm"); la etiqueta abajo en `tileLabel` y `textMuted`, hasta dos renglones, con una parte destacada en `text` ("última lluvia · **12 mm**"). La última lluvia muestra el cuándo como valor ("hace 3 días"). Las etiquetas de las tres columnas quedan alineadas abajo |
 | Animales por lote | **Panel de lotes,** con el mismo fondo, radio y padding. Arriba, "Cabezas por lote" en `noted` y, a la derecha, una píldora `surface` con los lotes que tienen hacienda en `pill` ("7 lotes activos"). Debajo, ocho columnas iguales, separadas `sm`: una barra de 14 × 84 con radio `lotBar`, fondo `surface` y relleno con el degradé vertical de `brand` (c1 abajo, c0 arriba), tan alto como la proporción respecto del lote con más cabezas; debajo, las cabezas en `lotHead` (`textMuted` si es 0) y el nombre corto en `lotName` |
 

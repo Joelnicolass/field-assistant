@@ -32,6 +32,8 @@ export function createStyles(theme: Theme) {
       justifyContent: 'flex-end',
     },
     fill: {
+      height: '100%',
+      transformOrigin: 'bottom',
       borderRadius: theme.radii.lotBar,
       backgroundImage: `linear-gradient(0deg, ${bottom} 0%, ${top} 100%)`,
     },

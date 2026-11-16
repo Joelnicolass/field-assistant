@@ -209,3 +209,29 @@ Qué se usa, qué se hace y por qué. Una entrada por decisión.
   - Muestra cada pieza del design system en todos sus estados, sin depender del turno de voz.
   - Sirve para revisar lo visual en el teléfono y para mostrar cómo está armada la interfaz.
 - **Resigno:** un botón más en la pantalla de inicio y una pantalla que el productor no usa.
+
+## D24 · La navegación entre pantallas, con React Navigation
+
+- **Decisión:** las pantallas van en un stack nativo de React Navigation
+  (`@react-navigation/native-stack`, con `react-native-screens`), con las rutas tipadas en
+  `presentation/navigation`. Es una excepción a lo que decía `RULES.md`: no usar navegación
+  porque había una sola pantalla.
+- **Por qué:**
+  - Con el catálogo (D23) la app tiene dos pantallas, y elegir cuál se ve con un `useState` es
+    una navegación hecha a mano: no es una buena práctica.
+  - El stack trae el botón "atrás" de Android, el historial y las rutas tipadas, y suma pantallas
+    sin tocar `App.tsx`.
+- **Resigno:** tres dependencias más, una de ellas nativa, y un build para incluirla.
+
+## D25 · La voz de la app es rioplatense: "Cande", de ElevenLabs
+
+- **Decisión:** la voz del server es "Cande" (`yFykvY9iSJewrANOC0cU`), una voz de la biblioteca de
+  ElevenLabs con acento porteño, informal y sin tono de locutor. Cierra la pregunta Q4 del research.
+- **Por qué:**
+  - Con el plan pago de ElevenLabs la API deja usar las voces de la biblioteca; con el gratis
+    solo había voces de acento neutro, como "Sarah".
+  - El productor habla en rioplatense: una voz que le contesta igual se siente del lugar.
+  - Ya en uso, tarda lo mismo que Sarah (0,64 s una frase corta). La primera frase con la voz
+    puede tardar varios segundos: si pasa de 1,5 s, esa frase la dice la voz del teléfono.
+- **Resigno:** depender de un plan pago de ElevenLabs. Sin él, la voz vuelve a fallar y la app
+  habla con la del teléfono.

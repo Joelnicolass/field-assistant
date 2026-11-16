@@ -283,10 +283,45 @@ no alcanza con volver a correr `assembleRelease`.
 - **Veredicto:** se cumple en lo común: dentro de los 5 s de RNF-02. La cola del modelo lo
   supera; el límite de tiempo del server la corta y el audio va a la cola.
 
+## Batería automática del server (RFC-004)
+
+- **Cómo:** `npm run eval` en `server/`. Manda al modelo real (`gemini-3.5-flash-lite`) los 26
+  casos de `server/eval/cases.ts`: las frases de `docs/BATERIA.md` (la 18 repite la 3) y cinco de
+  conversación. Los audios son de `scripts/make-audio.sh`, con la voz de la Mac (Paulina, español
+  de México; la 8 con Mónica, de España). Día de referencia: 2026-11-16. 5 s entre casos.
+- **Fecha:** 16-nov-2026, desde la Mac.
+- **Corrida 1:** 16 de 26. 7 fallas del proveedor (`503`). De los 19 que contestó, 4 mal:
+  "Llovió hoy" como consulta, "¿Qué onda el clima mañana?" con pregunta, y dos de la voz
+  sintética ("Mové" como "move" y "quinientos" como 50).
+- **Ajustes a las instrucciones:** si afirma que llovió es `register_rain` aunque no diga cuánto;
+  con `unknown` no hay pregunta; atención a los números parecidos ("quinientos" y "cincuenta").
+  Los cuatro casos dieron bien después.
+- **Corrida 2, con las instrucciones nuevas:** 16 de 26, y **los 16 que el modelo contestó,
+  bien**. Los otros 10 son fallas del proveedor: cinco `503` y cinco que pasaron el límite de 7 s.
+  Latencia de los que contestó: mínima 1.322 ms, mediana 1.698 ms, máxima 4.180 ms.
+- **Veredicto:** el modelo entiende las frases de la batería, con historial y correcciones. El
+  proveedor falló en 10 de 26 pedidos de esta corrida: esos audios irían a la cola de la app. La
+  batería suma reintentos por caso para medir lo que entiende el modelo aunque el proveedor
+  falle. Por decisión del autor, no se siguió midiendo la disponibilidad del proveedor.
+
+## Latencia de diez turnos, desde el teléfono (RFC-004, criterio 49)
+
+- **Dispositivo:** Motorola moto e40, Android 11, por USB contra el server local de la Mac
+  (Gemini y ElevenLabs reales). Audio de prueba en lugar del micrófono (frases de
+  `server/eval/audios/`). 16-nov-2026.
+- **Qué se mide:** la línea `[latencia]` del registro de la app, desde que termina la escucha
+  hasta que la respuesta está lista (subir el audio, entender y resolver), sin contar el hablar.
+- **Los diez turnos (consultas de lluvia y de lotes):** 1.725, 1.827, 1.957, 2.306, 2.603, 2.733,
+  2.990, 4.408, 4.767 y 7.056 ms. **Mediana: 2,7 s.**
+- **Veredicto:** la mediana queda dentro de los 5 s de RNF-02. Los turnos más lentos coinciden con
+  fallas de Gemini (`503` y cortes a los 7 s) durante la corrida: esos audios fueron a la cola y
+  se entendieron después. La voz del server empieza a sonar en 0,3 a 0,8 s con streaming.
+
 ## Faltan
 
-- **Para decidir, Q4:** la voz de servicio. Se probó "Sarah", incluida y de acento neutro; una
-  voz argentina pide un plan pago de ElevenLabs.
+- **Q4, decidida (D25):** con un plan pago de ElevenLabs la API deja usar la biblioteca, que tiene
+  30 voces con acento argentino. Se eligió "Cande". Ya en uso tarda como Sarah (0,64 s una frase
+  corta); la primera frase con una voz nueva tardó de 5,8 a 6,9 s.
 - **Con voz real, pendientes:** las otras grabaciones de I1, escuchar las voces de I4 y la frase
   de manos libres de I5 (RFC-005, Q2).
 - **Para decidir:** si el orbe respeta la opción de reducir animaciones del teléfono (I10).

@@ -9,7 +9,8 @@ export function createStyles(theme: Theme) {
     // El logo a la izquierda; al lado, el título con el campo debajo, alineado con la F.
     header: { flexDirection: 'row', alignItems: 'flex-start', gap: theme.spacing.md },
     names: { flex: 1, gap: theme.spacing.hair },
-    logo: { width: LOGO_SIZE, height: LOGO_SIZE, borderRadius: LOGO_RADIUS },
+    // Centrado con el bloque del título y el campo.
+    logo: { width: LOGO_SIZE, height: LOGO_SIZE, borderRadius: LOGO_RADIUS, alignSelf: 'center' },
     pills: { alignItems: 'flex-end', gap: theme.spacing.xs },
     pill: {
       flexDirection: 'row',

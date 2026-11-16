@@ -8,6 +8,17 @@ import { TextVariant } from '@/shared/presentation/theme/TextVariant';
 import type { SummaryLot } from '../../hooks/todaySummaryView';
 import { PANEL_IN_MS, PANEL_OUT_MS, TITLE } from './constants';
 import { createStyles } from './styles';
+import { useLotGrowth } from './useLotGrowth';
+
+function LotBar({ share, index }: { share: number; index: number }) {
+  const styles = useStyles(createStyles);
+  const growth = useLotGrowth(share, index);
+  return (
+    <View style={styles.track}>
+      <Animated.View style={[styles.fill, growth]} />
+    </View>
+  );
+}
 
 /** Una barra por lote, tan alta como las cabezas que tiene respecto del lote más grande. */
 export function SummaryLots({ lots, activeLots }: { lots: SummaryLot[]; activeLots: string }) {
@@ -29,11 +40,9 @@ export function SummaryLots({ lots, activeLots }: { lots: SummaryLot[]; activeLo
         </View>
       </View>
       <View style={styles.lots}>
-        {lots.map((lot) => (
+        {lots.map((lot, index) => (
           <View key={lot.key} style={styles.lot}>
-            <View style={styles.track}>
-              <View style={[styles.fill, { height: `${lot.share * 100}%` }]} />
-            </View>
+            <LotBar share={lot.share} index={index} />
             <AppText
               variant={TextVariant.LotHead}
               color={lot.empty ? theme.colors.textMuted : theme.colors.text}

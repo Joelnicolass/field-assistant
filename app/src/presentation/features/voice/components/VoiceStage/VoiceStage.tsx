@@ -1,4 +1,5 @@
-import { ScrollView, View } from 'react-native';
+import { useRef } from 'react';
+import { ScrollView, View, type ScrollViewInstance } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,6 +12,7 @@ import { useTheme } from '@/shared/presentation/hooks/useTheme';
 import type { ThemeColors } from '@/shared/presentation/theme/Theme';
 import { TextVariant } from '@/shared/presentation/theme/TextVariant';
 import type { VoiceStageView } from '../../hooks/useVoiceStage';
+import { statusIn } from './animations';
 import { createStyles } from './styles';
 import { useStageMotion } from './useStageMotion';
 
@@ -35,10 +37,14 @@ export function VoiceStage({ view }: { view: VoiceStageView }) {
   const theme = useTheme();
   const { bottom } = useSafeAreaInsets();
   const stage = useStageMotion(view.cards.length > 0, bottom);
+  const cardsRef = useRef<ScrollViewInstance>(null);
 
   return (
     <View style={styles.stage} onLayout={stage.onStageLayout}>
+      {/* Cuando llega una tarjeta, la lista baja hasta ella: la más nueva queda junto al orbe. */}
       <ScrollView
+        ref={cardsRef}
+        onContentSizeChange={() => cardsRef.current?.scrollToEnd({ animated: true })}
         style={[styles.cards, { bottom: stage.bottomGap + styles.voice.height }]}
         contentContainerStyle={styles.cardsContent}
         showsVerticalScrollIndicator={false}
@@ -69,9 +75,11 @@ export function VoiceStage({ view }: { view: VoiceStageView }) {
           />
         </Animated.View>
         <Animated.View style={[styles.status, stage.statusStyle]}>
-          <AppText variant={TextVariant.Status} color={theme.colors[STATUS_COLOR[view.orbState]]}>
-            {view.statusText}
-          </AppText>
+          <Animated.View key={view.statusText} entering={statusIn}>
+            <AppText variant={TextVariant.Status} color={theme.colors[STATUS_COLOR[view.orbState]]}>
+              {view.statusText}
+            </AppText>
+          </Animated.View>
         </Animated.View>
       </Animated.View>
     </View>

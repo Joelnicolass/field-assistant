@@ -5,8 +5,9 @@ un identificador permanente (`R1`, `R2`…): no se renumeran; una regla que se q
 `[QUITADA]`.
 
 **Tipo de producto:** app móvil para Android con un server mínimo sin estado. No aplican y se
-omiten: autenticación, base de datos, navegación entre pantallas, internacionalización, web
-y diseño adaptable a otros tamaños.
+omiten: autenticación, base de datos, internacionalización, web y diseño adaptable a otros
+tamaños. Hay dos pantallas, la de inicio y el catálogo del design system, con un stack de
+navegación (D24).
 
 ## 1. Stack
 
@@ -33,6 +34,8 @@ de esta tabla, se corrige la tabla.
 | Splash | `expo-splash-screen` | 58.0.14 |
 | Ajustes del build nativo | `expo-build-properties` | ~58.0.12 |
 | Barra de estado | `expo-status-bar` | ~58.0.5 |
+| Navegación | `@react-navigation/native` y `@react-navigation/native-stack` (D24) | ^7.5.2 y ^7.21.1 |
+| Pantallas nativas del stack | `react-native-screens` | ~4.30.1 |
 | Frase de manos libres | `react-native-vosk`, con el modelo `vosk-model-small-es-0.42` | ^2.2.0 |
 | Tests | `jest` | 30.5.2 |
 | Tests | `jest-expo` | 58.0.14 |
@@ -47,8 +50,9 @@ Proveedores, detrás del server: un modelo de lenguaje que recibe audio y devuel
 (Gemini Flash-Lite) y una voz de servicio (ElevenLabs Flash v2.5). El identificador exacto de
 cada modelo lo fija el research del RFC-001.
 
-No se usan: librería de estado global, librería de inyección de dependencias, navegación
-(hay una sola pantalla) ni Expo Go (hay módulos nativos).
+No se usan: librería de estado global, librería de inyección de dependencias ni Expo Go (hay
+módulos nativos). La navegación entre pantallas va con React Navigation (D24): un stack nativo
+en `presentation/navigation`, con las rutas tipadas.
 
 ## 2. Arquitectura
 

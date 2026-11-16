@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import { AppText } from '@/shared/presentation/components/AppText';
+import { useFadeOnChange } from '@/shared/presentation/hooks/useFadeOnChange';
 import { useStyles } from '@/shared/presentation/hooks/useStyles';
 import { useTheme } from '@/shared/presentation/hooks/useTheme';
 import { TextVariant } from '@/shared/presentation/theme/TextVariant';
@@ -13,16 +14,17 @@ import { createStyles } from './styles';
 function TileText({ tile }: { tile: SummaryTile }) {
   const theme = useTheme();
   const styles = useStyles(createStyles);
+  const fade = useFadeOnChange(tile.value);
   return (
     <>
-      <View style={styles.value}>
+      <Animated.View style={[styles.value, fade]}>
         <AppText variant={TextVariant.TileValue}>{tile.value}</AppText>
         {tile.unit === undefined ? null : (
           <AppText variant={TextVariant.RowLabel} color={theme.colors.textMuted}>
             {tile.unit}
           </AppText>
         )}
-      </View>
+      </Animated.View>
       <AppText variant={TextVariant.TileLabel} color={theme.colors.textMuted} numberOfLines={2}>
         {tile.label}
         {tile.labelStrong === undefined ? null : (

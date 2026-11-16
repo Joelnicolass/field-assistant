@@ -36,3 +36,6 @@ export const TOUCH = {
   button: 56,
   primary: 168,
 } as const;
+
+/** Fuera del tema: el ícono del distintivo de la tarjeta y el dibujo del centro del orbe. */
+export const GLYPH_COLOR = '#FFFFFF';

@@ -9,6 +9,8 @@ import { useTheme } from '@/shared/presentation/hooks/useTheme';
 import { TextVariant } from '@/shared/presentation/theme/TextVariant';
 import type { ThemeMode } from '@/shared/presentation/theme/ThemeMode';
 import { Tone } from '@/shared/presentation/theme/Tone';
+import { CatalogButtons } from '../CatalogButtons';
+import { CatalogCards } from '../CatalogCards';
 import { ICON_SIZE, SAMPLE_TEXT, SECTION, TITLE, TOGGLE_LABEL, TONE_LABEL } from './constants';
 import { createStyles } from './styles';
 
@@ -54,6 +56,12 @@ export function CatalogContent({ mode, onToggleMode }: CatalogContentProps) {
             <AppText variant={TextVariant.Display}>18</AppText>
           </Surface>
         ))}
+
+        <AppText variant={TextVariant.Overline}>{SECTION.buttons}</AppText>
+        <CatalogButtons />
+
+        <AppText variant={TextVariant.Overline}>{SECTION.cards}</AppText>
+        <CatalogCards />
       </ScrollView>
     </SafeAreaView>
   );

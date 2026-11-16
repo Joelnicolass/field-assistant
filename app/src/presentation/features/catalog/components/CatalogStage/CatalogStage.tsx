@@ -20,10 +20,13 @@ export function CatalogStage() {
           summary={SAMPLE_SUMMARY}
           compact={false}
           dimmed={false}
+          hidden={false}
           pendingCount={0}
           sending={false}
           onPendingPress={doNothing}
-          onOpenCatalog={doNothing}
+          handsFree={false}
+          onHandsFreeChange={doNothing}
+          onOpenSettings={doNothing}
         />
       </View>
       <AppText variant={TextVariant.Overline}>{SUMMARY_TITLE.compact}</AppText>
@@ -32,10 +35,13 @@ export function CatalogStage() {
           summary={SAMPLE_SUMMARY}
           compact
           dimmed={false}
+          hidden={false}
           pendingCount={2}
           sending={false}
           onPendingPress={doNothing}
-          onOpenCatalog={doNothing}
+          handsFree
+          onHandsFreeChange={doNothing}
+          onOpenSettings={doNothing}
         />
       </View>
       {STAGES.map((stage) => (

@@ -15,6 +15,12 @@ export const STATUS_TEXT: Record<VoicePhase, string> = {
   [VoicePhase.Proposing]: 'Tocá para decir otra cosa',
 };
 
+/** En reposo con manos libres encendido, el texto de estado dice qué frase espera. */
+export const handsFreeStatus = (phrase: string) => `Decí «${phrase}» y contame qué pasó`;
+
+/** Al oír la frase, el teléfono vibra. */
+export const HANDS_FREE_VIBRATION_MS = 120;
+
 export const ORB_STATE: Record<VoicePhase, OrbState> = {
   [VoicePhase.Idle]: OrbState.Idle,
   [VoicePhase.Listening]: OrbState.Listening,
@@ -134,6 +140,10 @@ export const CARD_TEXT = {
   microphoneDenied: 'Sin micrófono',
   microphoneDeniedMessage: 'Necesito permiso para usar el micrófono',
   microphoneDeniedHint: 'Se activa en los ajustes del teléfono',
+  missingVoice: 'Falta la voz',
+  missingVoiceMessage: 'Falta instalar la voz en español',
+  missingVoiceHint: 'Sin ella no te puedo contestar en voz alta cuando no hay señal',
+  installVoice: 'Instalar voz',
   audioSaved: 'Sin señal',
   audioSavedMessage: 'Guardé tu audio',
   audioSavedHint: 'Lo anoto cuando vuelva la señal',

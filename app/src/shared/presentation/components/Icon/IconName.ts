@@ -8,4 +8,5 @@ export enum IconName {
   Alert = 'alert',
   Offline = 'offline',
   Close = 'close',
+  Settings = 'settings',
 }

@@ -6,7 +6,11 @@
     "orientation": "portrait",
     "platforms": ["android"],
     "android": {
-      "package": "com.fieldassistant.app"
+      "package": "com.fieldassistant.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#0A3C1E"
+      }
     },
     "plugins": [
       [
@@ -50,6 +54,14 @@
         }
       ],
       [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 192,
+          "backgroundColor": "#FFFFFF"
+        }
+      ],
+      [
         "expo-audio",
         {
           "enableBackgroundPlayback": false,
@@ -66,11 +78,12 @@
         "expo-build-properties",
         {
           "android": {
-            "usesCleartextTraffic": true,
+            "usesCleartextTraffic": false,
             "extraProguardRules": "-dontwarn java.awt.**\n-keep class com.sun.jna.** { *; }\n-keepclassmembers class * extends com.sun.jna.** { public *; }\n-keep class org.vosk.** { *; }"
           }
         }
       ]
-    ]
+    ],
+    "icon": "./assets/images/icon.png"
   }
 }

@@ -7,7 +7,7 @@ const SAMPLE_PHRASE = 'Anotado. Van cincuenta y seis milímetros en el mes.';
 
 /** Prueba en el teléfono la voz de la app y el micrófono, sin el turno de voz. */
 export function useVoiceCheck() {
-  const { recorder, speaker } = useDependencies();
+  const { recorder, speaker, getUserSettings } = useDependencies();
   const [level, setLevel] = useState(0);
   const [recording, setRecording] = useState(false);
   const [heardVoice, setHeardVoice] = useState<boolean | null>(null);
@@ -23,7 +23,8 @@ export function useVoiceCheck() {
     }
     setHeardVoice(null);
     setRecording(true);
-    await recorder.start(setLevel);
+    const { speechLevel } = await getUserSettings.execute();
+    await recorder.start(setLevel, speechLevel);
   }
 
   async function stopRecording() {

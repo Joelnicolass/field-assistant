@@ -3,15 +3,18 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import { AppText } from '@/shared/presentation/components/AppText';
 import { Icon, IconName } from '@/shared/presentation/components/Icon';
+import { ToggleChip } from '@/shared/presentation/components/ToggleChip';
 import { useStyles } from '@/shared/presentation/hooks/useStyles';
 import { useTheme } from '@/shared/presentation/hooks/useTheme';
 import { TextVariant } from '@/shared/presentation/theme/TextVariant';
 import { AppTitle } from '../AppTitle';
 import {
-  CATALOG_LABEL,
+  SETTINGS_LABEL,
+  HANDS_FREE_LABEL,
   PENDING_IN_MS,
   PENDING_OUT_MS,
   PILL_ICON_SIZE,
+  ROUND_HIT_SLOP,
   pendingLabel,
   SEND_NOW_HINT,
   SENDING_LABEL,
@@ -26,11 +29,14 @@ type SummaryHeaderProps = {
   sending: boolean;
   /** Tocar la píldora de pendientes los reintenta en el momento. */
   onPendingPress: () => void;
-  onOpenCatalog: () => void;
+  handsFree: boolean;
+  onHandsFreeChange: (value: boolean) => void;
+  onOpenSettings: () => void;
 };
 
 export function SummaryHeader(props: SummaryHeaderProps) {
-  const { place, pendingCount, sending, onPendingPress, onOpenCatalog } = props;
+  const { place, pendingCount, sending, onPendingPress, onOpenSettings } = props;
+  const { handsFree, onHandsFreeChange } = props;
   const styles = useStyles(createStyles);
   const theme = useTheme();
 
@@ -44,16 +50,23 @@ export function SummaryHeader(props: SummaryHeaderProps) {
         </AppText>
       </View>
       <View style={styles.pills}>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={CATALOG_LABEL}
-          onPress={onOpenCatalog}
-          style={styles.pill}
-        >
-          <AppText variant={TextVariant.Pill} color={theme.colors.textMuted}>
-            {CATALOG_LABEL}
-          </AppText>
-        </Pressable>
+        <View style={styles.icons}>
+          <ToggleChip
+            label={HANDS_FREE_LABEL}
+            value={handsFree}
+            onChange={onHandsFreeChange}
+            icon={IconName.Microphone}
+          />
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={SETTINGS_LABEL}
+            onPress={onOpenSettings}
+            hitSlop={ROUND_HIT_SLOP}
+            style={[styles.pill, styles.round]}
+          >
+            <Icon name={IconName.Settings} size={PILL_ICON_SIZE} color={theme.colors.textMuted} />
+          </Pressable>
+        </View>
         {pendingCount === 0 ? null : (
           <Animated.View
             entering={FadeIn.duration(PENDING_IN_MS)}

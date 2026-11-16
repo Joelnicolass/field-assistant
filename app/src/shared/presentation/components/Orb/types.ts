@@ -1,3 +1,6 @@
+import type { ReactNode } from 'react';
+import type { DerivedValue } from 'react-native-reanimated';
+
 import type { OrbGlyph } from './OrbGlyph';
 
 export type OrbStateSpec = {
@@ -22,4 +25,23 @@ export type OrbPalette = {
   blobs: readonly [string, string, string];
   ring: readonly [string, string, string, string];
   glow: string;
+};
+
+/**
+ * Lo que una entrada le hace al orbe mientras corre. El orbe no sabe cuál es: solo obedece estos
+ * valores. Sin entrada, aparece ya armado.
+ */
+export type OrbIntro = {
+  /** Por cuánto se multiplica el tamaño de cada capa: 1 es su tamaño normal. */
+  sphereScale: DerivedValue<number>;
+  ringScale: DerivedValue<number>;
+  haloScale: DerivedValue<number>;
+  /** El dibujo del centro: cuánto se ve, de 0 a 1, y de qué tamaño. */
+  glyphOpacity: DerivedValue<number>;
+  glyphScale: DerivedValue<number>;
+  /** Por cuánto se multiplica el giro de los colores. */
+  swirlBoost: DerivedValue<number>;
+  /** Lo que la entrada dibuja detrás de la esfera y adentro de ella. */
+  behind: ReactNode;
+  inside: ReactNode;
 };

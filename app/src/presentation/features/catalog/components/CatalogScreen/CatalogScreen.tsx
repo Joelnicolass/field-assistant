@@ -12,11 +12,13 @@ export function CatalogScreen({ navigation }: CatalogScreenProps) {
   const { mode, toggleMode } = useCatalogTheme();
   return (
     <ThemeProvider mode={mode}>
-      {/* navigate vuelve al inicio si está debajo, y lo abre si el catálogo fue la primera pantalla. */}
+      {/* Vuelve a los Ajustes; si el catálogo fue la primera pantalla, abre el inicio. */}
       <CatalogContent
         mode={mode}
         onToggleMode={toggleMode}
-        onBack={() => navigation.navigate(RootScreen.Home)}
+        onBack={() =>
+          navigation.canGoBack() ? navigation.goBack() : navigation.navigate(RootScreen.Home)
+        }
       />
     </ThemeProvider>
   );

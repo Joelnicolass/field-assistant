@@ -176,7 +176,7 @@ function lotAnswerView({
   };
 }
 
-function button(
+export function button(
   key: string,
   label: string,
   variant: ButtonVariant,

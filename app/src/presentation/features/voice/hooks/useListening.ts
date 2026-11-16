@@ -18,6 +18,8 @@ const NO_AUDIO: RecordedAudio = { uri: '', mimeType: '', heardVoice: false };
 
 type RecordingHandlers = {
   dispatch: Dispatch<VoiceAction>;
+  /** El umbral de voz guardado: se lee al empezar cada grabación. */
+  speechLevel: () => Promise<number>;
   onLevel: (level: number) => void;
   onFailure: (error: unknown) => void;
 };
@@ -26,12 +28,14 @@ type RecordingHandlers = {
 // terminado de abrir, por si se sale antes.
 function startRecording(recorder: AudioRecorderService, handlers: RecordingHandlers) {
   let current = true;
-  const watch = levelWatcher(handlers.dispatch);
-  const started = recorder.start((level) => {
-    if (current) {
-      handlers.onLevel(level);
-      watch(level);
-    }
+  const started = handlers.speechLevel().then((speechLevel) => {
+    const watch = levelWatcher(handlers.dispatch, speechLevel);
+    return recorder.start((level) => {
+      if (current) {
+        handlers.onLevel(level);
+        watch(level);
+      }
+    }, speechLevel);
   });
   started.catch((error: unknown) => (current ? handlers.onFailure(error) : undefined));
   return () => {
@@ -45,7 +49,7 @@ function startRecording(recorder: AudioRecorderService, handlers: RecordingHandl
 
 /** Abre el micrófono en la fase Escuchando y lo cierra al salir de ella. Entrega el volumen y el audio. */
 export function useListening({ state, dispatch, fail }: ListeningInput) {
-  const { recorder } = useDependencies();
+  const { recorder, getUserSettings } = useDependencies();
   const [level, setLevel] = useState(0);
   const recording = useRef<Promise<RecordedAudio>>(Promise.resolve(NO_AUDIO));
   const reportFailure = useEffectEvent(fail);
@@ -56,6 +60,7 @@ export function useListening({ state, dispatch, fail }: ListeningInput) {
     }
     const stop = startRecording(recorder, {
       dispatch,
+      speechLevel: () => getUserSettings.execute().then(({ speechLevel }) => speechLevel),
       onLevel: setLevel,
       onFailure: reportFailure,
     });
@@ -63,7 +68,7 @@ export function useListening({ state, dispatch, fail }: ListeningInput) {
       setLevel(0);
       recording.current = stop();
     };
-  }, [state.phase, recorder, dispatch]);
+  }, [state.phase, recorder, getUserSettings, dispatch]);
 
   return { level, takeRecording: () => recording.current };
 }

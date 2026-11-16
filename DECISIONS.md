@@ -235,3 +235,27 @@ Qué se usa, qué se hace y por qué. Una entrada por decisión.
     puede tardar varios segundos: si pasa de 1,5 s, esa frase la dice la voz del teléfono.
 - **Resigno:** depender de un plan pago de ElevenLabs. Sin él, la voz vuelve a fallar y la app
   habla con la del teléfono.
+
+## D26 · Detrás de las tarjetas, el resumen desenfocado
+
+- **Decisión:** con tarjetas en pantalla, la lista ocupa todo el alto, de la barra de estado a
+  la zona de voz, y lo de atrás se desenfoca en vivo con `expo-blur` (`dimezisBlurView`, que
+  anda en Android 11). Los bordes de la lista se funden cuando quedan tarjetas por recorrer.
+  `VISUAL.md` decía "sin desenfoque en vivo": se corrigió para admitir este único caso.
+- **Por qué:**
+  - A veces no entraba ni una tarjeta en la mitad de abajo de la pantalla.
+  - El desenfoque deja claro que las tarjetas van por delante y el resumen queda de fondo.
+  - El fundido avisa que la lista se puede recorrer.
+- **Resigno:** una dependencia nativa más, y un desenfoque que en Android 11 cuesta más que
+  en los teléfonos nuevos.
+
+## D27 · El splash es el primer cuadro de la entrada del logo
+
+- **Decisión:** al abrir, el splash muestra el orbe con el logo adentro, al 55 % y en el centro
+  de la ventana, que es el primer cuadro de la entrada. La app lo quita sin fundido cuando dibuja
+  ese mismo cuadro, y sigue con la entrada: el logo se derrite en el orbe, aparece el micrófono,
+  el orbe baja a su lugar y recién ahí aparece el resto.
+- **Por qué:** la carga y la entrada se ven como una sola animación, sin un salto entre el
+  splash y la app.
+- **Resigno:** unos 3 s de entrada en cada apertura (se apaga con `EXPO_PUBLIC_LOGO_INTRO=false`),
+  y una imagen de splash que hay que volver a sacar si cambia el orbe.

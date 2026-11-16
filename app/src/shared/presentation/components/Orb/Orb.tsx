@@ -7,6 +7,7 @@ import { OrbRing } from './OrbRing';
 import { OrbRipples } from './OrbRipples';
 import { OrbSphere } from './OrbSphere';
 import type { OrbState } from './OrbState';
+import type { OrbIntro } from './types';
 import { useOrbMotion } from './useOrbMotion';
 
 type OrbProps = {
@@ -17,10 +18,13 @@ type OrbProps = {
   size: number;
   onPress: () => void;
   accessibilityLabel: string;
+  /** Una entrada que corre al abrir; sin ella, el orbe aparece ya armado. */
+  intro?: OrbIntro;
 };
 
-export function Orb({ state, level, size, onPress, accessibilityLabel }: OrbProps) {
-  const motion = useOrbMotion(state, level);
+export function Orb(props: OrbProps) {
+  const { state, level, size, onPress, accessibilityLabel, intro } = props;
+  const motion = useOrbMotion(state, level, intro);
   const layer = { state, size, motion };
 
   return (
@@ -35,8 +39,9 @@ export function Orb({ state, level, size, onPress, accessibilityLabel }: OrbProp
     >
       <OrbHalo {...layer} />
       <OrbRipples {...layer} />
+      {intro?.behind}
       <OrbRing {...layer} />
-      <OrbSphere {...layer}>
+      <OrbSphere {...layer} inside={intro?.inside}>
         <OrbCenter {...layer} />
       </OrbSphere>
     </Pressable>

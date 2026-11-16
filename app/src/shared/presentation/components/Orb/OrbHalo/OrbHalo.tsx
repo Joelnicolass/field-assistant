@@ -13,11 +13,12 @@ export function OrbHalo({ state, size, motion }: OrbLayerProps) {
   const { glow, kick } = motion.pose;
   const { breath } = motion.phases;
   const { voiceLag } = motion.voice;
+  const { haloScale } = motion.entrance;
   const diameter = size * HALO_SCALE;
 
   const style = useAnimatedStyle(() => ({
     opacity: glow.get() * (0.8 + 0.2 * Math.sin(breath.get() * TURN)),
-    transform: [{ scale: 1 + voiceLag.get() * 0.3 + kick.get() * 0.6 }],
+    transform: [{ scale: haloScale.get() * (1 + voiceLag.get() * 0.3 + kick.get() * 0.6) }],
   }));
 
   return (

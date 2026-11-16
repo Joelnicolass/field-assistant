@@ -41,6 +41,7 @@ function failing(code: InterpreterErrorCode): Outcome {
 function retryWith(failures: Record<string, Outcome> = {}) {
   const sent: InterpretInput[] = [];
   const interpreter: InterpreterService = {
+    wakeUp: () => undefined,
     interpret: async (input) => {
       sent.push(input);
       return (

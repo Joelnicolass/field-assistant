@@ -47,6 +47,7 @@ export function useStageMotion(docked: boolean, bottomInset: number, withIntro: 
     measured: lift.measured,
     stageTop: lift.stageTop,
     bottomGap: lift.bottomGap,
+    subtitleRoom: lift.subtitleRoom,
     voiceStyle,
     orbStyle,
     subtitleStyle,

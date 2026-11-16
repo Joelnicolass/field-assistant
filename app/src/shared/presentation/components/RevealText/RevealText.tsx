@@ -6,6 +6,7 @@ import type { TextVariant } from '@/shared/presentation/theme/TextVariant';
 import { STAGGER_MS, WORD_MS } from './constants';
 import { RevealWord } from './RevealWord';
 import { styles } from './styles';
+import { useFitText } from './useFitText';
 import { useRevealClock } from './useRevealClock';
 
 type RevealTextProps = {
@@ -19,6 +20,8 @@ type RevealTextProps = {
   wordMs?: number;
   /** Sin movimiento: las palabras solo se enfocan, sin subir. */
   still?: boolean;
+  /** El alto que tiene: si el texto no entra, se achica y, si aún así no entra, se corta con "…". */
+  maxHeight?: number;
 };
 
 function RevealLine(props: RevealTextProps) {
@@ -30,10 +33,12 @@ function RevealLine(props: RevealTextProps) {
     align = 'center',
     wordMs = WORD_MS,
     still = false,
+    maxHeight,
   } = props;
-  const letter = textStyle(useTheme(), variant);
-  const words = text.split(/\s+/).filter(Boolean);
-  const clock = useRevealClock(words.length * STAGGER_MS + wordMs, hidden);
+  const allWords = text.split(/\s+/).filter(Boolean);
+  const fit = useFitText(allWords, textStyle(useTheme(), variant), maxHeight);
+  const { words, letter } = fit;
+  const clock = useRevealClock(allWords.length * STAGGER_MS + wordMs, hidden);
 
   return (
     // Para el lector de pantalla es una sola frase, no palabras sueltas.
@@ -42,6 +47,7 @@ function RevealLine(props: RevealTextProps) {
       accessibilityRole="text"
       accessibilityLabel={text}
       style={[styles.line, styles[align]]}
+      onLayout={fit.onLayout}
     >
       {words.map((word, index) => (
         <RevealWord

@@ -14,6 +14,7 @@ import type { ThemeColors } from '@/shared/presentation/theme/Theme';
 import { TextVariant } from '@/shared/presentation/theme/TextVariant';
 import type { VoiceStageView } from '../../hooks/useVoiceStage';
 import { statusIn } from './animations';
+import { STAGE } from './constants';
 import { EdgeFade } from './EdgeFade';
 import { createStyles } from './styles';
 import { useScrollFades } from './useScrollFades';
@@ -127,6 +128,8 @@ export function VoiceStage({ view, intro }: VoiceStageProps) {
               text={view.subtitle}
               variant={TextVariant.Subtitle}
               color={theme.colors[SUBTITLE_COLOR[view.orbState]]}
+              // Con tarjetas el orbe está abajo y el subtítulo tiene todo su alto.
+              maxHeight={view.cards.length > 0 ? STAGE.subtitleHeight : stage.subtitleRoom}
             />
           ) : null}
         </Animated.View>

@@ -104,8 +104,8 @@ El repositorio tiene dos partes:
   grabadas en la app.
 - **La voz habla como el productor:** rioplatense, informal y corta.
 
-Las decisiones con su porqué y lo que se resignó en cada una, incluido el stack, están en
-[`DECISIONS.md`](DECISIONS.md).
+Las decisiones con su porqué y lo que se resignó en cada una, incluidos el stack y la
+escalabilidad (de un productor a miles), están en [`DECISIONS.md`](DECISIONS.md).
 
 ## Requisitos
 
@@ -255,7 +255,7 @@ Desde `server/`, con las claves cargadas:
 ## Documentos
 
 - `CHALLENGE.md`: la consigna.
-- `DECISIONS.md`: las decisiones, con qué se resigna en cada una.
+- `DECISIONS.md`: las decisiones, con qué se resigna en cada una, el stack y la escalabilidad.
 - `PRD.md`, `FEATURES.md`, `RULES.md` y `VISUAL.md`: qué se construye y cómo.
 - `RFCS.md` y `RFCs/`: el plan de implementación, en cinco RFCs.
 - `docs/RESEARCH.md`: lo que se comprobó en el teléfono y con los proveedores.

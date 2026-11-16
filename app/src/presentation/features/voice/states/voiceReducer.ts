@@ -14,6 +14,7 @@ import { handlesEvent, nextPhase } from './voiceTransitions';
 /** Lo que le llega al reducer: un evento y, si hace falta, lo que trae. */
 export type VoiceAction =
   | { type: VoiceEvent.OrbPressed }
+  | { type: VoiceEvent.PhraseDetected }
   | { type: VoiceEvent.PermissionDenied }
   | { type: VoiceEvent.ListeningFinished }
   | { type: VoiceEvent.NothingHeard }
@@ -167,6 +168,7 @@ const HANDLERS: {
   [E in VoiceEvent]: (action: ActionByEvent[E], state: VoiceState) => VoiceState;
 } = {
   [VoiceEvent.OrbPressed]: (_action, state) => pressOrb(state),
+  [VoiceEvent.PhraseDetected]: (_action, state) => pressOrb(state),
   [VoiceEvent.PermissionDenied]: (_action, state) => ({
     ...state,
     card: { kind: VoiceCardKind.MicrophoneDenied },

@@ -4,6 +4,7 @@ import { INITIAL_VOICE_STATE, voiceReducer } from '../states/voiceReducer';
 import { useBackgroundSignal } from './useBackgroundSignal';
 import { useCardActions } from './useCardActions';
 import { useFailure } from './useFailure';
+import { useHandsFree } from './useHandsFree';
 import { useListening } from './useListening';
 import { useOrbPress } from './useOrbPress';
 import { usePendingAudios } from './usePendingAudios';
@@ -16,7 +17,7 @@ export type VoiceTurnOptions = {
   onRecorded: () => void;
 };
 
-/** Arma el turno de voz: el estado, el orbe, y qué hace cada botón de las tarjetas. */
+/** Arma el turno de voz: el estado, el orbe, manos libres y qué hace cada botón de las tarjetas. */
 export function useVoiceTurn({ onRecorded }: VoiceTurnOptions) {
   const [state, dispatch] = useReducer(voiceReducer, INITIAL_VOICE_STATE);
   const speech = useSpeech({ state, dispatch });
@@ -26,11 +27,13 @@ export function useVoiceTurn({ onRecorded }: VoiceTurnOptions) {
   const pending = usePendingAudios(state);
   const proposal = useProposal({ state, dispatch, fail, onRecorded, ...speech, ...pending });
   useBackgroundSignal(dispatch);
+  const handsFree = useHandsFree({ phase: state.phase, dispatch, fail });
   const onOrbPress = useOrbPress({
     phase: state.phase,
     dispatch,
     silence: speech.silence,
     isWriting: proposal.isWriting,
+    releaseMicrophone: handsFree.release,
     fail,
   });
   const actions = useCardActions({ dispatch, discard: pending.discard, ...proposal });
@@ -41,5 +44,6 @@ export function useVoiceTurn({ onRecorded }: VoiceTurnOptions) {
     actions,
     onOrbPress,
     pending,
+    handsFree,
   };
 }

@@ -73,4 +73,9 @@ export class ServerInterpreterService implements InterpreterService {
       clearTimeout(timer);
     }
   }
+
+  // Un server gratuito se duerme y tarda en despertar; si no responde, no pasa nada.
+  wakeUp(): void {
+    fetch(`${this.serverUrl}/health`).catch(() => undefined);
+  }
 }

@@ -20,9 +20,12 @@ export function CatalogStage() {
           summary={SAMPLE_SUMMARY}
           compact={false}
           dimmed={false}
+          hidden={false}
           pendingCount={0}
           sending={false}
           onPendingPress={doNothing}
+          handsFree={false}
+          onHandsFreeChange={doNothing}
           onOpenCatalog={doNothing}
         />
       </View>
@@ -32,9 +35,12 @@ export function CatalogStage() {
           summary={SAMPLE_SUMMARY}
           compact
           dimmed={false}
+          hidden={false}
           pendingCount={2}
           sending={false}
           onPendingPress={doNothing}
+          handsFree
+          onHandsFreeChange={doNothing}
           onOpenCatalog={doNothing}
         />
       </View>

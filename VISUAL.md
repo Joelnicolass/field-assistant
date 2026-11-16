@@ -416,8 +416,9 @@ pregunta, alerta, sin señal y cruz.
 - **Nada de texto de menos de 11** ni números de tarjeta de menos de 20.
 - **Una sola familia tipográfica.** Ni la serif del wordmark ni una segunda familia para el
   texto corrido.
-- **Sin desenfoque en vivo,** que Android 11 no tiene: lo borroso se hace con degradés y sombras
-  de texto.
+- **Un solo desenfoque en vivo:** el del resumen cuando quedan tarjetas delante (`expo-blur` con
+  `dimezisBlurView`, que también anda en Android 11; decisión del autor del 16-nov). Todo lo
+  demás que se ve borroso se hace con degradés y sombras de texto.
 - **Sin mapas, gráficos de línea ni fotos.** La app muestra números y barras simples.
 - **Sin animaciones de color, de fondo o de layout en el hilo de JavaScript:** solo posición,
   tamaño, giro y opacidad (R46). La excepción es el fundido del fondo al cambiar de tema.

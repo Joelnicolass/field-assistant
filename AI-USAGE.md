@@ -74,3 +74,15 @@ Lo que decidió el autor en este RFC: la navegación con React Navigation (D24),
 callback desde la pantalla de inicio, sin trucos de tipos, la voz en streaming y siempre la misma
 en un turno, cómo se reintentan y se muestran los audios guardados, el texto para el servicio
 saturado, y las cinco categorías en la tarjeta de un lote.
+
+## RFC-005 · Extras y entrega
+
+- Dividir el RFC en seis pasos (`RFCs/RFC-005-PLAN.md`). Por pedido del autor, los pasos los
+  implementa el orquestador directamente, y la prueba en el teléfono la hace el autor.
+- Paso A: el ícono, el despertar del server al abrir, el APK de release con sus comprobaciones,
+  la entrada del logo en el orbe fusionada con el splash, el desenfoque detrás de las tarjetas y
+  el fundido de la lista.
+- Corregir la cola de audios guardados: la píldora aparece al guardar y reintenta al tocarla.
+
+Lo que decidió el autor en este RFC: el desenfoque con `expo-blur` y las tarjetas a todo el alto
+(D26), el splash como primer cuadro de la entrada (D27), y hacer los pasos sin subagentes.

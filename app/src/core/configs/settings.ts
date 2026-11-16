@@ -28,6 +28,10 @@ export const settings = {
   historyTurns: readNumber(process.env.EXPO_PUBLIC_HISTORY_TURNS, 4),
   retryQueueMs: readNumber(process.env.EXPO_PUBLIC_RETRY_QUEUE_MS, 20000),
   maxQuestionsInARow: readNumber(process.env.EXPO_PUBLIC_MAX_QUESTIONS_IN_A_ROW, 2),
+  /** La frase de manos libres, en minúsculas: sus dos palabras están en el vocabulario de Vosk. */
+  wakePhrase: process.env.EXPO_PUBLIC_WAKE_PHRASE || 'hola asistente',
+  /** La entrada del logo al abrir (VISUAL 4.8). El splash muestra su primer cuadro. */
+  logoIntro: process.env.EXPO_PUBLIC_LOGO_INTRO !== 'false',
   /** Con valor, la app graba bajando el audio de esta dirección en lugar de abrir el micrófono. */
   scriptedAudioUrl: process.env.EXPO_PUBLIC_SCRIPTED_AUDIO_URL || null,
   /** Luz ambiente, en lux: arriba de lightAboveLux, tema claro; abajo de darkBelowLux, oscuro. */

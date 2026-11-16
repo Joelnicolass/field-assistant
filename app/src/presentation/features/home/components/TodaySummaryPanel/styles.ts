@@ -4,9 +4,9 @@ import type { CSSTransitionProperties } from 'react-native-reanimated';
 import type { Theme } from '@/shared/presentation/theme/Theme';
 
 export function createStyles(theme: Theme) {
-  // Al apagarse o encenderse, la opacidad cambia con una transición y no de golpe.
+  // Al apagarse, encenderse o aparecer, cambia con una transición y no de golpe.
   const fade: CSSTransitionProperties = {
-    transitionProperty: 'opacity',
+    transitionProperty: ['opacity', 'transform'],
     transitionDuration: theme.durations.orbColor,
   };
   return {

@@ -8,7 +8,10 @@ export function createStyles(theme: Theme) {
     stage: { flex: 1 },
     cards: { position: 'absolute', top: 0, left: 0, right: 0 },
     // El margen de abajo y de los costados le deja lugar a la sombra de la tarjeta.
+    // Pocas tarjetas quedan abajo, junto al orbe; arriba se ve el resumen desenfocado.
     cardsContent: {
+      flexGrow: 1,
+      justifyContent: 'flex-end',
       paddingHorizontal: theme.spacing.gutter,
       paddingTop: theme.spacing.xl,
       paddingBottom: theme.spacing.xxxl,
@@ -29,5 +32,7 @@ export function createStyles(theme: Theme) {
     },
     slot: { height: STAGE.slotHeight, alignItems: 'center', justifyContent: 'center' },
     status: { height: STAGE.statusHeight, justifyContent: 'center' },
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 },
   });
 }

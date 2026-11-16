@@ -15,6 +15,12 @@ export const STATUS_TEXT: Record<VoicePhase, string> = {
   [VoicePhase.Proposing]: 'Tocá para decir otra cosa',
 };
 
+/** En reposo con manos libres encendido, el texto de estado dice qué frase espera. */
+export const handsFreeStatus = (phrase: string) => `Decí «${phrase}» y contame qué pasó`;
+
+/** Al oír la frase, el teléfono vibra. */
+export const HANDS_FREE_VIBRATION_MS = 120;
+
 export const ORB_STATE: Record<VoicePhase, OrbState> = {
   [VoicePhase.Idle]: OrbState.Idle,
   [VoicePhase.Listening]: OrbState.Listening,

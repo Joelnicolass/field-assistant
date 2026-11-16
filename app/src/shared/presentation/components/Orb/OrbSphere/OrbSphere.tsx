@@ -26,7 +26,15 @@ function Base({ palette, size }: { palette: OrbPalette; size: number }) {
   );
 }
 
-function BlobDrawing({ palette, size, group }: { palette: OrbPalette; size: number; group: BlobGroup }) {
+function BlobDrawing({
+  palette,
+  size,
+  group,
+}: {
+  palette: OrbPalette;
+  size: number;
+  group: BlobGroup;
+}) {
   return BLOB_GROUPS[group].blobs.map((blob) => {
     const radius = blob.radius * size;
     const color = blob.color === null ? GLYPH_COLOR : palette.blobs[blob.color];
@@ -91,13 +99,24 @@ function Shade({ size }: { size: number }) {
           backgroundImage: `radial-gradient(ellipse closest-side at 50% 50%, ${ORB_SHADE.shine} 0%, transparent 100%)`,
         }}
       />
-      <View style={[StyleSheet.absoluteFill, round, { borderWidth: RIM_WIDTH, borderColor: ORB_SHADE.rim }]} />
+      <View
+        style={[
+          StyleSheet.absoluteFill,
+          round,
+          { borderWidth: RIM_WIDTH, borderColor: ORB_SHADE.rim },
+        ]}
+      />
     </View>
   );
 }
 
 /** La esfera con sus manchas: respira, crece con la voz y se aplasta bajo el dedo. */
-export function OrbSphere({ state, size, motion, children }: OrbLayerProps & { children: ReactNode }) {
+export function OrbSphere({
+  state,
+  size,
+  motion,
+  children,
+}: OrbLayerProps & { children: ReactNode }) {
   const { breathSize, kick } = motion.pose;
   const { breath } = motion.phases;
   const { voice, voiceLag } = motion.voice;

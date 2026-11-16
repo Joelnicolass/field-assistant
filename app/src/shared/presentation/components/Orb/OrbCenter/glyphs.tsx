@@ -63,7 +63,12 @@ function Dot({ index, size, motion }: OrbGlyphProps & { index: number }) {
   return (
     <Animated.View
       style={[
-        { width: diameter, height: diameter, borderRadius: diameter / 2, backgroundColor: GLYPH_COLOR },
+        {
+          width: diameter,
+          height: diameter,
+          borderRadius: diameter / 2,
+          backgroundColor: GLYPH_COLOR,
+        },
         style,
       ]}
     />

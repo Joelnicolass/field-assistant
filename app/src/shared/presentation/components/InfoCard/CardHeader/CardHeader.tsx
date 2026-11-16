@@ -7,12 +7,7 @@ import { useTheme } from '@/shared/presentation/hooks/useTheme';
 import { TextVariant } from '@/shared/presentation/theme/TextVariant';
 import { GLYPH_COLOR } from '@/shared/presentation/theme/tokens';
 import type { Tone } from '@/shared/presentation/theme/Tone';
-import {
-  BADGE_ICON_SIZE,
-  CLOSE_HIT_SLOP,
-  CLOSE_ICON_SIZE,
-  CLOSE_LABEL,
-} from './constants';
+import { BADGE_ICON_SIZE, CLOSE_HIT_SLOP, CLOSE_ICON_SIZE, CLOSE_LABEL } from './constants';
 import { createStyles } from './styles';
 
 type CardHeaderProps = { icon: IconName; label: string; tone: Tone; onClose?: () => void };

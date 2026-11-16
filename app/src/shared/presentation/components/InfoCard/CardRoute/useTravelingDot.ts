@@ -1,10 +1,5 @@
 import { useEffect } from 'react';
-import {
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-} from 'react-native-reanimated';
+import { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
 import { EASING } from '@/shared/presentation/theme/motion';
 import { ARC_HEIGHT, TRAVEL_MS } from './constants';

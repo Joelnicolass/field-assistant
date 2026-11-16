@@ -140,7 +140,10 @@ export const CATALOG_CARDS: (InfoCardProps & { key: string })[] = [
     tone: Tone.Brand,
     big: { value: '18', unit: 'mm' },
     hint: 'Grabado a las 7:40',
-    buttons: [button('Anotar', ButtonVariant.Primary), button('Descartar', ButtonVariant.Secondary)],
+    buttons: [
+      button('Anotar', ButtonVariant.Primary),
+      button('Descartar', ButtonVariant.Secondary),
+    ],
     heard: 'llovieron dieciocho milímetros',
   },
   {

@@ -20,7 +20,10 @@ export function cardIn() {
   return {
     initialValues: { opacity: 0, transform: [{ translateY: CARD_RISE }, { scale: CARD_SCALE }] },
     animations: {
-      opacity: withDelay(CARD_DELAY_MS, withTiming(1, { duration: CARD_FADE_MS, easing: EASING.enter })),
+      opacity: withDelay(
+        CARD_DELAY_MS,
+        withTiming(1, { duration: CARD_FADE_MS, easing: EASING.enter }),
+      ),
       transform: [
         { translateY: withDelay(CARD_DELAY_MS, withSpring(0, SPRINGS.soft)) },
         { scale: withDelay(CARD_DELAY_MS, withSpring(1, SPRINGS.soft)) },
@@ -35,7 +38,9 @@ export function cardOut() {
     initialValues: { opacity: 1, transform: [{ scale: 1 }] },
     animations: {
       opacity: withTiming(0, { duration: CARD_EXIT_MS, easing: EASING.enter }),
-      transform: [{ scale: withTiming(CARD_SCALE, { duration: CARD_EXIT_MS, easing: EASING.enter }) }],
+      transform: [
+        { scale: withTiming(CARD_SCALE, { duration: CARD_EXIT_MS, easing: EASING.enter }) },
+      ],
     },
   };
 }
@@ -48,7 +53,14 @@ function partIn(order: number) {
       initialValues: { opacity: 0, transform: [{ translateY: PART_RISE }] },
       animations: {
         opacity: withDelay(delay, withTiming(1, { duration: PART_MS, easing: EASING.enter })),
-        transform: [{ translateY: withDelay(delay, withTiming(0, { duration: PART_MS, easing: EASING.enter })) }],
+        transform: [
+          {
+            translateY: withDelay(
+              delay,
+              withTiming(0, { duration: PART_MS, easing: EASING.enter }),
+            ),
+          },
+        ],
       },
     };
   };
@@ -59,7 +71,10 @@ export function popIn() {
   return {
     initialValues: { opacity: 0, transform: [{ scale: POP_SCALE }] },
     animations: {
-      opacity: withDelay(POP_DELAY_MS, withTiming(1, { duration: CARD_FADE_MS, easing: EASING.enter })),
+      opacity: withDelay(
+        POP_DELAY_MS,
+        withTiming(1, { duration: CARD_FADE_MS, easing: EASING.enter }),
+      ),
       transform: [{ scale: withDelay(POP_DELAY_MS, withSpring(1, SPRINGS.soft)) }],
     },
   };

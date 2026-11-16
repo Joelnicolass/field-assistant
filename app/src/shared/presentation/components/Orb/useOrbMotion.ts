@@ -18,7 +18,10 @@ import type { OrbState } from './OrbState';
 // El movimiento del orbe dice el estado de la app: ignora "reducir animaciones" (V3).
 const ALWAYS = ReduceMotion.Never;
 const GLIDE = { duration: GLIDE_MS, easing: EASING.move, reduceMotion: ALWAYS };
-const spring = (config: { duration: number; dampingRatio: number }) => ({ ...config, reduceMotion: ALWAYS });
+const spring = (config: { duration: number; dampingRatio: number }) => ({
+  ...config,
+  reduceMotion: ALWAYS,
+});
 
 /** Lleva cada número de la ficha del estado anterior al nuevo, y encoge apenas el orbe al cambiar. */
 function usePose(state: OrbState) {
@@ -41,7 +44,11 @@ function usePose(state: OrbState) {
     ripples.set(withTiming(next.ripples ? 1 : 0, GLIDE));
     kick.set(
       withSequence(
-        withTiming(KICK_SIZE, { duration: durations.press, easing: EASING.enter, reduceMotion: ALWAYS }),
+        withTiming(KICK_SIZE, {
+          duration: durations.press,
+          easing: EASING.enter,
+          reduceMotion: ALWAYS,
+        }),
         withSpring(0, spring(SPRINGS.soft)),
       ),
     );
@@ -92,7 +99,9 @@ function usePress() {
   return {
     pressed,
     onPressIn: () =>
-      pressed.set(withTiming(1, { duration: durations.press, easing: EASING.enter, reduceMotion: ALWAYS })),
+      pressed.set(
+        withTiming(1, { duration: durations.press, easing: EASING.enter, reduceMotion: ALWAYS }),
+      ),
     onPressOut: () => pressed.set(withSpring(0, spring(SPRINGS.soft))),
   };
 }

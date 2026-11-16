@@ -6,7 +6,7 @@ orquestador directamente, y el flujo se detiene después de cada paso para la re
 | Paso | Objetivo | Estado |
 | --- | --- | --- |
 | A | Los contratos, los datos iniciales y el guardado (F17) | aprobado |
-| B | Las reglas, la lluvia, el movimiento, las consultas y el resumen (F5, F6, F9, F10, F11) | pendiente |
+| B | Las reglas, la lluvia, el movimiento, las consultas y el resumen (F5, F6, F9, F10, F11) | aprobado |
 | C | La corrección de lo último (F8, Should) | pendiente |
 
 Rama por paso, con su PR a `feature/rfc-002`: `feature/rfc-002-A`, `-B` y `-C`.

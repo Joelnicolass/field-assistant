@@ -1,5 +1,7 @@
 export enum VoiceEvent {
   OrbPressed = 'orb_pressed',
+  /** Manos libres oyó la frase: en reposo es igual que un toque. */
+  PhraseDetected = 'phrase_detected',
   PermissionDenied = 'permission_denied',
   /** Hay audio con voz. */
   ListeningFinished = 'listening_finished',

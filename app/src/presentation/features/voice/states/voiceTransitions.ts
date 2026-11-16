@@ -16,6 +16,7 @@ export const voiceTransitions: Record<VoicePhase, Partial<Record<VoiceEvent, Tra
   [VoicePhase.Idle]: {
     ...inAnyPhase(VoicePhase.Idle),
     [VoiceEvent.OrbPressed]: VoicePhase.Listening,
+    [VoiceEvent.PhraseDetected]: VoicePhase.Listening,
     [VoiceEvent.PermissionDenied]: VoicePhase.Idle,
     // Anotar un audio guardado: muestra el comprobante y lo dice.
     [VoiceEvent.ProposalConfirmed]: VoicePhase.Speaking,

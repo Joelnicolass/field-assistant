@@ -29,6 +29,8 @@ export function HomeScreen({ navigation }: HomeScreenProps) {
           pendingCount={voice.pendingCount}
           sending={voice.sending}
           onPendingPress={voice.onPendingPress}
+          handsFree={voice.handsFree}
+          onHandsFreeChange={voice.onHandsFreeChange}
           onOpenCatalog={() => navigation.navigate(RootScreen.Catalog)}
         />
       )}

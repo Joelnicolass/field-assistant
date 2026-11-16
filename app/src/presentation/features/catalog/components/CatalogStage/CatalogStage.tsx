@@ -23,6 +23,8 @@ export function CatalogStage() {
           pendingCount={0}
           sending={false}
           onPendingPress={doNothing}
+          handsFree={false}
+          onHandsFreeChange={doNothing}
           onOpenCatalog={doNothing}
         />
       </View>
@@ -35,6 +37,8 @@ export function CatalogStage() {
           pendingCount={2}
           sending={false}
           onPendingPress={doNothing}
+          handsFree
+          onHandsFreeChange={doNothing}
           onOpenCatalog={doNothing}
         />
       </View>

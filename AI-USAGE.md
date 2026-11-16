@@ -31,3 +31,29 @@ proyecto (`.claude/`).
 Lo que decidió el autor en este RFC: usar Express en el server (D13), apagar React Compiler
 (D20), cómo se reparten los pasos en ramas y PRs, y cerrar el paso 5 con las pruebas de voz real
 pendientes.
+
+## RFC-002 · Datos y reglas del campo
+
+- Dividir el RFC en pasos e implementarlos: el dominio, el archivo del campo, los nueve casos de
+  uso y sus tests, uno por criterio.
+- Simplificar el mapper y los tests cuando el autor lo pidió.
+- Escribir `reviews/REVIEW-RFC-002.md`, a pedido del autor, en la misma sesión.
+
+Lo que decidió el autor en este RFC: "lo anotado hoy" cuenta por el día en que se anotó (D21), un
+mapper mínimo y un comentario corto en cada caso de uso y cada hook (R34).
+
+## RFC-003 · Design system y pantalla de inicio
+
+- Implementar el tema, la tipografía, `AppText`, `Icon`, `Surface`, `AppButton`, `InfoCard`, el
+  orbe, `RevealText`, la pantalla de inicio y la zona de voz, tomando como guía una
+  implementación de referencia y adaptándola a `RULES.md`.
+- Probar cada paso en el teléfono por Metro, con capturas por `adb`.
+- Medir la fluidez con `dumpsys gfxinfo` y bajar el tiempo por cuadro de 44 a 9 ms: el orbe
+  monta cada capa una sola vez, y Reanimated aplica las animaciones directo a la vista (D22).
+- Comparar el orbe y el resumen con las capturas del autor y ajustar `VISUAL.md` a lo que se
+  decidió.
+
+Lo que decidió el autor en este RFC: las decisiones visuales V1 a V4 (`VISUAL.md`), el orbe más
+parecido a su referencia, el resumen con el orden de su captura, el nombre de la app que alterna
+entre "Field Data" y "Field Assistant", encender la opción de Reanimated (D22) y dejar el
+catálogo en la app (D23).

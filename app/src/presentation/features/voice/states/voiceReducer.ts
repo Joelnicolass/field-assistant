@@ -1,9 +1,10 @@
 import { settings } from '@/core/configs/settings';
 import type { Receipt } from '@/domain/entities/Receipt';
 import type { Resolution } from '@/domain/entities/Resolution';
+import type { InterpreterErrorCode } from '@/domain/enums/InterpreterErrorCode';
 import { ResolutionKind } from '@/domain/enums/ResolutionKind';
 import type { Result } from '@/domain/errors/Result';
-import { SPOKEN } from '../hooks/constants';
+import { SAVED_REPLY, SPOKEN } from '../hooks/constants';
 import { VoiceCardKind, type VoiceCard } from './VoiceCard';
 import { VoiceEvent } from './VoiceEvent';
 import { VoicePhase } from './VoicePhase';
@@ -17,7 +18,7 @@ export type VoiceAction =
   | { type: VoiceEvent.ListeningFinished }
   | { type: VoiceEvent.NothingHeard }
   | { type: VoiceEvent.Understood; resolution: Resolution; transcript: string; spoken: string }
-  | { type: VoiceEvent.UnderstandingFailed }
+  | { type: VoiceEvent.UnderstandingFailed; code: InterpreterErrorCode }
   | { type: VoiceEvent.SpeechFinished }
   | { type: VoiceEvent.ProposalConfirmed; result: Result<Receipt>; spoken: string }
   | { type: VoiceEvent.ProposalCancelled }
@@ -39,6 +40,7 @@ export const INITIAL_VOICE_STATE: VoiceState = {
   card: null,
   subtitle: '',
   questionsInARow: 0,
+  paused: false,
   lastRecord: null,
   history: [],
 };
@@ -99,12 +101,19 @@ function cardOf<K extends ResolutionKind>(resolution: ResolutionOf<K>, heard: st
 
 // Pasa a hablar: lo que se dice es el subtítulo y `afterSpeech` es a dónde se va después.
 function speaking(state: VoiceState, said: Partial<VoiceState>): VoiceState {
-  return { ...state, afterSpeech: VoicePhase.Idle, questionsInARow: 0, ...said };
+  return { ...state, afterSpeech: VoicePhase.Idle, questionsInARow: 0, paused: false, ...said };
 }
 
 function pressOrb(state: VoiceState): VoiceState {
   return PRESS_STARTS_OVER[state.phase]
-    ? { ...state, turn: state.turn + 1, card: null, subtitle: '', questionsInARow: 0 }
+    ? {
+        ...state,
+        turn: state.turn + 1,
+        card: null,
+        subtitle: '',
+        questionsInARow: 0,
+        paused: false,
+      }
     : state;
 }
 
@@ -166,12 +175,19 @@ const HANDLERS: {
   [VoiceEvent.ListeningFinished]: (_action, state) => state,
   [VoiceEvent.NothingHeard]: (_action, state) => nothingHeard(state),
   [VoiceEvent.Understood]: understood,
-  [VoiceEvent.UnderstandingFailed]: (_action, state) =>
-    speaking(state, { card: { kind: VoiceCardKind.AudioSaved }, subtitle: SPOKEN.audioSaved }),
+  [VoiceEvent.UnderstandingFailed]: ({ code }, state) =>
+    speaking(state, {
+      card: { kind: VoiceCardKind.AudioSaved, code },
+      subtitle: SAVED_REPLY[code],
+    }),
   [VoiceEvent.SpeechFinished]: (_action, state) => state,
   [VoiceEvent.ProposalConfirmed]: confirmed,
   [VoiceEvent.ProposalCancelled]: (_action, state) => ({ ...state, card: null, subtitle: '' }),
-  [VoiceEvent.WentToBackground]: (_action, state) => state,
+  // En segundo plano la cuenta se frena y la propuesta queda esperando un toque.
+  [VoiceEvent.WentToBackground]: (_action, state) => ({
+    ...state,
+    paused: state.phase === VoicePhase.Proposing,
+  }),
   [VoiceEvent.Failed]: (_action, state) => ({
     ...state,
     card: null,

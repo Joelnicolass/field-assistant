@@ -13,7 +13,7 @@ type OrbPressInput = {
   silence: () => void;
   /** Mientras se está anotando, el orbe no cambia el turno: lo anotado tiene que llegar a su comprobante. */
   isWriting: () => boolean;
-  fail: () => void;
+  fail: (error?: unknown) => void;
 };
 
 // Con el permiso por pedir, la fase no cambia hasta saber si se puede escuchar.

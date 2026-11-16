@@ -46,6 +46,7 @@ describe('useProposal', () => {
         fail: jest.fn(),
         silence: jest.fn(),
         onRecorded,
+        discard: jest.fn(async () => undefined),
       }).confirm;
       return null;
     }

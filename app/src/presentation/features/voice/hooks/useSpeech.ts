@@ -15,12 +15,12 @@ export function useSpeech({ state, dispatch }: SpeechInput) {
   const [queue] = useState(() => createSoundQueue(settings.maxSpeakingMs));
 
   // Si la voz falla, el turno sigue igual: la persona lo lee en el subtítulo.
-  const say = (text: string) =>
+  const say = (text: string, onStart?: () => void) =>
     queue.enqueue({
-      play: () => speaker.speak(text).catch(() => undefined),
+      play: () => speaker.speak(text, onStart).catch(() => undefined),
       stop: () => speaker.stop(),
     });
 
-  useSpokenSubtitle({ state, dispatch, say });
-  return { say, silence: queue.silence };
+  const { voiceStarted } = useSpokenSubtitle({ state, dispatch, say });
+  return { say, silence: queue.silence, voiceStarted };
 }

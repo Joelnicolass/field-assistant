@@ -1,7 +1,6 @@
 import type { Dispatch } from 'react';
 import { Linking } from 'react-native';
 
-import { useDependencies } from '@/di/useDependencies';
 import { VoiceEvent } from '../states/VoiceEvent';
 import type { VoiceAction } from '../states/voiceReducer';
 import type { ProposalCard } from '../states/VoiceCard';
@@ -11,21 +10,23 @@ type CardActionsInput = {
   dispatch: Dispatch<VoiceAction>;
   confirm: (card: ProposalCard) => Promise<void>;
   cancel: () => void;
+  discard: (id: number) => Promise<void>;
 };
 
 /** Qué hace cada botón de las tarjetas. */
-export function useCardActions({ dispatch, confirm, cancel }: CardActionsInput): CardActions {
-  const { discardPendingAudio } = useDependencies();
+export function useCardActions({
+  dispatch,
+  confirm,
+  cancel,
+  discard,
+}: CardActionsInput): CardActions {
   const close = () => dispatch({ type: VoiceEvent.CardClosed });
 
   return {
     confirm: (card) => void confirm(card),
     cancel,
     close,
-    discard: (id) => {
-      void discardPendingAudio.execute({ id });
-      close();
-    },
+    discard: (id) => void discard(id),
     openSettings: () => void Linking.openSettings(),
   };
 }

@@ -1,3 +1,4 @@
+import { InterpreterErrorCode } from '@/domain/enums/InterpreterErrorCode';
 import { AnimalCategory } from '@/domain/enums/AnimalCategory';
 import { RainRange } from '@/domain/enums/RainRange';
 import { OrbState } from '@/shared/presentation/components/Orb/OrbState';
@@ -66,6 +67,7 @@ export const MONTHS = [
 export const SPOKEN = {
   nothingHeard: 'No te escuché.',
   audioSaved: 'Guardé tu audio. Lo anoto cuando vuelva la señal.',
+  serviceBusy: 'Enviaré tu audio enseguida, el servicio está saturado en este momento.',
   discarded: 'No llegué a entenderlo. Probá decirlo de una.',
   unexpected: 'Algo salió mal. Probá de nuevo.',
   notUnderstood: 'Eso no lo sé.',
@@ -135,6 +137,8 @@ export const CARD_TEXT = {
   audioSaved: 'Sin señal',
   audioSavedMessage: 'Guardé tu audio',
   audioSavedHint: 'Lo anoto cuando vuelva la señal',
+  serviceBusy: 'Servicio saturado',
+  serviceBusyHint: 'Lo envío enseguida',
   saved: 'Grabado sin señal',
   savedNotUnderstood: 'No se entendió lo que grabaste',
   millimetersUnit: 'mm',
@@ -147,5 +151,28 @@ export const CARD_TEXT = {
   previously: (value: string) => `Antes decía ${value}`,
   remainingInOrigin: (lot: number) => `Quedan en el lote ${lot}`,
   savedOn: (day: string) => `Grabado el ${day}`,
+  // Una sola tarjeta de audio guardado a la vez: la más vieja, con su lugar en la cola.
+  savedPosition: (total: number) => (total === 1 ? '' : ` · 1 de ${total}`),
   rainTitle: (period: string) => `Lluvia de ${period}`,
 } as const;
+
+// Sin red, el audio espera la señal. Si el server falla o tarda, hay señal pero el servicio está
+// saturado: el audio se manda en el próximo reintento.
+export const SAVED_REPLY: Record<InterpreterErrorCode, string> = {
+  [InterpreterErrorCode.Offline]: SPOKEN.audioSaved,
+  [InterpreterErrorCode.Timeout]: SPOKEN.serviceBusy,
+  [InterpreterErrorCode.Server]: SPOKEN.serviceBusy,
+  [InterpreterErrorCode.Refused]: SPOKEN.audioSaved,
+  [InterpreterErrorCode.Unreadable]: SPOKEN.audioSaved,
+};
+
+const NO_SIGNAL = { label: CARD_TEXT.audioSaved, hint: CARD_TEXT.audioSavedHint };
+const BUSY = { label: CARD_TEXT.serviceBusy, hint: CARD_TEXT.serviceBusyHint };
+
+export const SAVED_CARD: Record<InterpreterErrorCode, { label: string; hint: string }> = {
+  [InterpreterErrorCode.Offline]: NO_SIGNAL,
+  [InterpreterErrorCode.Timeout]: BUSY,
+  [InterpreterErrorCode.Server]: BUSY,
+  [InterpreterErrorCode.Refused]: NO_SIGNAL,
+  [InterpreterErrorCode.Unreadable]: NO_SIGNAL,
+};

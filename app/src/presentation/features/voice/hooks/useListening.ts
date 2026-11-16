@@ -11,7 +11,7 @@ import { levelWatcher } from './levelWatcher';
 type ListeningInput = {
   state: VoiceState;
   dispatch: Dispatch<VoiceAction>;
-  fail: () => void;
+  fail: (error?: unknown) => void;
 };
 
 const NO_AUDIO: RecordedAudio = { uri: '', mimeType: '', heardVoice: false };
@@ -19,7 +19,7 @@ const NO_AUDIO: RecordedAudio = { uri: '', mimeType: '', heardVoice: false };
 type RecordingHandlers = {
   dispatch: Dispatch<VoiceAction>;
   onLevel: (level: number) => void;
-  onFailure: () => void;
+  onFailure: (error: unknown) => void;
 };
 
 // Abre el micrófono y lleva la cuenta de la escucha. Devuelve cómo cerrarlo: espera a que haya
@@ -33,7 +33,7 @@ function startRecording(recorder: AudioRecorderService, handlers: RecordingHandl
       watch(level);
     }
   });
-  started.catch(() => (current ? handlers.onFailure() : undefined));
+  started.catch((error: unknown) => (current ? handlers.onFailure(error) : undefined));
   return () => {
     current = false;
     return started.then(

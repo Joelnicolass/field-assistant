@@ -3,6 +3,7 @@ import type { LotStock } from '@/domain/entities/LotStock';
 import type { RainSummary } from '@/domain/entities/RainSummary';
 import type { Receipt } from '@/domain/entities/Receipt';
 import type { Resolution } from '@/domain/entities/Resolution';
+import type { InterpreterErrorCode } from '@/domain/enums/InterpreterErrorCode';
 import type { ResolutionKind } from '@/domain/enums/ResolutionKind';
 import type { Failure } from '@/domain/errors/Failure';
 
@@ -18,6 +19,7 @@ export enum VoiceCardKind {
   AudioSaved = 'audio_saved',
   SavedProposal = 'saved_proposal',
   SavedAnswer = 'saved_answer',
+  SavedRejected = 'saved_rejected',
   SavedNotUnderstood = 'saved_not_understood',
 }
 
@@ -46,7 +48,7 @@ export type VoiceCard =
   | { kind: VoiceCardKind.Rejected; failure: Failure }
   | { kind: VoiceCardKind.NotUnderstood }
   | { kind: VoiceCardKind.MicrophoneDenied }
-  | { kind: VoiceCardKind.AudioSaved }
+  | { kind: VoiceCardKind.AudioSaved; code: InterpreterErrorCode }
   | {
       kind: VoiceCardKind.SavedProposal;
       id: number;
@@ -54,6 +56,7 @@ export type VoiceCard =
       recordedOn: DateText;
     }
   | { kind: VoiceCardKind.SavedAnswer; id: number; answer: AnswerCard }
+  | { kind: VoiceCardKind.SavedRejected; id: number; failure: Failure }
   | { kind: VoiceCardKind.SavedNotUnderstood; id: number };
 
 /** Las tarjetas con "Anotar": la del turno y la de un audio guardado. */

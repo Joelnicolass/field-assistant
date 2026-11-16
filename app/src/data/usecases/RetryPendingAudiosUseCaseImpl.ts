@@ -33,12 +33,13 @@ export class RetryPendingAudiosUseCaseImpl implements RetryPendingAudiosUseCase 
     today,
     lastRecord,
     alreadyResolved,
+    limit,
   }: RetryPendingAudiosUseCaseInput): Promise<RetryPendingAudiosUseCaseOutput> {
     const queue = (await this.pendingAudios.list()).filter(
       ({ id }) => !alreadyResolved.includes(id),
     );
     const resolved: ResolvedAudio[] = [];
-    for (const pending of queue) {
+    for (const pending of queue.slice(0, limit)) {
       const resolution = await this.interpretOne(pending, today, lastRecord);
       if (resolution === null) {
         break;

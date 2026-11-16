@@ -304,6 +304,19 @@ no alcanza con volver a correr `assembleRelease`.
   batería suma reintentos por caso para medir lo que entiende el modelo aunque el proveedor
   falle. Por decisión del autor, no se siguió midiendo la disponibilidad del proveedor.
 
+## Latencia de diez turnos, desde el teléfono (RFC-004, criterio 49)
+
+- **Dispositivo:** Motorola moto e40, Android 11, por USB contra el server local de la Mac
+  (Gemini y ElevenLabs reales). Audio de prueba en lugar del micrófono (frases de
+  `server/eval/audios/`). 16-nov-2026.
+- **Qué se mide:** la línea `[latencia]` del registro de la app, desde que termina la escucha
+  hasta que la respuesta está lista (subir el audio, entender y resolver), sin contar el hablar.
+- **Los diez turnos (consultas de lluvia y de lotes):** 1.725, 1.827, 1.957, 2.306, 2.603, 2.733,
+  2.990, 4.408, 4.767 y 7.056 ms. **Mediana: 2,7 s.**
+- **Veredicto:** la mediana queda dentro de los 5 s de RNF-02. Los turnos más lentos coinciden con
+  fallas de Gemini (`503` y cortes a los 7 s) durante la corrida: esos audios fueron a la cola y
+  se entendieron después. La voz del server empieza a sonar en 0,3 a 0,8 s con streaming.
+
 ## Faltan
 
 - **Q4, decidida (D25):** con un plan pago de ElevenLabs la API deja usar la biblioteca, que tiene

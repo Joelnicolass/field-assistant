@@ -17,7 +17,7 @@ import {
   type ProposalResolution,
   type VoiceCard,
 } from '../../states/VoiceCard';
-import { CARD_TEXT, RAIN_PERIOD, SPOKEN } from '../constants';
+import { CARD_TEXT, RAIN_PERIOD, SAVED_CARD, SPOKEN } from '../constants';
 import { failureReply } from './spokenReply';
 import {
   animalsText,
@@ -159,10 +159,9 @@ function rainAnswerView(
 function lotAnswerView({
   stock,
 }: Extract<AnswerCard, { kind: VoiceCardKind.LotAnswer }>): InfoCardProps {
-  const categories = Object.values(AnimalCategory).filter(
-    (category) => stock.byCategory[category] > 0,
-  );
-  const most = Math.max(...categories.map((category) => stock.byCategory[category]));
+  // Las cinco categorías siempre, también las que están en 0: así se ve qué falta en el lote.
+  const categories = Object.values(AnimalCategory);
+  const most = Math.max(1, ...categories.map((category) => stock.byCategory[category]));
   return {
     icon: IconName.Question,
     label: CARD_TEXT.lot(stock.lot),
@@ -261,12 +260,12 @@ const CARD_VIEWS: {
     ],
     onClose: actions.close,
   }),
-  [VoiceCardKind.AudioSaved]: (_card, { actions }) => ({
+  [VoiceCardKind.AudioSaved]: ({ code }, { actions }) => ({
     icon: IconName.Offline,
-    label: CARD_TEXT.audioSaved,
+    label: SAVED_CARD[code].label,
     tone: Tone.Warning,
     message: CARD_TEXT.audioSavedMessage,
-    hint: CARD_TEXT.audioSavedHint,
+    hint: SAVED_CARD[code].hint,
     onClose: actions.close,
   }),
   [VoiceCardKind.SavedProposal]: (card, context) => ({
@@ -285,6 +284,15 @@ const CARD_VIEWS: {
   [VoiceCardKind.SavedAnswer]: ({ id, answer }, context) => ({
     ...cardView(answer, context),
     onClose: () => context.actions.discard(id),
+  }),
+  [VoiceCardKind.SavedRejected]: ({ id, failure }, { actions }) => ({
+    icon: IconName.Alert,
+    label: CARD_TEXT.saved,
+    tone: Tone.Danger,
+    message: failureReply(failure),
+    buttons: [
+      button('discard', CARD_TEXT.discard, ButtonVariant.Secondary, () => actions.discard(id)),
+    ],
   }),
   [VoiceCardKind.SavedNotUnderstood]: ({ id }, { actions }) => ({
     icon: IconName.Alert,

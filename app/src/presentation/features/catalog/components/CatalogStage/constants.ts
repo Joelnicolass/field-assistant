@@ -15,6 +15,7 @@ const IDLE: VoiceStageView = {
   subtitle: 'Contame qué pasó hoy en el campo',
   cards: [],
   pendingCount: 0,
+  sending: false,
   busy: false,
   onOrbPress: doNothing,
 };

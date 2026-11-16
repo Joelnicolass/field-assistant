@@ -10,7 +10,10 @@ export function readNumber(raw: string | undefined, fallback: number): number {
 }
 
 export const settings = {
-  serverUrl: process.env.EXPO_PUBLIC_SERVER_URL ?? 'http://localhost:8787',
+  // El server publicado del challenge. Para desarrollar contra la Mac:
+  // EXPO_PUBLIC_SERVER_URL=http://localhost:8787 y `adb reverse tcp:8787 tcp:8787`.
+  serverUrl:
+    process.env.EXPO_PUBLIC_SERVER_URL || 'https://server-production-b97a938f.up.railway.app',
   /** La clave que el server publicado pide en X-App-Key; en desarrollo puede faltar. */
   appKey: process.env.EXPO_PUBLIC_APP_KEY ?? '',
   rootScreen: process.env.EXPO_PUBLIC_SHOW_CATALOG === '1' ? RootScreen.Catalog : RootScreen.Home,

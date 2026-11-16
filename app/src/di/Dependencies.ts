@@ -1,7 +1,9 @@
 import type { ClockService } from '@/domain/services/ClockService';
+import type { ApplyCorrectionUseCase } from '@/domain/usecases/ApplyCorrectionUseCase';
 import type { GetLotStockUseCase } from '@/domain/usecases/GetLotStockUseCase';
 import type { GetRainSummaryUseCase } from '@/domain/usecases/GetRainSummaryUseCase';
 import type { GetTodaySummaryUseCase } from '@/domain/usecases/GetTodaySummaryUseCase';
+import type { PreviewCorrectionUseCase } from '@/domain/usecases/PreviewCorrectionUseCase';
 import type { PreviewMovementUseCase } from '@/domain/usecases/PreviewMovementUseCase';
 import type { PreviewRainUseCase } from '@/domain/usecases/PreviewRainUseCase';
 import type { RegisterMovementUseCase } from '@/domain/usecases/RegisterMovementUseCase';
@@ -16,4 +18,6 @@ export type Dependencies = {
   getRainSummary: GetRainSummaryUseCase;
   getLotStock: GetLotStockUseCase;
   getTodaySummary: GetTodaySummaryUseCase;
+  previewCorrection: PreviewCorrectionUseCase;
+  applyCorrection: ApplyCorrectionUseCase;
 };

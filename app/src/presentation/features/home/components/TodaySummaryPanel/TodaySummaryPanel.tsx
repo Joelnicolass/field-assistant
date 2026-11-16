@@ -1,7 +1,6 @@
 import Animated from 'react-native-reanimated';
 
 import { useStyles } from '@/shared/presentation/hooks/useStyles';
-import { useTheme } from '@/shared/presentation/hooks/useTheme';
 import type { TodaySummaryView } from '../../hooks/todaySummaryView';
 import { SummaryData } from '../SummaryData';
 import { SummaryHeader } from '../SummaryHeader';
@@ -22,19 +21,9 @@ type TodaySummaryPanelProps = {
 export function TodaySummaryPanel(props: TodaySummaryPanelProps) {
   const { summary, compact, dimmed, pendingCount, onOpenCatalog } = props;
   const styles = useStyles(createStyles);
-  const { durations } = useTheme();
 
   return (
-    <Animated.View
-      style={[
-        styles.panel,
-        {
-          opacity: dimmed ? DIMMED_OPACITY : 1,
-          transitionProperty: 'opacity',
-          transitionDuration: durations.orbColor,
-        },
-      ]}
-    >
+    <Animated.View style={[styles.panel, styles.fade, { opacity: dimmed ? DIMMED_OPACITY : 1 }]}>
       <SummaryHeader
         place={summary.place}
         pendingCount={pendingCount}

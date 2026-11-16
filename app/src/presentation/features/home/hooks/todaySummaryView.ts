@@ -1,4 +1,5 @@
 import type { TodaySummary } from '@/domain/entities/TodaySummary';
+import { withThousands } from '@/shared/presentation/format/withThousands';
 import { TEXT } from './constants';
 
 /** Un dato del resumen: el valor con su unidad, y la etiqueta con una parte destacada. */
@@ -26,11 +27,6 @@ export type TodaySummaryView = {
   /** "7 lotes activos": los que tienen hacienda. */
   activeLots: string;
 };
-
-/** 1240 → "1.240". */
-export function withThousands(value: number): string {
-  return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-}
 
 // Con un espacio que no se parte: el número y la unidad van siempre en el mismo renglón.
 function millimeters(value: number): string {
@@ -68,33 +64,41 @@ function activeLotsText(lots: TodaySummary['lots']): string {
   return active === 1 ? '1 lote activo' : `${active} lotes activos`;
 }
 
+function summaryTiles(summary: TodaySummary): SummaryTile[] {
+  return [
+    { key: 'heads', value: withThousands(summary.totalHeads), label: TEXT.heads },
+    {
+      key: 'monthRain',
+      value: withThousands(summary.monthRain),
+      unit: TEXT.millimeters,
+      label: TEXT.monthRain,
+    },
+    lastRainTile(summary.lastRain),
+  ];
+}
+
+function summaryLots(lots: TodaySummary['lots']): SummaryLot[] {
+  const most = Math.max(0, ...lots.map((lot) => lot.total));
+  return lots.map((lot) => ({
+    key: String(lot.number),
+    name: `${TEXT.lotPrefix}${lot.number}`,
+    heads: withThousands(lot.total),
+    share: most === 0 ? 0 : lot.total / most,
+    empty: lot.total === 0,
+  }));
+}
+
 /** Arma los textos del resumen de hoy a partir de los números del caso de uso. */
 export function todaySummaryView(summary: TodaySummary): TodaySummaryView {
   const { notedToday } = summary;
-  const most = Math.max(0, ...summary.lots.map((lot) => lot.total));
   return {
     place: `${summary.farmName} · ${summary.activity} · ${summary.location}`,
     noted: {
       text: notedText(notedToday),
       anything: notedToday.rainMillimeters > 0 || notedToday.movedAnimals > 0,
     },
-    tiles: [
-      { key: 'heads', value: withThousands(summary.totalHeads), label: TEXT.heads },
-      {
-        key: 'monthRain',
-        value: withThousands(summary.monthRain),
-        unit: TEXT.millimeters,
-        label: TEXT.monthRain,
-      },
-      lastRainTile(summary.lastRain),
-    ],
-    lots: summary.lots.map((lot) => ({
-      key: String(lot.number),
-      name: `${TEXT.lotPrefix}${lot.number}`,
-      heads: withThousands(lot.total),
-      share: most === 0 ? 0 : lot.total / most,
-      empty: lot.total === 0,
-    })),
+    tiles: summaryTiles(summary),
+    lots: summaryLots(summary.lots),
     activeLots: activeLotsText(summary.lots),
   };
 }

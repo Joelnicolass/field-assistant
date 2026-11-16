@@ -6,6 +6,7 @@ import type { InterpreterFailure } from '@/domain/entities/InterpreterFailure';
 import { InterpreterErrorCode } from '@/domain/enums/InterpreterErrorCode';
 import type { Result } from '@/domain/errors/Result';
 import type { InterpretInput, InterpreterService } from '@/domain/services/InterpreterService';
+import { appKeyHeader } from './appKeyHeader';
 
 type InterpretResult = Result<Interpretation, InterpreterFailure>;
 
@@ -41,6 +42,7 @@ export class ServerInterpreterService implements InterpreterService {
   constructor(
     private readonly serverUrl: string,
     private readonly timeoutMs: number,
+    private readonly appKey: string,
   ) {}
 
   async interpret({ audio, history, referenceDay }: InterpretInput): Promise<InterpretResult> {
@@ -58,6 +60,7 @@ export class ServerInterpreterService implements InterpreterService {
           'Content-Type': audio.mimeType,
           'X-History': encodeURIComponent(JSON.stringify(history)),
           'X-Reference-Day': referenceDay,
+          ...appKeyHeader(this.appKey),
         },
         signal: controller.signal,
       });

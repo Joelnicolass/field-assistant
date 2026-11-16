@@ -2,9 +2,12 @@ import type { SpeakerService } from '@/domain/services/SpeakerService';
 
 /**
  * Habla con la primera voz y, si falla o no empieza a sonar en `startTimeoutMs`, la corta y dice
- * lo mismo con la segunda.
+ * lo mismo con la segunda. Una vez que pasó a la segunda, sigue con ella hasta `reset`, para no
+ * mezclar dos voces en un mismo turno.
  */
 export class FallbackSpeakerService implements SpeakerService {
+  private onFallback = false;
+
   constructor(
     private readonly primary: SpeakerService,
     private readonly fallback: SpeakerService,
@@ -12,10 +15,15 @@ export class FallbackSpeakerService implements SpeakerService {
   ) {}
 
   async speak(text: string, onStart?: () => void): Promise<void> {
-    if (await this.primaryWorked(text, onStart)) {
+    if (!this.onFallback && (await this.primaryWorked(text, onStart))) {
       return;
     }
+    this.onFallback = true;
     await this.fallback.speak(text, onStart);
+  }
+
+  reset(): void {
+    this.onFallback = false;
   }
 
   stop(): void {

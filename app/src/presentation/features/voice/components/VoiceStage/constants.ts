@@ -12,3 +12,4 @@ export const STAGE = {
 
 export const DOCK_ANTICIPATION = 0.025;
 export const SLIDE_MS = 300;
+export const STATUS_RISE = 5;

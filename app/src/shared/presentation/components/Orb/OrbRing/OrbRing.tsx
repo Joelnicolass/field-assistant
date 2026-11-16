@@ -41,10 +41,11 @@ export function OrbRing({ state, size, motion }: OrbLayerProps) {
   const { swirl } = motion.phases;
   const { voice, voiceLag } = motion.voice;
   const { pressed } = motion.press;
+  const { ringScale } = motion.entrance;
 
   // La escala va antes que el giro para que el aro se aplaste en el mismo eje que la esfera.
   const style = useAnimatedStyle(() => {
-    const scale = 1 + voiceLag.get() * 0.14;
+    const scale = ringScale.get() * (1 + voiceLag.get() * 0.14);
     const shape = squash(voice.get(), voiceLag.get(), pressed.get());
     return {
       transform: [

@@ -47,3 +47,13 @@ export const ORB_SHADE = {
   shine: '#FFFFFFB8',
   rim: '#FFFFFFE6',
 } as const;
+
+/** La entrada del logo (VISUAL 4.8): el blanco de sus caminos, las ondas y el fogonazo del golpe. */
+export const LOGO_INTRO_COLORS = {
+  roads: '#FFFFFF',
+  wave: '#3CCC6C',
+  /** El verde vivo con el que brillan las parcelas oscuras. */
+  lightGreen: '#3CCC6C',
+  flash:
+    'radial-gradient(circle closest-side at 50% 50%, #F4FFF6F2 0%, #D2F9DCE0 42%, #86E8A570 60%, #3CCC6C26 80%, #3CCC6C00 100%)',
+} as const;

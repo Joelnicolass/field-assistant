@@ -6,7 +6,7 @@ para la revisión del autor. Los pasos chicos los hace el orquestador; los grand
 
 | Paso | Objetivo | Estado |
 | --- | --- | --- |
-| A | Primera entrega: APK de release contra Railway, ícono y splash, y el Release v1.0.0 | pendiente |
+| A | Primera entrega: APK de release contra Railway, ícono y splash, y el Release v1.0.0 | aprobado (APK y Release al final) |
 | B | Documentos: README, DECISIONS con las nueve entradas y AI-USAGE | pendiente |
 | C | Manos libres | pendiente |
 | D | Frases grabadas y aviso de voz en español | pendiente |

@@ -12,4 +12,6 @@ export type InterpretInput = {
 
 export interface InterpreterService {
   interpret(input: InterpretInput): Promise<Result<Interpretation, InterpreterFailure>>;
+  /** Despierta al server, si estaba dormido, sin esperar la respuesta. */
+  wakeUp(): void;
 }

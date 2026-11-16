@@ -20,6 +20,7 @@ export function CatalogStage() {
           summary={SAMPLE_SUMMARY}
           compact={false}
           dimmed={false}
+          hidden={false}
           pendingCount={0}
           sending={false}
           onPendingPress={doNothing}
@@ -34,6 +35,7 @@ export function CatalogStage() {
           summary={SAMPLE_SUMMARY}
           compact
           dimmed={false}
+          hidden={false}
           pendingCount={2}
           sending={false}
           onPendingPress={doNothing}

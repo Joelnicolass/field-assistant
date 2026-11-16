@@ -6,6 +6,7 @@ import {
   withSequence,
   withSpring,
   withTiming,
+  type DerivedValue,
   type SharedValue,
 } from 'react-native-reanimated';
 
@@ -14,6 +15,7 @@ import { EASING, SPRINGS } from '@/shared/presentation/theme/motion';
 import { GLIDE_MS, KICK_SIZE, RIPPLE_MS, WAVE_MS } from './constants';
 import { ORB_STATES } from './orbStates';
 import type { OrbState } from './OrbState';
+import type { OrbIntro } from './types';
 
 // El movimiento del orbe dice el estado de la app: ignora "reducir animaciones" (V3).
 const ALWAYS = ReduceMotion.Never;
@@ -58,7 +60,11 @@ function usePose(state: OrbState) {
 }
 
 /** Relojes de 0 a 1 que avanzan en cada cuadro según la velocidad de la pose. */
-function usePhases(swirlSpeed: SharedValue<number>, breathSpeed: SharedValue<number>) {
+function usePhases(
+  swirlSpeed: SharedValue<number>,
+  breathSpeed: SharedValue<number>,
+  swirlBoost: DerivedValue<number>,
+) {
   const swirl = useSharedValue(0);
   const breath = useSharedValue(0);
   const ripple = useSharedValue(0);
@@ -66,7 +72,7 @@ function usePhases(swirlSpeed: SharedValue<number>, breathSpeed: SharedValue<num
 
   useFrameCallback((frame) => {
     const elapsed = frame.timeSincePreviousFrame ?? 0;
-    swirl.set((swirl.get() + elapsed * swirlSpeed.get()) % 1);
+    swirl.set((swirl.get() + elapsed * swirlSpeed.get() * swirlBoost.get()) % 1);
     breath.set((breath.get() + elapsed * breathSpeed.get()) % 1);
     ripple.set((ripple.get() + elapsed / RIPPLE_MS) % 1);
     wave.set((wave.get() + elapsed / WAVE_MS) % 1);
@@ -106,13 +112,27 @@ function usePress() {
   };
 }
 
+/** Los valores de la entrada o, sin entrada, un 1 fijo: tamaño normal, dibujo a la vista y giro normal. */
+function useEntrance(intro: OrbIntro | undefined) {
+  const still: DerivedValue<number> = useSharedValue(1);
+  return {
+    sphereScale: intro?.sphereScale ?? still,
+    ringScale: intro?.ringScale ?? still,
+    haloScale: intro?.haloScale ?? still,
+    glyphOpacity: intro?.glyphOpacity ?? still,
+    glyphScale: intro?.glyphScale ?? still,
+    swirlBoost: intro?.swirlBoost ?? still,
+  };
+}
+
 /** Todos los valores animados del orbe, que leen sus capas. */
-export function useOrbMotion(state: OrbState, level: number) {
+export function useOrbMotion(state: OrbState, level: number, intro?: OrbIntro) {
+  const entrance = useEntrance(intro);
   const pose = usePose(state);
-  const phases = usePhases(pose.swirlSpeed, pose.breathSpeed);
+  const phases = usePhases(pose.swirlSpeed, pose.breathSpeed, entrance.swirlBoost);
   const voice = useVoice(state, level);
   const press = usePress();
-  return { pose, phases, voice, press };
+  return { entrance, pose, phases, voice, press };
 }
 
 export type OrbMotion = ReturnType<typeof useOrbMotion>;

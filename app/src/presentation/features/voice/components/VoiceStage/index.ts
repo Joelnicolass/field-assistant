@@ -1,1 +1,1 @@
-export { VoiceStage } from './VoiceStage';
+export { VoiceStage, type VoiceStageIntro } from './VoiceStage';

@@ -12,3 +12,4 @@ export function pendingLabel(count: number): string {
 }
 
 export const SENDING_LABEL = 'Enviando…';
+export const SEND_NOW_HINT = 'Tocá para enviarlos ahora';

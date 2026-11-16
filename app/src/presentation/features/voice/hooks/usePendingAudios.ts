@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useEffectEvent, useState } from 'react';
 
 import { useDependencies } from '@/di/useDependencies';
 import type { ResolvedAudio } from '@/domain/entities/ResolvedAudio';
@@ -43,10 +43,19 @@ function oldestEntry(resolved: ResolvedAudio[]): SavedEntry[] {
  * persona los anota o los descarta; nada se anota solo. `pendingCount` son los que esperan señal.
  */
 export function usePendingAudios({ phase, lastRecord, history }: VoiceState) {
-  const { discardPendingAudio } = useDependencies();
+  const { discardPendingAudio, countPendingAudios } = useDependencies();
   const [queue, setQueue] = useState<Queue>({ waiting: 0, resolved: [] });
 
-  const sending = useQueueRetry({
+  // Un audio se guarda al fallar un turno, que pasa a otra fase: se cuenta en cada cambio, así la
+  // píldora aparece apenas se guardó, sin esperar al próximo reintento.
+  const resolvedIds = useEffectEvent(() => queue.resolved.map(({ pending }) => pending.id));
+  useEffect(() => {
+    void countPendingAudios
+      .execute({ alreadyResolved: resolvedIds() })
+      .then((waiting) => setQueue((current) => ({ ...current, waiting })));
+  }, [phase, countPendingAudios]);
+
+  const { sending, retryNow } = useQueueRetry({
     phase,
     history,
     lastRecord,
@@ -62,6 +71,7 @@ export function usePendingAudios({ phase, lastRecord, history }: VoiceState) {
   return {
     pendingCount: queue.waiting,
     sending,
+    retryNow,
     saved: oldestEntry(queue.resolved),
     discard,
   };

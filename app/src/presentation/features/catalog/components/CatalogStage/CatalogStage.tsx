@@ -22,6 +22,7 @@ export function CatalogStage() {
           dimmed={false}
           pendingCount={0}
           sending={false}
+          onPendingPress={doNothing}
           onOpenCatalog={doNothing}
         />
       </View>
@@ -33,6 +34,7 @@ export function CatalogStage() {
           dimmed={false}
           pendingCount={2}
           sending={false}
+          onPendingPress={doNothing}
           onOpenCatalog={doNothing}
         />
       </View>

@@ -3,6 +3,7 @@ import type { ClockService } from '@/domain/services/ClockService';
 import type { SpeakerService } from '@/domain/services/SpeakerService';
 import type { InterpreterService } from '@/domain/services/InterpreterService';
 import type { ApplyCorrectionUseCase } from '@/domain/usecases/ApplyCorrectionUseCase';
+import type { CountPendingAudiosUseCase } from '@/domain/usecases/CountPendingAudiosUseCase';
 import type { DiscardPendingAudioUseCase } from '@/domain/usecases/DiscardPendingAudioUseCase';
 import type { GetLotStockUseCase } from '@/domain/usecases/GetLotStockUseCase';
 import type { GetRainSummaryUseCase } from '@/domain/usecases/GetRainSummaryUseCase';
@@ -34,4 +35,5 @@ export type Dependencies = {
   keepAudioForLater: KeepAudioForLaterUseCase;
   retryPendingAudios: RetryPendingAudiosUseCase;
   discardPendingAudio: DiscardPendingAudioUseCase;
+  countPendingAudios: CountPendingAudiosUseCase;
 };

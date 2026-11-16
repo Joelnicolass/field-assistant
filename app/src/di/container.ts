@@ -11,6 +11,7 @@ import { ServerInterpreterService } from '@/data/services/ServerInterpreterServi
 import { ServerSpeakerService } from '@/data/services/ServerSpeakerService';
 import { SystemClockService } from '@/data/services/SystemClockService';
 import { ApplyCorrectionUseCaseImpl } from '@/data/usecases/ApplyCorrectionUseCaseImpl';
+import { CountPendingAudiosUseCaseImpl } from '@/data/usecases/CountPendingAudiosUseCaseImpl';
 import { DiscardPendingAudioUseCaseImpl } from '@/data/usecases/DiscardPendingAudioUseCaseImpl';
 import { GetLotStockUseCaseImpl } from '@/data/usecases/GetLotStockUseCaseImpl';
 import { GetRainSummaryUseCaseImpl } from '@/data/usecases/GetRainSummaryUseCaseImpl';
@@ -75,4 +76,5 @@ export const container: Dependencies = {
   keepAudioForLater: new KeepAudioForLaterUseCaseImpl(pendingAudios),
   retryPendingAudios: new RetryPendingAudiosUseCaseImpl(pendingAudios, interpreter, resolveRequest),
   discardPendingAudio: new DiscardPendingAudioUseCaseImpl(pendingAudios),
+  countPendingAudios: new CountPendingAudiosUseCaseImpl(pendingAudios),
 };

@@ -29,11 +29,14 @@ function retryWhenDue(retry: () => void): () => void {
 /**
  * Cuándo reintentar la cola: al abrir, cada `retryQueueMs`, al volver a la app y cuando termina un
  * turno que salió bien (el server respondió, y eso suma un turno al historial). Los manda de a uno
- * y no molesta mientras hay un turno en curso. Devuelve si hay un envío en curso.
+ * y no molesta mientras hay un turno en curso. Devuelve si hay un envío en curso y cómo pedir un
+ * reintento en el momento (al tocar la píldora).
  */
-export function useQueueRetry({ history, onFound, ...snapshot }: QueueRetryInput): boolean {
+export function useQueueRetry({ history, onFound, ...snapshot }: QueueRetryInput) {
   const services = useDependencies();
   const [sending, setSending] = useState(false);
+  // Cada toque de la píldora lo suma: el efecto de abajo reintenta al cambiar.
+  const [asked, setAsked] = useState(0);
   const busy = useRef(false);
   const answeredHistory = useRef(history);
   const latest = useEffectEvent(() => snapshot);
@@ -42,10 +45,12 @@ export function useQueueRetry({ history, onFound, ...snapshot }: QueueRetryInput
     trySend({ services, latest: () => latest(), onFound, busy, setSending }),
   );
 
+  useEffect(() => retryWhenDue(() => void retry()), []);
+
+  // Al abrir y cada vez que se pide en el momento.
   useEffect(() => {
     void retry();
-    return retryWhenDue(() => void retry());
-  }, []);
+  }, [asked]);
 
   useEffect(() => {
     if (snapshot.phase === VoicePhase.Idle && answeredHistory.current !== history) {
@@ -54,5 +59,5 @@ export function useQueueRetry({ history, onFound, ...snapshot }: QueueRetryInput
     }
   }, [snapshot.phase, history]);
 
-  return sending;
+  return { sending, retryNow: () => setAsked((count) => count + 1) };
 }

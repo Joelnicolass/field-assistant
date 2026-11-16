@@ -110,6 +110,101 @@ Tiempos: el bundle tarda entre 12 y 23 s y el `assembleRelease` que sigue, unos 
 **Veredicto:** el valor queda fijo en el paquete. Cambiarlo exige forzar la tarea del bundle;
 no alcanza con volver a correr `assembleRelease`.
 
+## Comprobaciones en el teléfono (I1, I4, I5, I6, I9, I10 e I11)
+
+- **Fecha:** 16-nov-2026.
+- **Dispositivo:** moto e40, Android 11 (API 30), arm64-v8a, con el build de debug y el
+  JavaScript por Metro. Cada una tiene su tarjeta en `ResearchScreen`.
+- **Dato del teléfono:** tiene activada la opción de reducir animaciones. Reanimated la respeta
+  por defecto y lo avisa en el log.
+
+### I1 · Grabar con `expo-audio` y leer el volumen
+
+- **Se espera:** graba en AAC (`.m4a`) y entrega el volumen varias veces por segundo. El permiso
+  se consulta antes de pedirlo. Se anota el volumen del ambiente y el de una voz.
+- **Qué dio:**
+  - El permiso, consultado antes de pedirlo, estaba en `undetermined`; después se pidió y se
+    concedió.
+  - El archivo es `.m4a` con AAC, 44,1 kHz y **un canal**, aunque `RecordingPresets.HIGH_QUALITY`
+    pide dos. Una grabación de 3,1 s pesa 40.657 bytes.
+  - El volumen se lee en vivo con `recorder.getStatus().metering`: −160 dB en silencio (el piso
+    del medidor) y −13,9 dB como máximo con voz.
+  - `durationMillis` de `getStatus()` vino en 0 durante la grabación: la duración se toma con el
+    reloj de la app.
+- **Pendiente:** se hizo una sola grabación. Las lecturas por segundo y el umbral entre ambiente
+  y voz quedan para cuando se grabe de nuevo.
+- **Veredicto:** se cumple en formato y en volumen en vivo; falta medir cuántas lecturas por
+  segundo entrega.
+
+### I4 · Voces en español del teléfono
+
+- **Se espera:** se listan las voces. En Android la voz se elige por su identificador, no por el
+  idioma con región.
+- **Qué dio:** 473 voces en total y 18 en español, todas de `es-US` o `es-ES` (por ejemplo
+  `es-us-x-sfb-network`, `es-es-x-eee-local`). No hay ninguna `es-AR`. Todas con calidad
+  `Enhanced`.
+- **Pendiente:** escuchar cómo suena hablar con el identificador y pidiendo `es-AR`.
+- **Veredicto:** se listan; no hay voz argentina en el teléfono.
+
+### I5 · Vosk como detector de una frase
+
+- **Se espera:** con una lista que tiene solo la frase, se dispara con cualquier oración. Con
+  una frase de dos palabras más una lista de palabras comunes, no.
+- **Qué dio:**
+  - El modelo carga en 2.033 ms (la primera vez lo copia desde el APK).
+  - "escuchame", "hola" y "asistente" están en el vocabulario. "vaquillonas" y "mové" **no**
+    están: la lista de palabras comunes no las usa.
+- **Pendiente:** decir las frases candidatas y contar aciertos y disparos por error. Q2 sigue
+  abierta. Se retoma en el RFC-005, que es donde se usa manos libres.
+
+### I6 · Memoria con el modelo de Vosk cargado
+
+- **Se espera:** sube alrededor de 100 MB.
+- **Qué dio:** `adb shell dumpsys meminfo com.fieldassistant.app`, `TOTAL PSS`: 305.755 kB
+  antes de cargar el modelo y 416.245 kB después. Sube 110 MB.
+- **Veredicto:** se cumple.
+
+### I9 · Degradés y sombras en Android 11
+
+- **Se espera:** `backgroundImage` con degradé lineal y radial, y `boxShadow`, se dibujan. El
+  desenfoque en vivo (`filter: blur`) no.
+- **Qué dio:** el degradé lineal, el radial y la sombra se ven. El cuadro con `filter: blur(6px)`
+  se ve nítido.
+- **Veredicto:** se cumple.
+
+### I10 · Reanimated en el hilo de la interfaz
+
+- **Se espera:** un estilo animado se recalcula solo si lee el valor compartido directamente,
+  no dentro de otra función.
+- **Qué dio:**
+  - Se movieron **los dos** cuadros: el que lee `offset.get()` en el estilo y el que lo lee
+    con una función `'worklet'` que recibe el valor compartido. Leerlo dentro de otra función
+    worklet también se sigue.
+  - Con reducir animaciones activado, `withTiming` no anima: el cuadro salta al final. A los
+    0,7 s de una animación de 1,5 s ya estaba en el final.
+  - Con el plugin de hooks de ESLint, el valor compartido se cambia con `.set()` y se lee con
+    `.get()`: asignar `.value` rompe el lint.
+- **Pendiente:** ver la animación fluida con JavaScript bloqueado. Con reducir animaciones
+  activado no se puede: hay que pedirle a la animación que no lo respete.
+- **Veredicto:** no se cumple como se esperaba. La restricción de R46 sobre leer el valor
+  "dentro de otra función" no aparece con una función worklet.
+
+### I11 · Sensor de luz y brillo
+
+- **Se espera:** el sensor entrega lux. `expo-brightness` cambia el brillo solo de la app y sin
+  pedir permiso.
+- **Qué dio:**
+  - El sensor está disponible y entrega lux en vivo: de 300 a 1.600 en interior, según la luz.
+  - El brillo de la app pasó a 1,0 y a 0,2. El del sistema siguió igual (148 de 255 en
+    `settings get system screen_brightness`; 0,50 según `getSystemBrightnessAsync`).
+  - No se pidió ningún permiso.
+- **Veredicto:** se cumple.
+
 ## Faltan
 
-Todavía sin hacer: I1, I2, I3, I4, I5, I6, I9, I10, I11 e I13. I12 se quitó.
+- **Paso 6:** I2 (el modelo entiende el audio), I3 (la voz de servicio) e I13 (la latencia de un
+  turno). I3 depende de que la clave de ElevenLabs tenga créditos.
+- **Con voz real, pendientes:** las otras grabaciones de I1, escuchar las voces de I4 y la frase
+  de manos libres de I5 (RFC-005).
+- **Para decidir:** si el orbe respeta la opción de reducir animaciones del teléfono (I10).
+- I12 se quitó.

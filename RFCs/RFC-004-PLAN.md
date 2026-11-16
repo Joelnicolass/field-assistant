@@ -10,7 +10,7 @@ implementa y prueba el orquestador; los grandes (C, E y F) van por `dev` y `qa`.
 | C | La app entiende y resuelve: contratos, ajustes, intérprete, `ResolveRequest` y la cola de audios | aprobado |
 | D | Grabar y hablar: los servicios de micrófono, voces y la cola de sonidos | aprobado |
 | E | El turno en pantalla: escuchar, pensar, hablar, proponer, anotar y preguntar | aprobado |
-| F | Errores con salida, audios guardados, corrección, latencia y la prueba de punta a punta | pendiente |
+| F | Errores con salida, audios guardados, corrección, latencia y la prueba de punta a punta | aprobado |
 
 Rama por paso, con su PR a `feature/rfc-004`: `feature/rfc-004-A` a `-F`.
 
@@ -167,11 +167,8 @@ app/src/presentation/features/home/   [~] pendingCount en el encabezado
 docs/RESEARCH.md   [~] la latencia de diez turnos, desde el teléfono
 ```
 
-**Android nuevos:** además del teléfono (Android 11), los turnos con audio de prueba se repiten
-en el emulador `Medium_Phone_API_36` (Android 16, el `targetSdk` de la app). Se revisa: pantalla de
-borde a borde (el resumen y el orbe no quedan debajo de las barras del sistema), el gesto de
-"atrás" predictivo entre el catálogo y el inicio, el permiso del micrófono "Solo esta vez" y
-denegado, y el micrófono apagado desde el panel rápido. Los permisos del manifiesto no se tocan.
+**Android nuevos:** el autor pidió saltear las pruebas en Android 16 en este paso. En el paso E
+se comprobó que la app instala y abre en el emulador de Android 16, de borde a borde.
 
 **Criterios:** 27, 30, 36 a 39, 41, 44, 46, 47 y 49.
 

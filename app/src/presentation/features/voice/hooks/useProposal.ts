@@ -10,10 +10,11 @@ import { useCountdown } from './useCountdown';
 type ProposalInput = {
   state: VoiceState;
   dispatch: Dispatch<VoiceAction>;
-  fail: () => void;
+  fail: (error?: unknown) => void;
   silence: () => void;
   /** Se llama después de anotar algo en el campo. */
   onRecorded: () => void;
+  discard: (id: number) => Promise<void>;
 };
 
 /** La propuesta en pantalla: anotarla, cancelarla y su cuenta. `confirm` es lo único que escribe. */

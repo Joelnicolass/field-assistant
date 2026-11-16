@@ -37,6 +37,7 @@ export class FallbackSpeakerService implements SpeakerService {
     const timer = setTimeout(() => {
       late = !started;
       if (late) {
+        console.log('[voz] la del server no empezó a tiempo: pasa a la del teléfono');
         this.primary.stop();
       }
     }, this.startTimeoutMs);

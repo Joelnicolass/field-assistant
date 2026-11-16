@@ -1,4 +1,5 @@
-import { ScrollView, View } from 'react-native';
+import { useRef } from 'react';
+import { ScrollView, View, type ScrollViewInstance } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -36,10 +37,14 @@ export function VoiceStage({ view }: { view: VoiceStageView }) {
   const theme = useTheme();
   const { bottom } = useSafeAreaInsets();
   const stage = useStageMotion(view.cards.length > 0, bottom);
+  const cardsRef = useRef<ScrollViewInstance>(null);
 
   return (
     <View style={styles.stage} onLayout={stage.onStageLayout}>
+      {/* Cuando llega una tarjeta, la lista baja hasta ella: la más nueva queda junto al orbe. */}
       <ScrollView
+        ref={cardsRef}
+        onContentSizeChange={() => cardsRef.current?.scrollToEnd({ animated: true })}
         style={[styles.cards, { bottom: stage.bottomGap + styles.voice.height }]}
         contentContainerStyle={styles.cardsContent}
         showsVerticalScrollIndicator={false}

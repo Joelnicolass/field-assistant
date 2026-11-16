@@ -5,7 +5,7 @@ import type { DateText } from '@/domain/entities/DateText';
 import type { Receipt } from '@/domain/entities/Receipt';
 import { ResolutionKind } from '@/domain/enums/ResolutionKind';
 import type { Result } from '@/domain/errors/Result';
-import type { ProposalCard, ProposalResolution } from '../states/VoiceCard';
+import { VoiceCardKind, type ProposalCard, type ProposalResolution } from '../states/VoiceCard';
 import { VoiceEvent } from '../states/VoiceEvent';
 import { VoicePhase } from '../states/VoicePhase';
 import type { VoiceAction } from '../states/voiceReducer';
@@ -20,9 +20,11 @@ type Services = Pick<
 export type ProposalContext = {
   state: VoiceState;
   dispatch: Dispatch<VoiceAction>;
-  fail: () => void;
+  fail: (error?: unknown) => void;
   silence: () => void;
   onRecorded: () => void;
+  /** Saca de la cola un audio guardado que se acaba de anotar. */
+  discard: (id: number) => Promise<void>;
   services: Services;
   /** Verdadero desde que empieza a escribir hasta que termina: ahí ya no se puede cancelar. */
   writing: RefObject<boolean>;
@@ -64,7 +66,7 @@ function skipSpeech({ state, silence, dispatch }: ProposalContext) {
  * siempre termina en su comprobante, aunque en el medio se toque "Cancelar".
  */
 export function confirmProposal(card: ProposalCard, context: ProposalContext): Promise<void> {
-  const { writing, services, dispatch, onRecorded, fail } = context;
+  const { writing, services, dispatch, onRecorded, discard, fail } = context;
   if (writing.current) {
     return Promise.resolve();
   }
@@ -74,6 +76,9 @@ export function confirmProposal(card: ProposalCard, context: ProposalContext): P
     .then((result) => {
       if (result.ok) {
         onRecorded();
+        if (card.kind === VoiceCardKind.SavedProposal) {
+          void discard(card.id);
+        }
       }
       dispatch({ type: VoiceEvent.ProposalConfirmed, result, spoken: confirmationReply(result) });
     })

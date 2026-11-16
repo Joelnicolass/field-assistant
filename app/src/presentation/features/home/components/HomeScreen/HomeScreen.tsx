@@ -27,6 +27,7 @@ export function HomeScreen({ navigation }: HomeScreenProps) {
           compact={voice.cards.length > 0}
           dimmed={voice.busy}
           pendingCount={voice.pendingCount}
+          sending={voice.sending}
           onOpenCatalog={() => navigation.navigate(RootScreen.Catalog)}
         />
       )}

@@ -10,8 +10,14 @@ function watch(
   end: (error?: Error) => void,
 ) {
   let started = false;
+  let requested = false;
   return player.addListener('playbackStatusUpdate', (status) => {
-    if (status.error !== null) {
+    // Se reproduce recién cuando cargó: un play() antes de eso puede perderse.
+    if (status.isLoaded && !requested) {
+      requested = true;
+      player.play();
+    }
+    if (typeof status.error === 'string' && status.error !== '') {
       end(new Error(status.error));
     } else if (status.didJustFinish) {
       end();
@@ -37,7 +43,6 @@ function play(player: AudioPlayer, onStart?: () => void) {
       player.remove();
       return error === undefined ? resolve() : reject(error);
     };
-    player.play();
   });
   return { done, stop: () => end() };
 }

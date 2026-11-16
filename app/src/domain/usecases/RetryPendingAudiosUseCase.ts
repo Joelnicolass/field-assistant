@@ -6,6 +6,8 @@ export type RetryPendingAudiosUseCaseInput = {
   today: DateText;
   lastRecord: LastRecord | null;
   alreadyResolved: number[];
+  /** Cuántos audios mandar como máximo en esta llamada; sin límite, todos. */
+  limit?: number;
 };
 
 export type RetryPendingAudiosUseCaseOutput = { waiting: number; resolved: ResolvedAudio[] };

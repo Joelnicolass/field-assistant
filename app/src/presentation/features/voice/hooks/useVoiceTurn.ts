@@ -1,11 +1,12 @@
 import { useReducer } from 'react';
 
-import { VoiceEvent } from '../states/VoiceEvent';
 import { INITIAL_VOICE_STATE, voiceReducer } from '../states/voiceReducer';
-import { SPOKEN } from './constants';
+import { useBackgroundSignal } from './useBackgroundSignal';
 import { useCardActions } from './useCardActions';
+import { useFailure } from './useFailure';
 import { useListening } from './useListening';
 import { useOrbPress } from './useOrbPress';
+import { usePendingAudios } from './usePendingAudios';
 import { useProposal } from './useProposal';
 import { useSpeech } from './useSpeech';
 import { useUnderstanding } from './useUnderstanding';
@@ -19,17 +20,12 @@ export type VoiceTurnOptions = {
 export function useVoiceTurn({ onRecorded }: VoiceTurnOptions) {
   const [state, dispatch] = useReducer(voiceReducer, INITIAL_VOICE_STATE);
   const speech = useSpeech({ state, dispatch });
-
-  // Un error que nadie esperaba: vuelve a reposo y lo dice.
-  function fail() {
-    speech.silence();
-    dispatch({ type: VoiceEvent.Failed });
-    void speech.say(SPOKEN.unexpected);
-  }
-
+  const fail = useFailure(dispatch, speech);
   const listening = useListening({ state, dispatch, fail });
   useUnderstanding({ state, dispatch, fail, takeRecording: listening.takeRecording });
-  const proposal = useProposal({ state, dispatch, fail, silence: speech.silence, onRecorded });
+  const pending = usePendingAudios(state);
+  const proposal = useProposal({ state, dispatch, fail, onRecorded, ...speech, ...pending });
+  useBackgroundSignal(dispatch);
   const onOrbPress = useOrbPress({
     phase: state.phase,
     dispatch,
@@ -37,7 +33,13 @@ export function useVoiceTurn({ onRecorded }: VoiceTurnOptions) {
     isWriting: proposal.isWriting,
     fail,
   });
-  const actions = useCardActions({ dispatch, ...proposal });
-
-  return { state, level: listening.level, actions, onOrbPress };
+  const actions = useCardActions({ dispatch, discard: pending.discard, ...proposal });
+  return {
+    state,
+    level: listening.level,
+    voiceStarted: speech.voiceStarted,
+    actions,
+    onOrbPress,
+    pending,
+  };
 }

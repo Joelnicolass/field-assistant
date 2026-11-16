@@ -8,5 +8,7 @@ export const LOGO_SIZE = 40;
 export const LOGO_RADIUS = 12;
 
 export function pendingLabel(count: number): string {
-  return count === 1 ? '1 guardado' : `${count} guardados`;
+  return `${count} esperando señal`;
 }
+
+export const SENDING_LABEL = 'Enviando…';

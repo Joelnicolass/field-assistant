@@ -15,11 +15,12 @@ type TodaySummaryPanelProps = {
   compact: boolean;
   dimmed: boolean;
   pendingCount: number;
+  sending: boolean;
   onOpenCatalog: () => void;
 };
 
 export function TodaySummaryPanel(props: TodaySummaryPanelProps) {
-  const { summary, compact, dimmed, pendingCount, onOpenCatalog } = props;
+  const { summary, compact, dimmed, pendingCount, sending, onOpenCatalog } = props;
   const styles = useStyles(createStyles);
 
   return (
@@ -27,6 +28,7 @@ export function TodaySummaryPanel(props: TodaySummaryPanelProps) {
       <SummaryHeader
         place={summary.place}
         pendingCount={pendingCount}
+        sending={sending}
         onOpenCatalog={onOpenCatalog}
       />
       <SummaryNoted text={summary.noted.text} anything={summary.noted.anything} />

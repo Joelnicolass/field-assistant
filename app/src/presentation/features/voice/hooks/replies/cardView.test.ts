@@ -2,6 +2,7 @@ import { describe, expect, it, jest } from '@jest/globals';
 
 import type { RainSummary } from '@/domain/entities/RainSummary';
 import { AnimalCategory } from '@/domain/enums/AnimalCategory';
+import { InterpreterErrorCode } from '@/domain/enums/InterpreterErrorCode';
 import { RainRange } from '@/domain/enums/RainRange';
 import { RecordKind } from '@/domain/enums/RecordKind';
 import { ResolutionKind } from '@/domain/enums/ResolutionKind';
@@ -93,6 +94,9 @@ const CASES: [string, VoiceCard, Partial<InfoCardProps>][] = [
       rows: [
         { key: 'cow', label: 'Vacas', value: '80', share: 1 },
         { key: 'heifer', label: 'Vaquillonas', value: '20', share: 0.25 },
+        { key: 'calf', label: 'Terneros', value: '0', share: 0 },
+        { key: 'steer', label: 'Novillos', value: '0', share: 0 },
+        { key: 'bull', label: 'Toros', value: '0', share: 0 },
       ],
     },
   ],
@@ -118,8 +122,13 @@ const CASES: [string, VoiceCard, Partial<InfoCardProps>][] = [
   ],
   [
     'AudioSaved',
-    { kind: VoiceCardKind.AudioSaved },
-    { icon: IconName.Offline, message: 'Guardé tu audio' },
+    { kind: VoiceCardKind.AudioSaved, code: InterpreterErrorCode.Offline },
+    { icon: IconName.Offline, message: 'Guardé tu audio', label: 'Sin señal' },
+  ],
+  [
+    'AudioSaved con el servicio saturado',
+    { kind: VoiceCardKind.AudioSaved, code: InterpreterErrorCode.Server },
+    { message: 'Guardé tu audio', label: 'Servicio saturado', hint: 'Lo envío enseguida' },
   ],
   [
     'SavedProposal',
@@ -138,6 +147,15 @@ const CASES: [string, VoiceCard, Partial<InfoCardProps>][] = [
     'SavedAnswer',
     { kind: VoiceCardKind.SavedAnswer, id: 5, answer: RAIN_ANSWER },
     { label: 'Lluvia de noviembre', big: { value: '64', unit: 'mm' } },
+  ],
+  [
+    'SavedRejected',
+    {
+      kind: VoiceCardKind.SavedRejected,
+      id: 7,
+      failure: { code: FarmErrorCode.LotNotFound, lot: 12 },
+    },
+    { tone: Tone.Danger, message: 'El lote 12 no existe.' },
   ],
   [
     'SavedNotUnderstood',

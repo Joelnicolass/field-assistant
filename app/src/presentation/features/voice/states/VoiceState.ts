@@ -14,6 +14,8 @@ export type VoiceState = {
   /** Lo que la app dice: se muestra mientras lo dice y queda después. */
   subtitle: string;
   questionsInARow: number;
+  /** La cuenta de la propuesta se frenó (la app fue a segundo plano): espera un toque. */
+  paused: boolean;
   lastRecord: LastRecord | null;
   history: ConversationTurn[];
 };

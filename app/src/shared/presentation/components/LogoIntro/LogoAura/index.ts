@@ -1,0 +1,1 @@
+export { LogoAura } from './LogoAura';

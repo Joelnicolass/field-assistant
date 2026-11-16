@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { CheckView } from '../components/CheckCard';
 import { SPANISH_PREFIX, SPOKEN_SAMPLE, SPOKEN_SAMPLE_LANGUAGE, TEXT } from './constants';
 
+/** I4: lista las voces del teléfono y prueba hablar con una en español. */
 export function useVoicesCheck(): CheckView {
   const [voices, setVoices] = useState<readonly Speech.Voice[]>([]);
   const spanish = voices.filter((voice) => voice.language.startsWith(SPANISH_PREFIX));

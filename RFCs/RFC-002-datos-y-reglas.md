@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| **Estado** | Pendiente |
+| **Estado** | Terminado |
 | **Features** | F17 completa. La parte de datos y reglas de F5, F6, F7, F8, F9, F10 y F11 |
 | **Requisitos del PRD** | RF-06 a RF-15, RF-22, RF-23, RF-37 y el supuesto S1 |
 | **Predecesores** | RFC-001 |

@@ -12,6 +12,7 @@ export type PreviewMovementUseCaseInput = {
   today: DateText;
 };
 
+/** Valida un movimiento de animales entre lotes y devuelve la propuesta, sin guardar nada. */
 export interface PreviewMovementUseCase {
   execute(input: PreviewMovementUseCaseInput): Promise<Result<MovementProposal>>;
 }

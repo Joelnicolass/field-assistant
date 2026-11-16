@@ -11,6 +11,7 @@ function formatNumber(value: number | null): string {
   return value === null ? TEXT.none : value.toFixed(2);
 }
 
+/** I11: lee el sensor de luz y cambia el brillo de la app. */
 export function useLightCheck(): CheckView {
   const [measuring, setMeasuring] = useState(false);
   const [available, setAvailable] = useState<boolean | null>(null);

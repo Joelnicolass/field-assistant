@@ -173,7 +173,7 @@ Orb/
 | R31 | **Objetos en lugar de condicionales.** Un `Record<Enum, …>` reemplaza a un `switch` o a una cadena de `if`. Si falta un caso, no compila. |
 | R32 | **Funciones chicas que hacen una sola cosa**, con un nombre que dice qué devuelven o qué hacen. Hasta tres parámetros; con más, un objeto. |
 | R33 | **Nombres que se explican solos**, sin abreviaturas. |
-| R34 | **Comentarios: por defecto, ninguno.** Solo para un porqué que el código no puede decir, como una limitación de la plataforma. Nunca para contar qué hace el código, ni encabezados de archivo, ni documentación de lo obvio. |
+| R34 | **Comentarios: pocos.** Cada contrato de caso de uso y cada hook llevan un `/** … */` de una o dos líneas que dice qué hacen. Además, solo para un porqué que el código no puede decir, como una limitación de la plataforma. Nada de encabezados de archivo ni de explicar línea por línea. |
 | R35 | **Sin validaciones de más.** Se confía en los tipos. Se valida solo en los bordes: lo que llega del server, del archivo guardado o de un módulo nativo. Sin `try/catch` que solo relanza o que esconde el error, y sin valores por defecto "por las dudas". |
 | R36 | **TypeScript estricto:** sin `any`, sin `!`, y `as` solo en los mappers de borde. |
 | R37 | **Las fallas esperadas son valores, no excepciones.** Un caso de uso que puede fallar devuelve `Result`: el valor o la falla con su código. Uno que no puede fallar devuelve el valor. |

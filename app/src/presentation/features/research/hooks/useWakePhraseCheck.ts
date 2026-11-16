@@ -17,6 +17,7 @@ function listeningModes(): readonly Listening[] {
   ]);
 }
 
+/** I5: carga Vosk y cuenta cuántas veces oye la frase de manos libres. */
 export function useWakePhraseCheck(): CheckView {
   const [loadMs, setLoadMs] = useState<number | null>(null);
   const [listening, setListening] = useState<Listening | null>(null);

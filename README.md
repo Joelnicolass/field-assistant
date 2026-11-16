@@ -9,6 +9,11 @@ muestra el comprobante: una tarjeta con los números, no un chat.
 (`field-assistant-v1.1.0-arm64.apk`, Android 11 o superior, arm64, firmado en debug). Ya
 apunta al server publicado; no hace falta levantar nada.
 
+<img src="docs/qr-apk.png" alt="QR para bajar el APK" width="180" />
+
+Escaneá el QR con el teléfono y baja siempre el APK de la última versión. Android pide permitir
+instalar desde el navegador, porque está firmado en debug.
+
 El repositorio tiene dos partes:
 
 - `app/`: la app, con Expo y React Native. Solo Android.
@@ -223,7 +228,10 @@ rm -rf "$TMPDIR/metro-cache"
 ./gradlew app:assembleRelease -PreactNativeArchitectures=arm64-v8a
 ```
 
-El APK queda en `app/android/app/build/outputs/apk/release/app-release.apk`.
+El APK queda en `app/android/app/build/outputs/apk/release/app-release.apk`. Cada Release lleva
+dos copias: `field-assistant-vX.Y.Z-arm64.apk` y `field-assistant-arm64.apk`. La segunda, con el
+nombre fijo, es la que baja el QR, por la dirección
+`https://github.com/Joelnicolass/field-assistant/releases/latest/download/field-assistant-arm64.apk`.
 
 ### Chequeos
 

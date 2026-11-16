@@ -279,7 +279,8 @@ Qué se usa, qué se hace y por qué. Una entrada por decisión.
   - Los datos son los mismos en todos los teléfonos y tienen respaldo: los comparten el dueño, el
     encargado y el peón.
   - Una regla nueva o un arreglo se publica en el server, sin sacar un APK.
-  - El mismo cerebro puede atender otros canales, además de la app.
+  - El mismo cerebro puede atender otros canales además de la app, como el bot de WhatsApp de
+    FieldData.
 - **Queda en el teléfono:** grabar, la frase de manos libres, la voz y su respaldo, la cuenta de
   4 segundos (D7), las animaciones, la cola de audios y una copia de los datos para mirar sin
   señal.

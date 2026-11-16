@@ -9,7 +9,7 @@ Seis pasos. Cada uno deja el proyecto compilando y se revisa de una sentada. `de
 | --- | --- | --- |
 | 1 | La app de Expo con todas las librerías y su configuración | aprobado |
 | 2 | Estructura de carpetas, `settings`, `di` y los chequeos con sus límites | aprobado |
-| 3 | El server mínimo | pendiente |
+| 3 | El server mínimo | aprobado |
 | 4 | Los builds de debug y release en el teléfono | pendiente |
 | 5 | `ResearchScreen` y las comprobaciones en el teléfono | pendiente |
 | 6 | Los scripts de research del server y los documentos | pendiente |

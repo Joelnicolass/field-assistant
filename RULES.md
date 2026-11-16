@@ -193,7 +193,7 @@ const STATUS_TEXT: Record<VoicePhase, string> = {
 | ID | Regla |
 | --- | --- |
 | R40 | Solo componentes de función y hooks. |
-| R41 | **React Compiler encendido.** Con él no se escribe `useMemo`, `useCallback` ni `memo` a mano, salvo con una medición que lo justifique. El RFC-001 comprueba cómo se enciende en esta versión de Expo. |
+| R41 | **Sin React Compiler.** Está apagado: en esta versión de Expo es experimental y la app no lo necesita (D20). `useMemo`, `useCallback` y `memo` se escriben solo con una medición que lo justifique. |
 | R42 | **APIs actuales de React 19:** `ref` como una prop más (sin `forwardRef`), `use()` para leer contexto, `<Context value={…}>` como proveedor y `useEffectEvent` para la lógica de un efecto que no debe volver a dispararlo. |
 | R43 | **Efectos solo para sincronizar con algo de afuera:** un sensor, el micrófono, un temporizador, el estado de la app. Lo que se puede calcular al dibujar se calcula, y no se guarda estado que se deriva de otro. |
 | R44 | **Estado mínimo, con una máquina por feature.** Las fases son un enum y las transiciones un objeto, en `states/`, sin React. El hook las usa con `useReducer`. Lo que comparten dos features va por contexto en `shared/presentation/states`. |

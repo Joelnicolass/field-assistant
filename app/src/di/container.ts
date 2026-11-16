@@ -7,9 +7,11 @@ import { ExpoAudioRecorderService } from '@/data/services/ExpoAudioRecorderServi
 import { FallbackSpeakerService } from '@/data/services/FallbackSpeakerService';
 import { PhoneSpeakerService } from '@/data/services/PhoneSpeakerService';
 import { ScriptedAudioRecorderService } from '@/data/services/ScriptedAudioRecorderService';
+import { ScriptedWakePhraseService } from '@/data/services/ScriptedWakePhraseService';
 import { ServerInterpreterService } from '@/data/services/ServerInterpreterService';
 import { ServerSpeakerService } from '@/data/services/ServerSpeakerService';
 import { SystemClockService } from '@/data/services/SystemClockService';
+import { VoskWakePhraseService } from '@/data/services/vosk/VoskWakePhraseService';
 import { ApplyCorrectionUseCaseImpl } from '@/data/usecases/ApplyCorrectionUseCaseImpl';
 import { CountPendingAudiosUseCaseImpl } from '@/data/usecases/CountPendingAudiosUseCaseImpl';
 import { DiscardPendingAudioUseCaseImpl } from '@/data/usecases/DiscardPendingAudioUseCaseImpl';
@@ -39,6 +41,10 @@ const recorder =
   settings.scriptedAudioUrl === null
     ? new ExpoAudioRecorderService(settings.speechLevel)
     : new ScriptedAudioRecorderService(settings.scriptedAudioUrl);
+const wakePhrase =
+  settings.scriptedAudioUrl === null
+    ? new VoskWakePhraseService(settings.wakePhrase)
+    : new ScriptedWakePhraseService(settings.scriptedAudioUrl);
 const speaker = new FallbackSpeakerService(
   new ServerSpeakerService(settings.serverUrl, settings.appKey),
   new PhoneSpeakerService(),
@@ -70,6 +76,7 @@ export const container: Dependencies = {
   previewCorrection,
   applyCorrection: new ApplyCorrectionUseCaseImpl(farm),
   recorder,
+  wakePhrase,
   speaker,
   interpreter,
   resolveRequest,

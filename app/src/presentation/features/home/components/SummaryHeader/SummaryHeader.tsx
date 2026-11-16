@@ -3,12 +3,14 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import { AppText } from '@/shared/presentation/components/AppText';
 import { Icon, IconName } from '@/shared/presentation/components/Icon';
+import { ToggleChip } from '@/shared/presentation/components/ToggleChip';
 import { useStyles } from '@/shared/presentation/hooks/useStyles';
 import { useTheme } from '@/shared/presentation/hooks/useTheme';
 import { TextVariant } from '@/shared/presentation/theme/TextVariant';
 import { AppTitle } from '../AppTitle';
 import {
   CATALOG_LABEL,
+  HANDS_FREE_LABEL,
   PENDING_IN_MS,
   PENDING_OUT_MS,
   PILL_ICON_SIZE,
@@ -26,11 +28,14 @@ type SummaryHeaderProps = {
   sending: boolean;
   /** Tocar la píldora de pendientes los reintenta en el momento. */
   onPendingPress: () => void;
+  handsFree: boolean;
+  onHandsFreeChange: (value: boolean) => void;
   onOpenCatalog: () => void;
 };
 
 export function SummaryHeader(props: SummaryHeaderProps) {
   const { place, pendingCount, sending, onPendingPress, onOpenCatalog } = props;
+  const { handsFree, onHandsFreeChange } = props;
   const styles = useStyles(createStyles);
   const theme = useTheme();
 
@@ -44,6 +49,7 @@ export function SummaryHeader(props: SummaryHeaderProps) {
         </AppText>
       </View>
       <View style={styles.pills}>
+        <ToggleChip label={HANDS_FREE_LABEL} value={handsFree} onChange={onHandsFreeChange} />
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={CATALOG_LABEL}

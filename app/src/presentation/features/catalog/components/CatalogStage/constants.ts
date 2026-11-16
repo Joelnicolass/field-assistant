@@ -19,6 +19,8 @@ const IDLE: VoiceStageView = {
   onPendingPress: doNothing,
   busy: false,
   onOrbPress: doNothing,
+  handsFree: false,
+  onHandsFreeChange: doNothing,
 };
 
 export const STAGES: { key: string; title: string; view: VoiceStageView }[] = [
@@ -56,5 +58,5 @@ export const SAMPLE_SUMMARY: TodaySummaryView = {
 
 export const SUMMARY_TITLE = {
   full: 'Resumen de hoy',
-  compact: 'Resumen con una tarjeta y 2 audios guardados',
+  compact: 'Resumen con una tarjeta, 2 audios guardados y manos libres',
 } as const;

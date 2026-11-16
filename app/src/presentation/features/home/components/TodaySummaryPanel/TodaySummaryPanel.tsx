@@ -19,6 +19,8 @@ type TodaySummaryPanelProps = {
   pendingCount: number;
   sending: boolean;
   onPendingPress: () => void;
+  handsFree: boolean;
+  onHandsFreeChange: (value: boolean) => void;
   onOpenCatalog: () => void;
 };
 
@@ -33,6 +35,7 @@ function panelOpacity(hidden: boolean, dimmed: boolean): number {
 export function TodaySummaryPanel(props: TodaySummaryPanelProps) {
   const { summary, compact, dimmed, hidden, pendingCount, sending, onPendingPress, onOpenCatalog } =
     props;
+  const { handsFree, onHandsFreeChange } = props;
   const styles = useStyles(createStyles);
 
   return (
@@ -51,6 +54,8 @@ export function TodaySummaryPanel(props: TodaySummaryPanelProps) {
         pendingCount={pendingCount}
         sending={sending}
         onPendingPress={onPendingPress}
+        handsFree={handsFree}
+        onHandsFreeChange={onHandsFreeChange}
         onOpenCatalog={onOpenCatalog}
       />
       <SummaryNoted text={summary.noted.text} anything={summary.noted.anything} />

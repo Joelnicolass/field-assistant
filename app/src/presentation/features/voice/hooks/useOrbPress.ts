@@ -13,12 +13,14 @@ type OrbPressInput = {
   silence: () => void;
   /** Mientras se está anotando, el orbe no cambia el turno: lo anotado tiene que llegar a su comprobante. */
   isWriting: () => boolean;
+  /** Frena manos libres y termina cuando soltó el micrófono, para poder grabar. */
+  releaseMicrophone: () => Promise<void>;
   fail: (error?: unknown) => void;
 };
 
 // Con el permiso por pedir, la fase no cambia hasta saber si se puede escuchar.
 async function pressOrb(
-  { phase, dispatch, silence, isWriting }: OrbPressInput,
+  { phase, dispatch, silence, isWriting, releaseMicrophone }: OrbPressInput,
   speaker: SpeakerService,
   canListen: () => Promise<boolean>,
 ) {
@@ -28,6 +30,7 @@ async function pressOrb(
   silence();
   speaker.reset();
   const allowed = phase !== VoicePhase.Idle || (await canListen());
+  await releaseMicrophone();
   dispatch({ type: allowed ? VoiceEvent.OrbPressed : VoiceEvent.PermissionDenied });
 }
 

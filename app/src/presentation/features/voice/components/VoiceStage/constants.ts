@@ -8,6 +8,8 @@ export const STAGE = {
   /** En el centro el orbe es más grande que su casillero: el subtítulo y el estado se corren. */
   spread: 52,
   bottomMargin: 12,
+  /** El aire mínimo entre el resumen y el subtítulo, con el orbe en el centro. */
+  topMargin: 8,
 } as const;
 
 export const DOCK_ANTICIPATION = 0.025;

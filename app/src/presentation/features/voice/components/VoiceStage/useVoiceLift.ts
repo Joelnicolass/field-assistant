@@ -22,7 +22,10 @@ export function useVoiceLift(bottomInset: number) {
   const bottomGap = bottomInset + STAGE.bottomMargin;
   const restingCenter = stage.height - bottomGap - STAGE.statusHeight - STAGE.slotHeight / 2;
   const middle = (stage.height - bottomInset) / 2;
-  const lift = stage.height > 0 ? restingCenter - middle : 0;
+  // El orbe sube hasta el centro, pero no tanto como para que el subtítulo (hasta tres renglones)
+  // pise el resumen: en pantallas chicas queda un poco más abajo.
+  const roomAbove = stage.height - bottomGap - STAGE.voiceHeight - STAGE.spread - STAGE.topMargin;
+  const lift = stage.height > 0 ? Math.max(0, Math.min(restingCenter - middle, roomAbove)) : 0;
   const liftNow = useSharedValue(0);
   const screenShift = useSharedValue(0);
   // La zona de voz no se ve hasta conocer las medidas: pasa a verse en el mismo cuadro en que se
@@ -37,10 +40,11 @@ export function useVoiceLift(bottomInset: number) {
     liftNow.set(
       measured.current ? withTiming(lift, { duration: SLIDE_MS, easing: EASING.move }) : lift,
     );
-    screenShift.set(stage.top + middle - window.height / 2);
+    // Dónde queda el centro del orbe, contado desde arriba de la pantalla, menos el de la ventana.
+    screenShift.set(stage.top + restingCenter - lift - window.height / 2);
     shown.set(1);
     measured.current = true;
-  }, [stage, lift, middle, window.height, liftNow, screenShift, shown]);
+  }, [stage, lift, restingCenter, window.height, liftNow, screenShift, shown]);
 
   return {
     onStageLayout,

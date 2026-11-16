@@ -10,7 +10,7 @@ Seis pasos. Cada uno deja el proyecto compilando y se revisa de una sentada. `de
 | 1 | La app de Expo con todas las librerías y su configuración | aprobado |
 | 2 | Estructura de carpetas, `settings`, `di` y los chequeos con sus límites | aprobado |
 | 3 | El server mínimo | aprobado |
-| 4 | Los builds de debug y release en el teléfono | pendiente |
+| 4 | Los builds de debug y release en el teléfono | aprobado |
 | 5 | `ResearchScreen` y las comprobaciones en el teléfono | pendiente |
 | 6 | Los scripts de research del server y los documentos | pendiente |
 
@@ -139,13 +139,14 @@ docs/
 
 **Cómo lo comprueba `qa`:**
 
-- `npx expo prebuild --platform android --clean` y
-  `./gradlew app:assembleDebug -PreactNativeArchitectures=arm64-v8a`.
-- `adb install`, `adb reverse tcp:8081 tcp:8081`, Metro levantado y la app abierta con
-  `adb shell am start`. Captura de pantalla con `adb exec-out screencap`: se ve `ResearchScreen`.
-- I7: `assembleRelease` sin las reglas de R8 (falla) y con ellas (compila); el peso del APK.
-- I8: dos builds de release con distinto `EXPO_PUBLIC_SERVER_URL`, buscando el valor dentro del
-  APK; con y sin vaciar la caché de Metro. Anota la receta.
+- El build de debug ya está instalado y tiene todos los módulos nativos: el JavaScript llega por
+  Metro. Se abre con `adb shell am start` y se saca una captura: se ve `ResearchScreen`.
+- I7 e I8 ya se compilaron: `qa` no compila de nuevo. Verifica sobre los APK que quedaron en
+  `android/app/build/outputs/apk/` (peso, y el valor de prueba dentro del bundle de release) y
+  contra lo anotado en `docs/RESEARCH.md`.
+
+**Cuándo hace falta compilar de nuevo:** solo cuando cambia algo nativo (un paquete con código
+nativo, un plugin o `app.json`). Los cambios de JavaScript llegan por Metro, sin build.
 
 ---
 

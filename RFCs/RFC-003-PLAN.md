@@ -7,7 +7,7 @@ uno para la revisión del autor. Cada paso se mira en el teléfono por Metro y e
 | --- | --- | --- |
 | A | Tema, tipografía y piezas básicas (`AppText`, `Icon`, `Surface`) | aprobado |
 | B | Botón con cuenta y tarjeta (`AppButton`, `InfoCard`) | aprobado |
-| C | El orbe y el subtítulo (`Orb`, `RevealText`) | pendiente |
+| C | El orbe y el subtítulo (`Orb`, `RevealText`) | aprobado |
 | D | Pantalla de inicio, zona de voz, catálogo y limpieza | pendiente |
 
 Rama por paso, con su PR a `feature/rfc-003`: `feature/rfc-003-A` a `-D`.

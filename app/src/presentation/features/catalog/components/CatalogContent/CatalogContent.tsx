@@ -11,6 +11,7 @@ import type { ThemeMode } from '@/shared/presentation/theme/ThemeMode';
 import { Tone } from '@/shared/presentation/theme/Tone';
 import { CatalogButtons } from '../CatalogButtons';
 import { CatalogCards } from '../CatalogCards';
+import { CatalogOrb } from '../CatalogOrb';
 import { ICON_SIZE, SAMPLE_TEXT, SECTION, TITLE, TOGGLE_LABEL, TONE_LABEL } from './constants';
 import { createStyles } from './styles';
 
@@ -32,6 +33,9 @@ export function CatalogContent({ mode, onToggleMode }: CatalogContentProps) {
         >
           <AppText variant={TextVariant.Pill}>{TOGGLE_LABEL[mode]}</AppText>
         </Pressable>
+
+        <AppText variant={TextVariant.Overline}>{SECTION.orb}</AppText>
+        <CatalogOrb />
 
         <AppText variant={TextVariant.Overline}>{SECTION.texts}</AppText>
         {Object.values(TextVariant).map((variant) => (

@@ -39,3 +39,11 @@ export const TOUCH = {
 
 /** Fuera del tema: el ícono del distintivo de la tarjeta y el dibujo del centro del orbe. */
 export const GLYPH_COLOR = '#FFFFFF';
+
+/** El volumen de la esfera del orbe, igual en los dos temas (VISUAL 5.1). */
+export const ORB_SHADE = {
+  center: '#00000026',
+  edge: '#00000038',
+  shine: '#FFFFFFB8',
+  rim: '#FFFFFFE6',
+} as const;

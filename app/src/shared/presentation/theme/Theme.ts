@@ -1,3 +1,5 @@
+import type { OrbState } from '@/shared/presentation/components/Orb/OrbState';
+import type { OrbPalette } from '@/shared/presentation/components/Orb/types';
 import type { ThemeMode } from '@/shared/presentation/theme/ThemeMode';
 import type { Tone } from '@/shared/presentation/theme/Tone';
 import type { TextVariant } from '@/shared/presentation/theme/TextVariant';
@@ -27,4 +29,5 @@ export type Theme = {
   durations: typeof DURATIONS;
   touch: typeof TOUCH;
   tones: Record<Tone, readonly [string, string, string]>;
+  orb: Record<OrbState, OrbPalette>;
 };

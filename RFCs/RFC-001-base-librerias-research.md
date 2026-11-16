@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| **Estado** | Pendiente |
+| **Estado** | Terminado |
 | **Features** | F26. Deja preparado F24 (el build de release compila) y empieza F25 |
 | **Predecesores** | Ninguno |
 | **Sucesores** | RFC-002, RFC-003, RFC-004 y RFC-005 |
@@ -45,9 +45,7 @@ field-assistant/
   `com.fieldassistant.app`, orientación vertical, solo Android.
 - TypeScript en modo estricto. El alias `@/` apunta a `app/src/`, y funciona igual en
   TypeScript, en Metro y en Jest.
-- React Compiler encendido (R41). Cómo se enciende en esta versión, y si hace falta un paquete
-  más, se comprueba en la documentación instalada de Expo (I12). Si suma un paquete, se agrega
-  a la tabla de stack de `RULES.md`.
+- Sin React Compiler (R41, D20): `app.json` no tiene `experiments.reactCompiler`.
 - Todas las librerías de la tabla de stack de `RULES.md`, instaladas con `npx expo install`.
 - Plugins de configuración en `app.json`:
 
@@ -117,7 +115,7 @@ El primer test es `settings.test.ts`: sin la variable, `serverUrl` es `http://lo
 
 ### 5. El server
 
-- `server/`, en Node 24 o superior, que corre TypeScript sin compilar. Sin framework.
+- `server/`, en Node 24 o superior, que corre TypeScript sin compilar, con Express (D13).
 - Estructura `src/domain`, `src/data` y `src/http`, más `src/main.ts`. En este RFC `domain` y
   `data` quedan vacías: las llena el RFC-004.
 - `npm start` corre `node --env-file=.env src/main.ts` y lo levanta en el puerto de la variable
@@ -169,7 +167,7 @@ y decide el usuario; el PRD se corrige con `/manage-changes`.
 | I9 | Degradés y sombras en Android 11 | `ResearchScreen` | `backgroundImage` con degradé lineal y radial, y `boxShadow`, se dibujan. El desenfoque en vivo (`filter: blur`) no: necesita Android 12 |
 | I10 | Reanimated en el hilo de la interfaz | `ResearchScreen` | Un estilo animado se recalcula solo si lee el valor compartido directamente, no dentro de otra función |
 | I11 | Sensor de luz y brillo | `ResearchScreen` y, en el emulador, `adb emu sensor set light` | El sensor entrega lux. `expo-brightness` cambia el brillo solo de la app y sin pedir permiso |
-| I12 | React Compiler | La documentación instalada y un build | Está encendido y compila los componentes |
+| I12 | [QUITADA] React Compiler: está apagado (D20) | — | — |
 | I13 | Latencia de un turno (responde a Q5) | Sumar I1, I2 e I3 en el dispositivo | Desde que termina la escucha hasta tener la respuesta, 5 segundos o menos (RNF-02) |
 
 **Audios de prueba (I2).** Tres archivos `.m4a` en `server/scripts/samples/`, grabados por el
@@ -192,7 +190,7 @@ usuario la confirma.
   builds y cómo levantar el server y cargar sus claves.
 - `DECISIONS.md`: el stack y la arquitectura, con qué se resigna en cada una.
 - `AI-USAGE.md`: qué herramienta de IA se usó en este RFC y para qué.
-- `docs/RESEARCH.md`: las trece comprobaciones.
+- `docs/RESEARCH.md`: las doce comprobaciones (I12 quedó quitada).
 
 ## Contratos que quedan
 
@@ -227,7 +225,7 @@ Server: `GET /health` → `200 { "ok": true }`.
 6. Existen `core/configs/settings.ts`, `di/Dependencies.ts`, `di/container.ts`,
    `di/DependenciesProvider/`, `di/useDependencies.ts`, `App.tsx` y la feature `research`, en
    las rutas del punto 3.
-7. React Compiler está encendido.
+7. React Compiler está apagado: `app.json` no tiene `experiments.reactCompiler` (D20).
 
 **Chequeos**
 
@@ -254,7 +252,7 @@ Server: `GET /health` → `200 { "ok": true }`.
 
 **Research**
 
-16. `docs/RESEARCH.md` tiene las trece comprobaciones, de I1 a I13, cada una con fecha,
+16. `docs/RESEARCH.md` tiene las doce comprobaciones, de I1 a I13 sin I12, cada una con fecha,
     dispositivo, versión de Android, lo que se esperaba y lo que dio.
 17. Q2 (la frase elegida), Q4 (la voz elegida) y Q5 (la latencia medida) del PRD quedan
     contestadas en `docs/RESEARCH.md`.
@@ -271,7 +269,7 @@ Server: `GET /health` → `200 { "ok": true }`.
 ## Reglas que aplican
 
 R1 a R7 (capas y lint), R15 (inyección a mano), R19 a R23 (carpeta y archivos de cada
-componente), R34 y R35 (comentarios y validaciones), R41 y R42 (React Compiler y `use()`),
+componente), R34 y R35 (comentarios y validaciones), R41 y R42 (sin React Compiler y `use()`),
 R48 a R50 (tests), R52 a R55 (server), R56 a R62 (proceso).
 
 ## Riesgos y casos límite

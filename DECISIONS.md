@@ -113,13 +113,17 @@ Qué se usa, qué se hace y por qué. Una entrada por decisión.
 
 ## D13 · Un server mínimo y sin estado
 
-- **Decisión:** entre la app y los proveedores (modelo y voz) hay un server que no guarda nada.
+- **Decisión:** entre la app y los proveedores (modelo y voz) hay un server que no guarda nada,
+  hecho con Express.
 - **Por qué:**
   - Las claves de los proveedores quedan en el server, no dentro del APK.
   - Simple de publicar: sirve cualquier hosting y no hay base de datos que cuidar.
   - El modelo o la voz se cambian en el server, sin sacar un APK nuevo.
   - No guarda audio ni datos: el audio pasa y no queda en ningún lado.
-- **Resigno:** una pieza más que publicar y mantener prendida; cada pedido da un salto más.
+  - Express es lo más usado para APIs chicas en Node: cualquiera que lea el código lo conoce, y
+    resuelve rutas, JSON y errores sin escribirlos a mano.
+- **Resigno:** una pieza más que publicar y mantener prendida; cada pedido da un salto más; y
+  una dependencia más en el server, en lugar de usar solo `node:http`.
 
 ## D14 · Un orbe y tarjetas con números, no un chat
 
@@ -169,3 +173,12 @@ Qué se usa, qué se hace y por qué. Una entrada por decisión.
   - No hay que adaptarlo: es lo que menos tiempo lleva.
   - El APK funciona en el teléfono de quien evalúa, sin levantar nada.
 - **Resigno:** depender de un servicio más y de que siga prendido.
+
+## D20 · Sin React Compiler
+
+- **Decisión:** React Compiler queda apagado.
+- **Por qué:**
+  - En esta versión de Expo es experimental.
+  - La app no lo necesita: tiene una sola pantalla y pocos componentes.
+  - Al probarlo en el teléfono, la app andaba bien, pero Metro no le aplicaba el compilador al código: tenerlo encendido daba una garantía que no se cumplía.
+- **Resigno:** la memoización automática. Si una pantalla se vuelve lenta, se memoiza a mano, con una medición que lo justifique (R41).

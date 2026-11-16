@@ -40,6 +40,8 @@ de esta tabla, se corrige la tabla.
 | Lint | `eslint-config-expo` | 58.0.4 |
 | Formato | `prettier` | 3.10.1 |
 | Server | Node, que corre TypeScript sin compilar | 24 o superior |
+| Server | `express` | ^5.3.0 |
+| Server | `@types/express` | ^5.0.6 |
 
 Proveedores, detrás del server: un modelo de lenguaje que recibe audio y devuelve JSON
 (Gemini Flash-Lite) y una voz de servicio (ElevenLabs Flash v2.5). El identificador exacto de
@@ -175,7 +177,7 @@ Orb/
 | R35 | **Sin validaciones de más.** Se confía en los tipos. Se valida solo en los bordes: lo que llega del server, del archivo guardado o de un módulo nativo. Sin `try/catch` que solo relanza o que esconde el error, y sin valores por defecto "por las dudas". |
 | R36 | **TypeScript estricto:** sin `any`, sin `!`, y `as` solo en los mappers de borde. |
 | R37 | **Las fallas esperadas son valores, no excepciones.** Un caso de uso que puede fallar devuelve `Result`: el valor o la falla con su código. Uno que no puede fallar devuelve el valor. |
-| R38 | **Exports con nombre.** `index.ts` solo en carpetas de componente. |
+| R38 | **Exports con nombre.** `index.ts` solo en carpetas de componente, salvo `app/index.ts`, el punto de entrada que registra la app en Expo. |
 | R39 | **Sin pendientes:** nada de `TODO`, código muerto ni código comentado. |
 
 ```ts
@@ -193,7 +195,7 @@ const STATUS_TEXT: Record<VoicePhase, string> = {
 | ID | Regla |
 | --- | --- |
 | R40 | Solo componentes de función y hooks. |
-| R41 | **React Compiler encendido.** Con él no se escribe `useMemo`, `useCallback` ni `memo` a mano, salvo con una medición que lo justifique. El RFC-001 comprueba cómo se enciende en esta versión de Expo. |
+| R41 | **Sin React Compiler.** Está apagado: en esta versión de Expo es experimental y la app no lo necesita (D20). `useMemo`, `useCallback` y `memo` se escriben solo con una medición que lo justifique. |
 | R42 | **APIs actuales de React 19:** `ref` como una prop más (sin `forwardRef`), `use()` para leer contexto, `<Context value={…}>` como proveedor y `useEffectEvent` para la lógica de un efecto que no debe volver a dispararlo. |
 | R43 | **Efectos solo para sincronizar con algo de afuera:** un sensor, el micrófono, un temporizador, el estado de la app. Lo que se puede calcular al dibujar se calcula, y no se guarda estado que se deriva de otro. |
 | R44 | **Estado mínimo, con una máquina por feature.** Las fases son un enum y las transiciones un objeto, en `states/`, sin React. El hook las usa con `useReducer`. Lo que comparten dos features va por contexto en `shared/presentation/states`. |
@@ -214,7 +216,7 @@ const STATUS_TEXT: Record<VoicePhase, string> = {
 
 | ID | Regla |
 | --- | --- |
-| R52 | El server no guarda nada: recibe, llama al proveedor y contesta. Sin framework. |
+| R52 | El server no guarda nada: recibe, llama al proveedor y contesta. Usa Express (D13), sin otras librerías de servidor. |
 | R53 | Las claves viven solo en `.env`, que no se versiona. Hay un `.env.example` sin valores. |
 | R54 | Mismas capas, en chico: contratos en `domain`, proveedores en `data` y rutas en `http`. |
 | R55 | Como corre sin compilar, los conjuntos cerrados del server son objetos `as const` con su tipo derivado, no `enum`. |

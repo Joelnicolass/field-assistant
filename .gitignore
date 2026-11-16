@@ -12,3 +12,6 @@ docs/visual-refs/*
 app/assets/model-es/
 app/android/
 app/ios/
+
+# Audio que genera research:speak
+server/scripts/samples/speak.mp3

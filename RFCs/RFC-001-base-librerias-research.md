@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| **Estado** | Pendiente |
+| **Estado** | Terminado |
 | **Features** | F26. Deja preparado F24 (el build de release compila) y empieza F25 |
 | **Predecesores** | Ninguno |
 | **Sucesores** | RFC-002, RFC-003, RFC-004 y RFC-005 |

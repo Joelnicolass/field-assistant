@@ -15,6 +15,40 @@ El repositorio tiene dos partes:
 - `server/`: un server mínimo y sin estado entre la app y los proveedores de voz. Guarda las
   claves para que no viajen en el APK. Está publicado en Railway.
 
+## El flujo de punta a punta
+
+```mermaid
+flowchart TD
+    A["Tocás el orbe<br/>o decís «hola asistente»"] --> B["Escuchando<br/>el orbe sigue tu voz"]
+    B -->|"terminás de hablar"| C["Pensando<br/>suena una muletilla grabada"]
+    B -->|"no hubo voz"| N["«No te escuché»<br/>con ejemplos"]
+    C --> D["La app sube el audio<br/>POST /interpret-audio + X-App-Key"]
+    D --> S["Server en Railway<br/>sin estado"]
+    S --> G["Gemini entiende el audio<br/>JSON de forma fija"]
+    G --> S
+    S -->|"qué se pidió y con qué datos"| R["La app calcula<br/>reglas del campo, en el teléfono"]
+    D -->|"sin señal o más de 8 s"| Q["El audio se guarda en la cola<br/>aviso grabado y píldora"]
+    Q -->|"vuelve la señal o tocás la píldora"| D
+    R --> P{"¿Qué fue?"}
+    P -->|"anotar"| T["Tarjeta con la cuenta<br/>se anota sola a los 4 s"]
+    P -->|"pregunta"| U["Tarjeta con el detalle"]
+    P -->|"falta un dato"| V["Repregunta: «¿De qué lote?»"]
+    P -->|"no se entendió"| W["Lo dice, con ejemplos"]
+    T --> Y["Responde en voz y subtítulo<br/>GET /speak, ElevenLabs en streaming"]
+    U --> Y
+    V --> Y
+    W --> Y
+    Y -->|"si la voz falla o tarda"| Z["Voz del teléfono"]
+    T -->|"no la frenaste"| J["Se guarda en el JSON del teléfono<br/>y se actualiza el resumen de hoy"]
+    V -.->|"la respuesta sigue en el próximo turno"| A
+```
+
+- **El modelo entiende, la app calcula:** el server solo traduce el audio a un JSON con qué se
+  pidió y con qué datos. Las cuentas (cuántos animales quedan, cuánto llovió) las hace la app.
+- **El server no guarda nada:** las claves de los proveedores viven ahí, no en el APK.
+- **Nada se traba:** sin señal el audio espera en la cola; si la voz del server falla, habla la
+  del teléfono.
+
 ## Qué hace
 
 ### El turno de voz

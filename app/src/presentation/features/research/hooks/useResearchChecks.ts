@@ -1,22 +1,32 @@
-import { settings } from '../../../../core/configs/settings';
-import { EMPTY_CHECKS_TEXT } from './constants';
+import { settings } from '@/core/configs/settings';
 
-type ResearchCheck = {
-  id: string;
-  title: string;
-};
+import type { CheckView } from '../components/CheckCard';
+import { TEXT } from './constants';
+import { useLightCheck } from './useLightCheck';
+import { useRecordingCheck } from './useRecordingCheck';
+import { useVoicesCheck } from './useVoicesCheck';
+import { useWakePhraseCheck } from './useWakePhraseCheck';
+
+type ResearchCheck = { key: string; title: string; view: CheckView };
 
 type ResearchChecks = {
   checks: readonly ResearchCheck[];
-  emptyText: string | null;
   serverUrl: string;
 };
 
 export function useResearchChecks(): ResearchChecks {
-  const checks: readonly ResearchCheck[] = [];
+  const recording = useRecordingCheck();
+  const voices = useVoicesCheck();
+  const wakePhrase = useWakePhraseCheck();
+  const light = useLightCheck();
+
   return {
-    checks,
-    emptyText: checks.length === 0 ? EMPTY_CHECKS_TEXT : null,
+    checks: [
+      { key: 'recording', title: TEXT.recordingTitle, view: recording },
+      { key: 'voices', title: TEXT.voicesTitle, view: voices },
+      { key: 'wake', title: TEXT.wakeTitle, view: wakePhrase },
+      { key: 'light', title: TEXT.lightTitle, view: light },
+    ],
     serverUrl: settings.serverUrl,
   };
 }

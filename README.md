@@ -5,8 +5,8 @@ app responde en voz alta, anota lo que pasó en el campo y contesta preguntas. L
 muestra el comprobante: una tarjeta con los números, no un chat.
 
 **Probarlo:** el APK está en el
-[Release v1.0.0](https://github.com/Joelnicolass/field-assistant/releases/tag/v1.0.0)
-(`field-assistant-v1.0.0-arm64.apk`, Android 11 o superior, arm64, firmado en debug). Ya
+[Release v1.1.0](https://github.com/Joelnicolass/field-assistant/releases/tag/v1.1.0)
+(`field-assistant-v1.1.0-arm64.apk`, Android 11 o superior, arm64, firmado en debug). Ya
 apunta al server publicado; no hace falta levantar nada.
 
 El repositorio tiene dos partes:

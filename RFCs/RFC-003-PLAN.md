@@ -5,7 +5,7 @@ uno para la revisión del autor. Cada paso se mira en el teléfono por Metro y e
 
 | Paso | Objetivo | Estado |
 | --- | --- | --- |
-| A | Tema, tipografía y piezas básicas (`AppText`, `Icon`, `Surface`) | pendiente |
+| A | Tema, tipografía y piezas básicas (`AppText`, `Icon`, `Surface`) | aprobado |
 | B | Botón con cuenta y tarjeta (`AppButton`, `InfoCard`) | pendiente |
 | C | El orbe y el subtítulo (`Orb`, `RevealText`) | pendiente |
 | D | Pantalla de inicio, zona de voz, catálogo y limpieza | pendiente |

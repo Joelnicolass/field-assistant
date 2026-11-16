@@ -45,8 +45,7 @@ mapper mínimo y un comentario corto en cada caso de uso y cada hook (R34).
 ## RFC-003 · Design system y pantalla de inicio
 
 - Implementar el tema, la tipografía, `AppText`, `Icon`, `Surface`, `AppButton`, `InfoCard`, el
-  orbe, `RevealText`, la pantalla de inicio y la zona de voz, tomando como guía una
-  implementación de referencia y adaptándola a `RULES.md`.
+  orbe, `RevealText`, la pantalla de inicio y la zona de voz, siguiendo `RULES.md`.
 - Probar cada paso en el teléfono por Metro, con capturas por `adb`.
 - Medir la fluidez con `dumpsys gfxinfo` y bajar el tiempo por cuadro de 44 a 9 ms: el orbe
   monta cada capa una sola vez, y Reanimated aplica las animaciones directo a la vista (D22).
@@ -57,3 +56,21 @@ Lo que decidió el autor en este RFC: las decisiones visuales V1 a V4 (`VISUAL.m
 parecido a su referencia, el resumen con el orden de su captura, el nombre de la app que alterna
 entre "Field Data" y "Field Assistant", encender la opción de Reanimated (D22) y dejar el
 catálogo en la app (D23).
+
+## RFC-004 · Server y turno de voz
+
+- Dividir el RFC en seis pasos (`RFCs/RFC-004-PLAN.md`). Los pasos A, B y D los implementó el
+  orquestador; C, E y F, un subagente `dev`, con un subagente `qa` que los probó en el teléfono.
+- Escribir el server: las rutas para entender un audio y para hablar, los errores y la clave de
+  la app; el Dockerfile y la publicación en Railway.
+- Armar la batería automática contra el modelo real y ajustar las instrucciones con lo que falló.
+- Implementar el turno de voz en la app: escuchar, entender, proponer con la cuenta, anotar,
+  preguntar, la cola de audios guardados y lo que la app dice.
+- Probar los turnos en el teléfono con audio de prueba, medir la latencia y buscar en el registro
+  la causa de las fallas (la voz que no sonaba y el grabador que se usaba después de liberarlo).
+
+Lo que decidió el autor en este RFC: la navegación con React Navigation (D24), la voz "Cande"
+(D25), publicar el server con Docker y una clave de la app, que el resumen se actualice con un
+callback desde la pantalla de inicio, sin trucos de tipos, la voz en streaming y siempre la misma
+en un turno, cómo se reintentan y se muestran los audios guardados, el texto para el servicio
+saturado, y las cinco categorías en la tarjeta de un lote.

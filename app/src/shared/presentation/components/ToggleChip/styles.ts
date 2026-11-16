@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import type { Theme } from '@/shared/presentation/theme/Theme';
-import { PADDING } from './constants';
+import { PADDING, ROUND_PADDING } from './constants';
 
 export function createStyles(theme: Theme) {
   return StyleSheet.create({
@@ -13,6 +13,7 @@ export function createStyles(theme: Theme) {
       paddingVertical: PADDING.vertical,
       paddingHorizontal: PADDING.horizontal,
     },
+    round: { paddingVertical: ROUND_PADDING, paddingHorizontal: ROUND_PADDING },
     off: { backgroundColor: theme.colors.surfaceSoft },
     on: { backgroundColor: theme.colors.brand },
   });

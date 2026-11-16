@@ -11,7 +11,7 @@ para la revisión del autor. Los pasos chicos los hace el orquestador; los grand
 | C | Manos libres | aprobado |
 | D | Frases grabadas y aviso de voz en español | aprobado |
 | E | Entrada con el logo, tema según la luz y brillo al sol | aprobado (la entrada entró con A) |
-| F | Pantalla de Ajustes (pedido del autor) y entrega final | pendiente |
+| F | Pantalla de Ajustes (pedido del autor) y entrega final | aprobado |
 
 Rama por paso, con su PR a `feature/rfc-005`: `feature/rfc-005-A` a `-F`.
 
@@ -123,7 +123,10 @@ app/src/App.tsx           [~] AmbientShell
 
 ## Paso F · Pantalla de Ajustes y entrega final
 
-Pedido del autor (16-nov), que se registra como cambio de alcance al empezar el paso.
+Pedido del autor (16-nov), que se registra como cambio de alcance: la pantalla de Ajustes con el
+calibrador del umbral de voz, el tema automático (encendido por defecto), el permiso del micrófono
+y el acceso al catálogo del DS, que sale del encabezado. En el encabezado, manos libres y Ajustes
+quedan como íconos.
 
 ```
 app/src/presentation/features/settings/   [+] SettingsScreen: calibrador del umbral de voz (mide

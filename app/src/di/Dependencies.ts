@@ -10,6 +10,8 @@ import type { ScreenBrightnessService } from '@/domain/services/ScreenBrightness
 import type { ApplyCorrectionUseCase } from '@/domain/usecases/ApplyCorrectionUseCase';
 import type { CountPendingAudiosUseCase } from '@/domain/usecases/CountPendingAudiosUseCase';
 import type { DiscardPendingAudioUseCase } from '@/domain/usecases/DiscardPendingAudioUseCase';
+import type { GetUserSettingsUseCase } from '@/domain/usecases/GetUserSettingsUseCase';
+import type { SaveUserSettingsUseCase } from '@/domain/usecases/SaveUserSettingsUseCase';
 import type { GetLotStockUseCase } from '@/domain/usecases/GetLotStockUseCase';
 import type { GetRainSummaryUseCase } from '@/domain/usecases/GetRainSummaryUseCase';
 import type { GetTodaySummaryUseCase } from '@/domain/usecases/GetTodaySummaryUseCase';
@@ -46,4 +48,6 @@ export type Dependencies = {
   retryPendingAudios: RetryPendingAudiosUseCase;
   discardPendingAudio: DiscardPendingAudioUseCase;
   countPendingAudios: CountPendingAudiosUseCase;
+  getUserSettings: GetUserSettingsUseCase;
+  saveUserSettings: SaveUserSettingsUseCase;
 };

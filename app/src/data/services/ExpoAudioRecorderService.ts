@@ -40,8 +40,6 @@ export class ExpoAudioRecorderService implements AudioRecorderService {
   private levelTimer: ReturnType<typeof setInterval> | undefined;
   private heardVoice = false;
 
-  constructor(private readonly speechLevel: number) {}
-
   async permission(): Promise<MicrophonePermission> {
     return toPermission(await getRecordingPermissionsAsync());
   }
@@ -50,11 +48,14 @@ export class ExpoAudioRecorderService implements AudioRecorderService {
     return toPermission(await requestRecordingPermissionsAsync());
   }
 
-  async start(onLevel: (level: number) => void): Promise<void> {
+  async start(onLevel: (level: number) => void, speechLevel: number): Promise<void> {
     const recorder = new AudioModule.AudioRecorder(OPTIONS);
     this.recorder = recorder;
     this.heardVoice = false;
-    this.starting = this.record(recorder, onLevel);
+    this.starting = this.record(recorder, (level) => {
+      this.heardVoice ||= level >= speechLevel;
+      onLevel(level);
+    });
     await this.starting;
   }
 
@@ -78,9 +79,7 @@ export class ExpoAudioRecorderService implements AudioRecorderService {
       if (this.recorder !== recorder) {
         return;
       }
-      const level = levelFromDecibels(recorder.getStatus().metering ?? -160);
-      this.heardVoice ||= level >= this.speechLevel;
-      onLevel(level);
+      onLevel(levelFromDecibels(recorder.getStatus().metering ?? -160));
     }, LEVEL_EVERY_MS);
   }
 

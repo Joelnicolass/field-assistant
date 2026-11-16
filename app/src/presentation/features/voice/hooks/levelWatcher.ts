@@ -11,14 +11,14 @@ const VERDICT_ACTION: Partial<Record<ListeningVerdict, VoiceAction>> = {
 };
 
 /** Lleva la cuenta de la escucha: con cada volumen que llega, decide una sola vez cómo termina. */
-export function levelWatcher(dispatch: Dispatch<VoiceAction>) {
+export function levelWatcher(dispatch: Dispatch<VoiceAction>, speechLevel: number) {
   const startedAt = Date.now();
   let lastVoiceAt = startedAt;
   let heardVoice = false;
   let decided = false;
   return (level: number) => {
     const now = Date.now();
-    if (level >= settings.speechLevel) {
+    if (level >= speechLevel) {
       heardVoice = true;
       lastVoiceAt = now;
     }

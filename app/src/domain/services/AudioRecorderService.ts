@@ -4,8 +4,8 @@ import type { MicrophonePermission } from '@/domain/enums/MicrophonePermission';
 export interface AudioRecorderService {
   permission(): Promise<MicrophonePermission>;
   requestPermission(): Promise<MicrophonePermission>;
-  /** `level` va de 0 a 1. */
-  start(onLevel: (level: number) => void): Promise<void>;
+  /** `level` va de 0 a 1; desde `speechLevel`, cuenta como voz para `heardVoice`. */
+  start(onLevel: (level: number) => void, speechLevel: number): Promise<void>;
   stop(): Promise<RecordedAudio>;
   cancel(): Promise<void>;
 }

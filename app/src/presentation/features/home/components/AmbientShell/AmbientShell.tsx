@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import Animated from 'react-native-reanimated';
 
 import { settings } from '@/core/configs/settings';
+import { useUserSettings } from '@/presentation/features/settings/hooks/useUserSettings';
 import { ThemeProvider } from '@/shared/presentation/states/ThemeProvider';
 import { useAmbientTheme } from '../../hooks/useAmbientTheme';
 import { useSunBrightness } from '../../hooks/useSunBrightness';
@@ -17,7 +18,9 @@ type AmbientShellProps = { children: ReactNode };
 export function AmbientShell({ children }: AmbientShellProps) {
   // El splash es blanco y la entrada del logo corre en claro: el tema del sensor espera a que terminen.
   const held = useThemeHold(settings.themeHoldMs);
-  const mode = useAmbientTheme(held);
+  // Con el cambio automático apagado en Ajustes, queda el claro, igual que mientras espera.
+  const automatic = useUserSettings().settings?.autoTheme ?? true;
+  const mode = useAmbientTheme(held || !automatic);
   const background = useBackgroundFade(mode);
   useSunBrightness();
 

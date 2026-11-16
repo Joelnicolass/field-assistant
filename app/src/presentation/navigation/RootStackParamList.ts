@@ -4,4 +4,5 @@ import type { RootScreen } from '@/core/configs/RootScreen';
 export type RootStackParamList = {
   [RootScreen.Home]: undefined;
   [RootScreen.Catalog]: undefined;
+  [RootScreen.Settings]: undefined;
 };
